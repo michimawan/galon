@@ -110,6 +110,7 @@ echo $this->Html->css(array('jquery-ui.min.css'));
                 
       data: {term: request.term},
       success: function( data ) {
+        if(data != 'no') {
         var autos = new Array();
         result = JSON.parse(data);
         for (x in result){
@@ -118,6 +119,7 @@ echo $this->Html->css(array('jquery-ui.min.css'));
         }
         
         response( autos );
+        }
       }
       });
       },

@@ -43,6 +43,7 @@
                 
       data: {term: request.term},
       success: function( data ) {
+        if(data != 'no') {
         var autos = new Array();
         result = JSON.parse(data);
         console.log(result);
@@ -52,6 +53,7 @@
         }
         
         response( autos );
+        }
       }
       });
       },

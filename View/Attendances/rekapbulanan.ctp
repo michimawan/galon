@@ -139,6 +139,7 @@ echo $this->Html->css(array('jquery-ui.min.css'));
                 
                 data: {term: request.term},
                 success: function( data ) {
+                    if(data != 'no') {
                     var autos = new Array();
                     result = JSON.parse(data);
                     console.log(result);
@@ -148,6 +149,7 @@ echo $this->Html->css(array('jquery-ui.min.css'));
                     }
                     
                     response( autos );
+                    }
                 }
             });
             },
@@ -177,13 +179,7 @@ echo $this->Html->css(array('jquery-ui.min.css'));
             if(pegawai != '' && month != '' && year != ''){
     			var loc = '<?php echo $this->Html->url(array('action' => 'rekapbulanan'))?>/' + pegawai + '/' + year + '/' + month;
                 window.location.assign(loc);
-            }
-		/*if(tmp.length == 0)
-			window.location.assign(loc);
-		else {
-			window.location.assign(loc + '/' + );
-		}*/
-		
+            }		
 		});
   	});
 </script>
