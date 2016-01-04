@@ -1,0 +1,28 @@
+#wrap > .container {
+	margin-top: 60px;
+}
+
+.ui-datepicker-calendar {
+    display: none;
+}
+
+select{
+	color: black;
+}
+
+.center{
+	text-align: center;
+}
+
+.table > thead > tr > th {
+	font-weight: bolder;
+}
+
+.table > thead > tr> th.middle{
+	vertical-align: middle;
+	text-align: center;
+}
+
+.add-5{
+	margin-top: 5%;
+}

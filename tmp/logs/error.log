@@ -1,0 +1,73 @@
+2016-01-04 15:50:42 Error: [MissingViewException] View file "E:\xampp\htdocs\galon\app\View\Goods\Goods\add.ctp" is missing.
+Exception Attributes: array (
+  'file' => 'E:\\xampp\\htdocs\\galon\\app\\View\\Goods\\Goods\\add.ctp',
+)
+Request URL: /galon/goods
+Stack Trace:
+#0 E:\xampp\htdocs\galon\lib\Cake\View\View.php(718): View->_getViewFileName('Goods/add')
+#1 E:\xampp\htdocs\galon\app\View\Goods\index.ctp(75): View->extend('Goods/add')
+#2 E:\xampp\htdocs\galon\lib\Cake\View\View.php(948): include('E:\\xampp\\htdocs...')
+#3 E:\xampp\htdocs\galon\lib\Cake\View\View.php(910): View->_evaluate('E:\\xampp\\htdocs...', Array)
+#4 E:\xampp\htdocs\galon\lib\Cake\View\View.php(471): View->_render('E:\\xampp\\htdocs...')
+#5 E:\xampp\htdocs\galon\lib\Cake\Controller\Controller.php(954): View->render(NULL, NULL)
+#6 E:\xampp\htdocs\galon\lib\Cake\Routing\Dispatcher.php(198): Controller->render()
+#7 E:\xampp\htdocs\galon\lib\Cake\Routing\Dispatcher.php(165): Dispatcher->_invoke(Object(GoodsController), Object(CakeRequest))
+#8 E:\xampp\htdocs\galon\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#9 {main}
+2016-01-04 16:08:55 Error: [MissingPluginException] Plugin Good could not be found.
+Exception Attributes: array (
+  'plugin' => 'Good',
+)
+Request URL: /galon/goods
+Stack Trace:
+#0 E:\xampp\htdocs\galon\lib\Cake\Core\App.php(227): CakePlugin::path('Good')
+#1 E:\xampp\htdocs\galon\lib\Cake\Core\App.php(549): App::path('Model', 'Good')
+#2 [internal function]: App::load('add')
+#3 [internal function]: spl_autoload_call('add')
+#4 E:\xampp\htdocs\galon\lib\Cake\Utility\ClassRegistry.php(146): class_exists('add')
+#5 E:\xampp\htdocs\galon\lib\Cake\View\Helper\FormHelper.php(171): ClassRegistry::init('Good.add', true)
+#6 E:\xampp\htdocs\galon\lib\Cake\View\Helper\FormHelper.php(204): FormHelper->_getModel('Good.add')
+#7 E:\xampp\htdocs\galon\lib\Cake\View\Helper\FormHelper.php(354): FormHelper->_introspectModel('Good.add', 'key')
+#8 E:\xampp\htdocs\galon\app\View\Goods\add.ctp(12): FormHelper->create('Good.add')
+#9 E:\xampp\htdocs\galon\lib\Cake\View\View.php(948): include('E:\\xampp\\htdocs...')
+#10 E:\xampp\htdocs\galon\lib\Cake\View\View.php(910): View->_evaluate('E:\\xampp\\htdocs...', Array)
+#11 E:\xampp\htdocs\galon\lib\Cake\View\View.php(1213): View->_render('E:\\xampp\\htdocs...', Array)
+#12 E:\xampp\htdocs\galon\lib\Cake\View\View.php(418): View->_renderElement('E:\\xampp\\htdocs...', Array, Array)
+#13 E:\xampp\htdocs\galon\app\View\Goods\index.ctp(75): View->element('../Goods/add')
+#14 E:\xampp\htdocs\galon\lib\Cake\View\View.php(948): include('E:\\xampp\\htdocs...')
+#15 E:\xampp\htdocs\galon\lib\Cake\View\View.php(910): View->_evaluate('E:\\xampp\\htdocs...', Array)
+#16 E:\xampp\htdocs\galon\lib\Cake\View\View.php(471): View->_render('E:\\xampp\\htdocs...')
+#17 E:\xampp\htdocs\galon\lib\Cake\Controller\Controller.php(954): View->render(NULL, NULL)
+#18 E:\xampp\htdocs\galon\lib\Cake\Routing\Dispatcher.php(198): Controller->render()
+#19 E:\xampp\htdocs\galon\lib\Cake\Routing\Dispatcher.php(165): Dispatcher->_invoke(Object(GoodsController), Object(CakeRequest))
+#20 E:\xampp\htdocs\galon\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#21 {main}
+2016-01-04 19:55:39 Error: [MissingControllerException] Controller class GalonController could not be found.
+Exception Attributes: array (
+  'class' => 'GalonController',
+  'plugin' => NULL,
+)
+Request URL: /galon/goods/add_stock/10
+Stack Trace:
+#0 E:\xampp\htdocs\galon\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2016-01-04 19:56:57 Error: [MissingActionException] Action GoodsController::add_stoc19() could not be found.
+Exception Attributes: array (
+  'controller' => 'GoodsController',
+  'action' => 'add_stoc19',
+)
+Request URL: /goods/add_stoc19
+Stack Trace:
+#0 E:\xampp\htdocs\galon\lib\Cake\Routing\Dispatcher.php(191): Controller->invokeAction(Object(CakeRequest))
+#1 E:\xampp\htdocs\galon\lib\Cake\Routing\Dispatcher.php(165): Dispatcher->_invoke(Object(GoodsController), Object(CakeRequest))
+#2 E:\xampp\htdocs\galon\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2016-01-04 20:36:19 Error: [MissingControllerException] Controller class CssController could not be found.
+Exception Attributes: array (
+  'class' => 'CssController',
+  'plugin' => NULL,
+)
+Request URL: /css/images/ui-bg_highlight-soft_100_eeeeee_1x100.png
+Stack Trace:
+#0 E:\xampp\htdocs\galon\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
