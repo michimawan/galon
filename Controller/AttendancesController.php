@@ -76,27 +76,29 @@ class AttendancesController extends AppController {
 
     public function rekapbulanan($id = null, $year = null, $month = null){
         $this->set('title', 'Galon - Rekap Kehadiran Bulanan');
-        // $this->set('data', $this->request->data);
 
-        $user = $this->Auth->User();
-        $id = $user['id'];
-    	if($id) {
-            $user = $this->Attendance->User->find('first', array(
-                'field' => array('User.id', 'User.username', 'User.firstname', 'User.lastname'),
-                'recursive' => -1, 
-                'conditions' => array('User.id' => $id)
-                )
-            );
+        $user = $this->Attendance->User->find('first', array(
+            'field' => array('User.id', 'User.username', 'User.firstname', 'User.lastname'),
+            'recursive' => -1, 
+            'conditions' => array('User.id' => $id, 'User.status' => 1)
+            )
+        );
 
+        if($user) {
             $month_record = $this->Attendance->getMonthRecord($id, $month, $year);
 
+            $count_present = 0;
+            foreach ($month_record as $day) {
+                $day['Attendance']['kehadiran'] ? $count_present++ : "";
+            }
+
+            $this->set(compact('count_present'));
             $this->set(compact('month_record'));
-            $this->set(compact('user'));
-            
+            $this->set(compact('user'));            
     	} else {
-    		$this->Session->setFlash('Tidak dapat melihat presensi user', 'customflash', array('class' => 'warning'));
-            //$this->redirect(array('controller'=>'users','action' => 'index'));
-    	}
+            $this->Session->setFlash('User tidak ada', 'customflash', array('class' => 'warning'));
+            $this->redirect(array('controller'=>'users','action' => 'index'));
+        }
     }
 
     private function to1DArray($_3D_array, $field_1, $field_2){

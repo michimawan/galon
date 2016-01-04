@@ -26,6 +26,7 @@
             <h1>Presensi Pegawai</h1>
             <h3><?php echo $user['User']['username'];?></h3>
             <h3><?php echo $user['User']['firstname']. " " .$user['User']['lastname'];?></h3>
+            <h3><?php echo "Masuk " . $count_present. " hari"; ?></h3>
         </div>
     </div>
     <div class="col-xs-12 col-md-12">
