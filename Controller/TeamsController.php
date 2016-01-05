@@ -177,7 +177,7 @@ class TeamsController extends AppController {
 		}
 	}
 
-	public function not_teamed(){
+	public function customer_not_teamed(){
 		$this->layout = 'no_layout';
 		$customer_not_in_team = $this->Team->PairTeamCustomer->Customer->get_customer_not_have_team();
 

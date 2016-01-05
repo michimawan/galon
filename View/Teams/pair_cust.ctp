@@ -40,7 +40,7 @@
         tambahkan
       </button>
     </form>
-    <?php echo $this->Html->link(    "Lihat Daftar Pelanggan",  array('action'=>'not_teamed'), array('class' => 'btn btn-success', 'data-toggle' => 'modal', 'data-action' => $this->Html->url(array('action'=>'not_teamed')),'data-target' => '#modal_not_teamed')); ?> 
+    <?php echo $this->Html->link(    "Lihat Daftar Pelanggan",  array('action'=>'customer_not_teamed'), array('class' => 'btn btn-success', 'data-toggle' => 'modal', 'data-action' => $this->Html->url(array('action'=>'customer_not_teamed')),'data-target' => '#modal_cust_not_teamed')); ?> 
     <div class='table-responsive'>
       <table class='table table-striped table-hover'>
         <thead>
@@ -82,7 +82,7 @@
     </div>
 </div>
 
-<div class="modal fade" tabindex="-1" role="dialog" id='modal_not_teamed' aria-labelledby="myLargeModalLabel">
+<div class="modal fade" tabindex="-1" role="dialog" id='modal_cust_not_teamed' aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg">
         <div class="modal-content" id='index'>
         </div>
@@ -140,13 +140,13 @@ echo $this->Html->css(array('jquery-ui.min.css'));
     });
   
 
-    $("a[data-target=#modal_not_teamed]").click(function(ev) {
+    $("a[data-target=#modal_cust_not_teamed]").click(function(ev) {
         //ev.preventDefault();
         var target = $(this).attr("href");
 
         // load the url and show modal on success
-        $("#modal_not_teamed #index").load(target, function() { 
-             $("#modal_not_teamed").modal("show");
+        $("#modal_cust_not_teamed #index").load(target, function() { 
+             $("#modal_cust_not_teamed").modal("show");
         });
     });
   });
