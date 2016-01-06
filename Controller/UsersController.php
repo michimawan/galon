@@ -1,6 +1,8 @@
 <?php 
 App::uses('File', 'Utility');
 
+// in case forget password
+// debug(Security::hash('users', 'sha1', true));
 class UsersController extends AppController {
     public $layout = "layout";
     
@@ -24,11 +26,11 @@ class UsersController extends AppController {
 
     public function login() {
         $this->set('title','Galon - Login Pengguna');
-        //if already logged-in, redirect
+        // if already logged-in, redirect
         if($this->Session->check('Auth.User')){
             $this->redirect(array('action' => 'index'));    
         }
-         
+        
         // if we get the post information, try to authenticate
         if ($this->request->is('post')) {
             if ($this->Auth->login()) {
@@ -67,9 +69,8 @@ class UsersController extends AppController {
     public function add() {
         $this->set('title','Galon - Tambah Data Pengguna');
         $this->check_user_access('add');
-
+        
         if ($this->request->is('post')) {
-                 
             $this->User->create();
             if ($this->User->save($this->request->data)) {
                 $this->Session->setFlash('Pengguna baru berhasil dibuat', 'customflash', array('class' => 'success'));
