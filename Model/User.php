@@ -200,6 +200,14 @@ class User extends AppModel {
 		return $this->query($q);
 	}
 
+	public function get_user_not_have_team(){
+        $q = "SELECT * FROM `users` AS `User` 
+        	WHERE `User`.`id` NOT IN (
+        		SELECT `Team`.`idpegawai` FROM `teams` AS `Team` WHERE `Team`.`status` = 1) 
+			AND `User`.`status` = 1 ORDER BY `User`.`id` ASC";
+
+        return $this->query($q);
+    }
 }	
 
 ?>

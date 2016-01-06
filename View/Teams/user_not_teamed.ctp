@@ -1,8 +1,8 @@
-<!-- app/View/Teams/not_teamed.ctp -->
+<!-- app/View/Teams/user_not_teamed.ctp -->
 
 <div class="modal-header">
   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  <h4 class="modal-title" id="myModalLabel">Daftar Pelanggan yang belum memiliki sales</h4>
+  <h4 class="modal-title" id="myModalLabel">Daftar Pengguna yang belum berpasangan</h4>
 
 </div>
 <div class="modal-body">
@@ -12,23 +12,22 @@
     <thead>
       <tr>
         <th>No.</th>
-        <th>Kode Pelanggan</th>
-        <th>Nama Pelanggan</th>
-        <th>Alamat</th>
+        <th>Username</th>
+        <th>Nama Pengguna</th>
       </tr>
     </thead>
     <tbody>
       <?php 
       $i = 1;
-      if(!$customer_not_in_team)
-        echo "<tr><td colspan='4'>Semua pelanggan telah memiliki sales</td></tr>";
-      foreach ($customer_not_in_team as $customer) {
+      if(!$user_not_in_team)
+        echo "<tr><td colspan='4'>Semua pengguna telah berpasangan</td></tr>";
+      foreach ($user_not_in_team as $user) {
       ?>
       <tr>
+        <?php debug($user); ?>
         <td><?php echo $i?></td>
-        <td><?php echo $customer['Customer']['kdpelanggan']?></td>
-        <td><?php echo $customer['Customer']['namapelanggan']?></td>
-        <td><?php echo $customer['Customer']['alamat']?></td>
+        <td><?php echo $user['User']['username']?></td>
+        <td><?php echo $user['User']['firstname']. ' ' .$user['User']['lastname']?></td>
       </tr>
       <?php
       $i++; }

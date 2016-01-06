@@ -16,6 +16,7 @@ foreach ($galons as $galon) {
             echo $this->Html->link( "Lihat Daftar Tim",   array('action'=>'index'), array('class'=>'btn btn-default')); 
             }
         ?>
+        <?php echo $this->Html->link(    "Lihat Daftar Pengguna",  array('action'=>'user_not_teamed'), array('class' => 'btn btn-success', 'data-toggle' => 'modal', 'data-action' => $this->Html->url(array('action'=>'user_not_teamed')),'data-target' => '#modal_user_not_teamed')); ?> 
     </div>
 
     <div class="col-xs-12 col-md-10">
@@ -41,6 +42,14 @@ foreach ($galons as $galon) {
     <?php echo $this->Form->end(); ?>
     </div>
 </div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id='modal_user_not_teamed' aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id='index'>
+        </div>
+    </div>
+</div>
+
 <?php 
 echo $this->Html->script(array('jquery-ui.min.js'));
 echo $this->Html->css(array('jquery-ui.min.css'));
@@ -126,5 +135,15 @@ echo $this->Html->css(array('jquery-ui.min.css'));
                 $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
             }
         });
+
+    $("a[data-target=#modal_user_not_teamed]").click(function(ev) {
+        //ev.preventDefault();
+        var target = $(this).attr("href");
+
+        // load the url and show modal on success
+        $("#modal_user_not_teamed #index").load(target, function() { 
+             $("#modal_user_not_teamed").modal("show");
+        });
+    });
     });
 </script>

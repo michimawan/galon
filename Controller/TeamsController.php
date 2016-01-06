@@ -184,6 +184,13 @@ class TeamsController extends AppController {
 		$this->set(compact('customer_not_in_team'));
 	}
 
+	public function user_not_teamed(){
+		$this->layout = 'no_layout';
+		$user_not_in_team = $this->Team->User->get_user_not_have_team();
+
+		$this->set(compact('user_not_in_team'));
+	}
+
 	public function delete_pair($idcustomer = null, $idtim = null){
 		if($this->request->is('post')){
 			if(!$this->Team->PairTeamCustomer->delete_by_cust_tim($idcustomer, $idtim)){
