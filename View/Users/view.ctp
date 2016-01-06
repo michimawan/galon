@@ -24,6 +24,8 @@
             <h3>No. HP: <?php echo $user['User']['nohp'];?></h3>
             <?php echo $this->Html->link( "Lihat Presensi", array('controller'=>'attendances','action'=>'rekapbulanan', $user['User']['id'], date('Y'), date('m')), array('escape' => false, 'class' => 'btn btn-default')); ?>
         </div>
+
+        <?php if ($partner): ?>
         <div>
             <h1>Teman Tim Pegawai</h1>
             <h3>Username: <?php echo $partner['User']['username'];?></h3>
@@ -31,5 +33,10 @@
             <h3>No. HP: <?php echo $partner['User']['nohp'];?></h3>
             <?php echo $this->Html->link( "Lihat Presensi", array('controller'=>'attendances','action'=>'rekapbulanan', $partner['User']['id'], date('Y'), date('m')), array('escape' => false, 'class' => 'btn btn-default')); ?>
         </div>
+        <?php else: ?>
+        <div>
+            <h3>Pegawai ini belum memiliki tim</h3>
+        </div>
+        <?php endif ?>
     </div>
 </div>
