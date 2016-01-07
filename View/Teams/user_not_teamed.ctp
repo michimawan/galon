@@ -24,7 +24,6 @@
       foreach ($user_not_in_team as $user) {
       ?>
       <tr>
-        <?php debug($user); ?>
         <td><?php echo $i?></td>
         <td><?php echo $user['User']['username']?></td>
         <td><?php echo $user['User']['firstname']. ' ' .$user['User']['lastname']?></td>

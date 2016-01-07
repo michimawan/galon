@@ -10,13 +10,15 @@ foreach ($galons as $galon) {
 ?>
 <div class="row">
     <div class="col-xs-3 col-md-2">
+        <div class='btn-group-vertical'>
         <?php 
 
             if($this->Session->check('Auth.User')){
             echo $this->Html->link( "Lihat Daftar Tim",   array('action'=>'index'), array('class'=>'btn btn-default')); 
             }
         ?>
-        <?php echo $this->Html->link(    "Lihat Daftar Pengguna",  array('action'=>'user_not_teamed'), array('class' => 'btn btn-success', 'data-toggle' => 'modal', 'data-action' => $this->Html->url(array('action'=>'user_not_teamed')),'data-target' => '#modal_user_not_teamed')); ?> 
+        <?php echo $this->Html->link(    "Lihat Daftar Pengguna",  array('action'=>'user_not_teamed'), array('class' => 'btn btn-default', 'data-toggle' => 'modal', 'data-action' => $this->Html->url(array('action'=>'user_not_teamed')),'data-target' => '#modal_user_not_teamed')); ?>
+        </div>
     </div>
 
     <div class="col-xs-12 col-md-10">
