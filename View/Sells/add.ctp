@@ -45,14 +45,9 @@
         echo $this->Form->input('jmlbeli', array('label'=>'Jumlah beli air' ,'type' => 'number', 'max' => '100', 'min' => '0', 'id'=>'SellJmlBeli', 'value' => '0', 'class' => 'form-control', 'required'));
         echo $this->Form->input('jmlpinjam', array('label'=>'Jumlah pinjam galon' ,'type' => 'number', 'max' => '100', 'min' => '0', 'value' => '0', 'class' => 'form-control', 'required'));
         echo $this->Form->input('jmlkembali', array('label'=>'Jumlah kembali galon' ,'type' => 'number', 'max' => '100', 'min' => '0', 'value' => '0', 'class' => 'form-control', 'required'));
-        echo $this->Form->input('totalharga', array('label'=>'Total Harga Galon' ,'type' => 'number', 'max' => '1000000', 'min' => '0', 'readonly', 'value' => '0', 'class' => 'form-control'));
-        ?>
-        <div class='form-input'>
-            <label for='bayar_customer'>Yang harus dibayarkan pelanggan</label>
-            <input class='form-control' id='bayar_customer' type='text' readonly>
-        </div>
-        <?php
-        echo $this->Form->input('bayar', array('label'=>'Total Bayar' ,'type' => 'number', 'max' => '1000000', 'min' => '0', 'value' => '0', 'class' => 'form-control'));
+        echo $this->Form->input('totalhargagalon', array('label'=>'Total Harga Galon' ,'type' => 'number', 'max' => '1000000', 'min' => '0', 'readonly', 'value' => '0', 'class' => 'form-control'));
+        echo $this->Form->input('totalharga', array('label'=>'Total Harga yang harus Dibayarkan' ,'type' => 'number', 'max' => '1000000', 'min' => '0', 'readonly', 'value' => '0', 'class' => 'form-control'));
+        echo $this->Form->input('bayar', array('label'=>'Pembayaran Pelanggan' ,'type' => 'number', 'max' => '1000000', 'min' => '0', 'value' => '0', 'class' => 'form-control'));
         echo $this->Form->input('hutang', array('label'=>'Hutang' ,'type' => 'number', 'max' => '1000000', 'min' => '0', 'readonly', 'value' => '0', 'class' => 'form-control'));
         ?>
         <?php
@@ -64,25 +59,26 @@
 
 <script type="text/javascript">
     $(document).on('keyup', '#SellJmlBeli', function() {
-        var amount = $('#SellJmlBeli').val();
+        var tot_galon = $('#SellJmlBeli').val();
+        var last_cust_debt = $('#hutang_customer').val() ? $('#hutang_customer').val() : 0;
+
         var price = $('#price' + $('#SellIdgood').val()).html();
-        amount = amount * price;
+        var buy_price = tot_galon * price;
         
-        $('#SellTotalharga').attr('value', amount);
+        var total_price = parseInt(buy_price) + parseInt(last_cust_debt);
+        $('#SellTotalhargagalon').attr('value', buy_price);
+        $('#SellTotalharga').attr('value', total_price);
 
         var bayar = $('#SellBayar').val();
-        var totalharga = $('#SellTotalharga').val();
-        var hutang_lama = $('#hutang_customer').val();
-        var hutang = (totalharga - bayar + parseInt(hutang_lama));
-
+        var hutang = (total_price - bayar);
         $('#SellHutang').attr('value', hutang);
     });
+
     $(document).on('keyup', '#SellBayar', function() {
         var bayar = $('#SellBayar').val();
-        var totalharga = $('#SellTotalharga').val();
-        var hutang_lama = $('#hutang_customer').val();
-        var hutang = (totalharga - bayar + parseInt(hutang_lama));
-        console.log(hutang);
+        var total_price = $('#SellTotalharga').val();
+        var hutang = (total_price - bayar);
+
         $('#SellHutang').attr('value', hutang);
     });
 
@@ -95,7 +91,7 @@
         if(jmlpinjam== '')
             $('#SellJmlpinjam').attr('value', '0');
         if(jmlkembali == '')
-            $('#SellJmlkembali').attr('value', '0');            
+            $('#SellJmlkembali').attr('value', '0');
     }
 
     $('#SellIdcustomer').change(function(){
@@ -107,10 +103,20 @@
                 success: function( data ) {
                 data = JSON.parse(data);
                 for(x in data){
-                    $('#hutang_customer').val(data[x]['hutang']);
+                    $('#hutang_customer').attr('value', data[x]['hutang']);
+                    $('#SellTotalharga').attr('value', data[x]['hutang']);
                 }
+                reset();
                 }
             });
         }
     });
+
+    function reset() {
+        $('#SellJmlBeli').attr('value', '0');
+        $('#SellJmlkembali').attr('value', '0');
+        $('#SellJmlpinjam').attr('value', '0');
+        $('#SellTotalhargagalon').attr('value', '0');
+        $('#SellBayar').attr('value', '0');
+    }
 </script>

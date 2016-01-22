@@ -45,7 +45,7 @@ class Customer extends AppModel {
     public function get_customer_in_team($idtim){
         $q = "SELECT * FROM `customers` AS `Customer`  
             WHERE `Customer`.`id` IN 
-                (SELECT `pair_team_customers`.`idcustomer` FROM `pair_team_customers` WHERE `pair_team_customerS`.`idtim` = '$idtim') 
+                (SELECT `pair_team_customers`.`idcustomer` FROM `pair_team_customers` WHERE `pair_team_customers`.`idtim` = '$idtim') 
             AND `Customer`.`status` = 1
             ORDER BY `Customer`.`id`";
 
