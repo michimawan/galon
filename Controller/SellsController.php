@@ -77,7 +77,7 @@ class SellsController extends AppController {
         if($user['role'] == 'pegawai')
             $idtim = $user['Team']['idtim'];
 
-        $params = array('limit' => 20, 'recursive' => -1);
+        $params = array('limit' => 20, 'recursive' => -1, 'order' => 'Master.date DESC');
         if($idtim > 0)
             $params['conditions'] = array('idtim' => $idtim);
 

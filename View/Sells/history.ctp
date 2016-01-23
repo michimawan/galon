@@ -116,6 +116,11 @@
         	</table>
         </div>
     </div>
+    <div class="paging">
+        <?php
+            echo $this->Paginator->prev() .'  '. $this->Paginator->numbers(array('before'=>false, 'after'=>false,'separator'=> false)) .'  '. $this->Paginator->next();
+        ?>
+    </div>
 </div>
 <script type="text/javascript">
     $('#search').click(function() {
