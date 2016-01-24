@@ -6,10 +6,10 @@
 </div>
 <div class="row">
     <div class="col-xs-3 col-md-2">
-        <?php 
+        <?php
 
             if($this->Session->check('Auth.User')){
-            echo $this->Html->link( "Lihat Penjualan",   array('action'=>'index'), array('class'=>'btn btn-default')); 
+            echo $this->Html->link( "Lihat Penjualan",   array('action'=>'index'), array('class'=>'btn btn-default'));
             }
         ?>
     </div>
@@ -27,7 +27,7 @@
                                     // 'select' => $goods[0],
                                     'class' => 'form-control'
                                     ));
-        
+
         echo $this->Form->input('idcustomer', array(
                                     'label'=>'Pilih Pelanggan ',
                                     'type' => 'select',
@@ -64,7 +64,7 @@
 
         var price = $('#price' + $('#SellIdgood').val()).html();
         var buy_price = tot_galon * price;
-        
+
         var total_price = parseInt(buy_price) + parseInt(last_cust_debt);
         $('#SellTotalhargagalon').attr('value', buy_price);
         $('#SellTotalharga').attr('value', total_price);

@@ -7,7 +7,7 @@
 		<?php echo !$master? "": ($members == 0? "": ($master[0]['Master']['status']? "" : $this->Html->link("<span class='glyphicon glyphicon-plus' aria-hidden='true'></span> | Tambah Data Transaksi", array('action' => 'add', $id), array('escape' => false,'class' => 'btn btn-primary'))));?>
 	</div>
 	<div class="col-md-3">
-		<?php echo !$master? "": ($members == 0? "": ($master[0]['Master']['status']? "" : $this->Form->postLink("<span class='glyphicon glyphicon-lock' aria-hidden='true'></span> | Kunci Data Transaksi", array('action' => 'lock', $id, date('Y-m-d'),$master[0]['Master']['start']),  array('escape' => false,'class' => 'btn btn-danger', 'confirm' => 'Anda yakin semua transaksi sudah selesai?'))));?>
+		<?php echo !$master? "": ($members == 0? "": ($master[0]['Master']['status']? "" : $this->Form->postLink("<span class='glyphicon glyphicon-lock' aria-hidden='true'></span> | Kunci Data Transaksi", array('action' => 'lock', $master[0]['Master']['id'], date('Y-m-d')),  array('escape' => false,'class' => 'btn btn-danger', 'confirm' => 'Anda yakin semua transaksi sudah selesai?'))));?>
 	</div>
 	<div class="col-md-3">
 		<?php echo  !$master? "": ($members == 0? "": ($master[0]['Master']['status']? "" : $this->Html->link("<span class='glyphicon glyphicon-print' aria-hidden='true'></span> | Cetak Halaman Transaksi", array('action' => 'printblank', $id, date('Y-m-d')), array('escape' => false, 'class' => 'btn btn-success'))));?>

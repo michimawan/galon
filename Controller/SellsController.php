@@ -416,16 +416,15 @@ class SellsController extends AppController {
         $this->redirect(array('action' => 'index'));
     }
 
-    public function lock($idtim, $dates, $start){
+    public function lock($idmaster, $dates){
         $user = $this->Auth->user();
 
         if($this->request->is('post')){
-
-            if($idtim && $dates){
-                $this->calculate_today_sells($idtim, $dates, $start);
+            if($idmaster && $dates){
+                $this->recalculate_sells($idmaster, $dates);
                 if($this->Sell->updateAll(
                     array('Sell.status' => "1"),
-                    array('Sell.idtim' => $idtim, 'DATE(Sell.date)' => $dates)
+                    array('Sell.idmaster' => $idmaster)
                 ))
                 $this->Session->setFlash('Data transaksi berhasil dilock', 'customflash', array('class' => 'success'));
                 else
@@ -440,14 +439,19 @@ class SellsController extends AppController {
 
     }
 
-    private function recalculate_sells($idmaster)
+    private function recalculate_sells($idmaster, $dates = null)
     {
         $datas = $this->Sell->find('all', array('conditions' => array('Sell.idmaster' => $idmaster),
             'recursive' => 0, 'order' => 'Sell.idcustomer',
             'fields' => array('DISTINCT Sell.id', 'Sell.idtim', 'Sell.idcustomer', 'Sell.jmlbeli', 'Sell.jmlkembali',
             'Sell.jmlpinjam', 'Sell.bayar','Sell.hutang', 'Sell.totalharga', 'Sell.totalhargagalon', 'Customer.id', 'Customer.hutang', 'Customer.galonterpinjam'))
         );
-        $harga_galon = $datas[0]['Sell']['totalhargagalon'] / $datas[0]['Sell']['jmlbeli'];
+        if($datas[0]['Sell']['jmlbeli'] == 0) {
+            $harga_galon = $this->Sell->Good->find('first', array('conditions' => array('Good.namabarang LIKE' => '%galon%'), 'fields' => array('Good.hargajual')));
+            $harga_galon = $harga_galon['Good']['hargajual'];
+        }
+        else
+            $harga_galon = $datas[0]['Sell']['totalhargagalon'] / $datas[0]['Sell']['jmlbeli'];
 
         $galonkosong = 0;
         $finish = 0;
@@ -503,6 +507,9 @@ class SellsController extends AppController {
             'total_hutang' => $total_hutang,
             'status' => 1,
         ));
+
+        if($dates)
+            $master['Master']['date'] = $dates;
 
         $this->Sell->Team->updateAll(
             array('Team.jmlgalon' => $teams[0]['Team']['jmlgalon']),
