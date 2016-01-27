@@ -142,7 +142,7 @@ class SellsController extends AppController {
 				
 				$teams = $this->Sell->Team->User->get_user_with_idtim_and_attend($id);
 				$team_galon = $this->Sell->Team->find('first', array('conditions' => array('Team.idtim' => $id), 'recursive' => -1));
-				$good_price = $this->Sell->Good->find('first', array('conditions' => array('Good.kdbarang' => 'CG0004'), 'fields' => array('Good.hargajual')));
+				$good_price = $this->Sell->Good->find('first', array('conditions' => array('Good.kdbarang' => 'CG0001'), 'fields' => array('Good.hargajual')));
 				// $customers = $this->Sell->Team->PairTeamCustomer->Customer->get_customer_in_team($id);
 				// $jml_galon = $this->Sell->Team->find('first', array('conditions' => array('Team.idtim' => $id), 'fields' => array('Team.jmlgalon'), 'recursive' => -1));
 				$datas = $this->Sell->find('all', array('conditions' => array('DATE(Sell.date)' => date('Y-m-d'), 'Sell.idtim' => $id), 'recursive' => 0, 'order' => 'Sell.idcustomer', 'fields' => array('DISTINCT Sell.id','Sell.idtim', 'Sell.jmlbeli','Sell.jmlpinjam', 'Sell.jmlkembali', 'Sell.bayar', 'Sell.hutang','Sell.status', 'Customer.id', 'Customer.kdpelanggan', 'Customer.namapelanggan', 'Customer.alamat', 'Customer.galonterpinjam', 'Customer.hutang', 'Customer.transaksiterakhir')));
@@ -169,11 +169,16 @@ class SellsController extends AppController {
 
 	//accessed by user
 	public function add($idtim = null){
-		$this->set('title', 'Galon - Tambah Daftar Barang');
+		$this->set('title', 'Galon - Tambah Transaksi');
 		$this->check_admin_access('add');
 
 		if ($this->request->is('post')) {
-			
+			$user = $this->Auth->user();
+			$master = $this->Sell->Master->find('all', 
+				array('conditions' => array('Master.idtim' => $user['Team']['idtim'], 'Master.date' => date('Y-m-d'))
+			));
+			debug($master);
+			$this->_stop();
 			$this->request->data['Sell']['kodepenjualan'] = $this->generate_kodepenjualan();
 			$this->request->data['Sell']['date'] = '';
 			
