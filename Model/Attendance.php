@@ -19,11 +19,7 @@ class Attendance extends AppModel{
 
         return $this->query($q);
     }
-
-    public function getYearRecord($idpegawai, $year){
-    	
-    }
-
+    
     public function getUserIDThatAttend(){
         $q = "SELECT `idpegawai` FROM `attendances` WHERE tanggal LIKE curdate()";
 
