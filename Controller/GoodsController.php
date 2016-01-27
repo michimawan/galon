@@ -16,7 +16,18 @@ class GoodsController extends AppController {
 		$this->set(compact('goods'));
 	}
 
+	private function check_admin_access($location){
+		$user = $this->Auth->user();
+		if($user['role'] === 'pegawai'){
+			if($location == 'add' || $location == 'edit' ||
+				$location == 'index' || $location == 'delete'){
+					$this->redirect(array('action' => 'index'));	
+			}
+		}
+	}
+
 	public function add(){
+		$this->check_admin_access('add');
 		$this->set('title', 'Galon - Tambah Daftar Barang');
 		if ($this->request->is('post')) {
 			
@@ -81,6 +92,7 @@ class GoodsController extends AppController {
 	}
 
 	public function edit($id = null){
+		$this->check_admin_access('edit');
 		$this->set('title','Galon - Edit Data Barang');
 		if($this->request->is('post') || $this->request->is('put'))
 		{
@@ -107,7 +119,9 @@ class GoodsController extends AppController {
 
 		}
 	}
+	
 	public function delete($id){
+		$this->check_admin_access('delete');
 		if($this->request->is('post')){
 			if (!$id) {
                 $this->Session->setFlash('Tidak ada data barang yang dipilih', 'customflash', array('class' => 'warning'));

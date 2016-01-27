@@ -1,6 +1,9 @@
 <!-- app/View/Goods/index.ctp -->
 
 <div class="row">
+    <?php
+    $user = $this->Auth->user();
+    if($user['role'] != 'pegawai'){ ?>
     <div class="col-xs-3 col-md-2">
         <div class="btn-group-vertical" role="group">
             <div class='btn-group' role='group'>
@@ -8,6 +11,7 @@
             </div>
         </div>
     </div>
+    <?php } ?>
     <div class="col-xs-12 col-md-10">
     <h1>Daftar Barang</h1>
     <h4>Menampilkan <?php echo $this->params['paging']['Good']['count'] < 20? ($this->params['paging']['Good']['count']." dari ".$this->params['paging']['Good']['count']." record") : ("20 dari ".$this->params['paging']['Good']['count']." record") ?></h4>

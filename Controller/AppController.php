@@ -63,7 +63,7 @@ class AppController extends Controller {
  
 	public function isAuthorized($user) {
 	    // Here is where we should verify the role and give access based on role
-	     
+	    
 	    return true;
 	}
 }
