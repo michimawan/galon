@@ -112,7 +112,7 @@
     </div> 
 </div>
 
-<?php echo $this->element('add_customer'); ?>
+<?php echo $this->element('../Customers/add'); ?>
 <script type="text/javascript">
     $(document).ready(function(){
         $('#idtim').change(function(){
