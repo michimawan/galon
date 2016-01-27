@@ -15,11 +15,11 @@ class Sell extends AppModel {
         'Team' => array(
             'className' => 'Team',
             'foreignKey'=>'idtim'
-        )
-    );
-
-    public $hasOne = array(
-        
+        ),
+        'Master' => array(
+            'className' => 'Master',
+            'foreignKey' => 'idmaster',
+        ),
     );
 
     public function cek_lock($idtim){
