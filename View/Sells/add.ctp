@@ -15,10 +15,8 @@
     </div>
     <!-- <span class='hidden' price="<?php ?>"></span> -->
     <div class="col-xs-12 col-md-10">
-        <?php // echo $this->Form->create('Sell', array('action'=>'add', 'enctype'=>'multipart/form-data', 'onsubmit' => 'return formcheck()'));?>
         <?php echo $this->Form->create('Sell', array('action'=>'add', 'enctype'=>'multipart/form-data', 'onsubmit' => 'return formcheck()'));?>
         <h1><?php echo __('Tambah Penjualan'); ?></h1>
-        <!-- <h4>Galon tersisa: <?php // echo $total_galon; ?></h4> -->
         <?php
         echo $this->Form->input('idtim', array('type' => 'hidden','value'=>$idtim));
         echo $this->Form->input('idgood', array(
@@ -26,10 +24,10 @@
                                     'type' => 'select',
                                     'options' => $goods,
                                     'readonly'=>'readonly',
-                                    'select' => $goods[8],
+                                    // 'select' => $goods[0],
                                     'class' => 'form-control'
                                     ));
-        //echo $this->Form->input('idgood', array('type' => 'hidden','value'=>$idgood['Good']['id']));
+        
         echo $this->Form->input('idcustomer', array(
                                     'label'=>'Pilih Pelanggan ',
                                     'type' => 'select',
