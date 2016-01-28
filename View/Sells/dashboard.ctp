@@ -43,7 +43,7 @@
 			</div>
   			<div class="form-group">
 			    <label for="MasterStart">Start</label>
-			    <input type="number" class="form-control" id="MasterStart"  name="data[Master][start]" required min='0'>
+			    <input type="number" class="form-control" id="MasterStart"  name="data[Master][start]" required min='0' max="<?php echo $team_galon['Team']['jmlgalon']?>">
   			</div>
   			<button type="submit" class="form-group btn btn-success" aria-label="Left Align">
 				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
