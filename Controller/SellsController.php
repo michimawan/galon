@@ -2,11 +2,10 @@
 
 class SellsController extends AppController {
 	public $layout = 'layout';
-	//accessed by admin
-
+	
 	private function check_user_access($location){
 		$user = $this->Auth->user();
-		if($user['role'] == 'pegawai' && $user['Team']['idtim'])
+		if($user['role'] == 'pegawai' && isset($user['Team']['idtim']))
 			$this->redirect(array('action' => $location, $user['Team']['idtim']));
 		else if($user['role'] == 'pegawai')
 			$this->redirect(array('controller' => 'users', 'action' => 'index'));
@@ -177,11 +176,11 @@ class SellsController extends AppController {
 			$master = $this->Sell->Master->find('all', 
 				array('conditions' => array('Master.idtim' => $user['Team']['idtim'], 'Master.date' => date('Y-m-d'))
 			));
-			debug($master);
-			$this->_stop();
+
+			$idmaster = $master[0]['Master']['id'];
 			$this->request->data['Sell']['kodepenjualan'] = $this->generate_kodepenjualan();
 			$this->request->data['Sell']['date'] = '';
-			
+			$this->request->data['Sell']['idmaster'] = $idmaster;
 			
             $this->Sell->create();
             if ($this->Sell->save($this->request->data)) {
@@ -273,7 +272,7 @@ class SellsController extends AppController {
 	//accessed by user and admin
 	public function edit($id = null){
 		$this->set('title','Galon - Ubah Data Transaksi');
-		$this->check_user_access('edit');
+		// $this->check_user_access('edit');
 
     	if (!$id) {
             $this->Session->setFlash('Gagal memilih transaksi yang akan diedit', 'customflash', array('class' => 'danger'));
