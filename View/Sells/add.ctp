@@ -45,7 +45,13 @@
         echo $this->Form->input('jmlbeli', array('label'=>'Jumlah beli air' ,'type' => 'number', 'max' => '100', 'min' => '0', 'id'=>'SellJmlBeli', 'value' => '0', 'class' => 'form-control', 'required'));
         echo $this->Form->input('jmlpinjam', array('label'=>'Jumlah pinjam galon' ,'type' => 'number', 'max' => '100', 'min' => '0', 'value' => '0', 'class' => 'form-control', 'required'));
         echo $this->Form->input('jmlkembali', array('label'=>'Jumlah kembali galon' ,'type' => 'number', 'max' => '100', 'min' => '0', 'value' => '0', 'class' => 'form-control', 'required'));
-        echo $this->Form->input('totalharga', array('label'=>'Total Harga' ,'type' => 'number', 'max' => '1000000', 'min' => '0', 'readonly', 'value' => '0', 'class' => 'form-control'));
+        echo $this->Form->input('totalharga', array('label'=>'Total Harga Galon' ,'type' => 'number', 'max' => '1000000', 'min' => '0', 'readonly', 'value' => '0', 'class' => 'form-control'));
+        ?>
+        <div class='form-input'>
+            <label for='bayar_customer'>Yang harus dibayarkan pelanggan</label>
+            <input class='form-control' id='bayar_customer' type='text' readonly>
+        </div>
+        <?php
         echo $this->Form->input('bayar', array('label'=>'Total Bayar' ,'type' => 'number', 'max' => '1000000', 'min' => '0', 'value' => '0', 'class' => 'form-control'));
         echo $this->Form->input('hutang', array('label'=>'Hutang' ,'type' => 'number', 'max' => '1000000', 'min' => '0', 'readonly', 'value' => '0', 'class' => 'form-control'));
         ?>

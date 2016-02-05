@@ -141,7 +141,7 @@ class SellsController extends AppController {
 				
 				$teams = $this->Sell->Team->User->get_user_with_idtim_and_attend($id);
 				$team_galon = $this->Sell->Team->find('first', array('conditions' => array('Team.idtim' => $id), 'recursive' => -1));
-				$good_price = $this->Sell->Good->find('first', array('conditions' => array('Good.kdbarang' => 'CG0001'), 'fields' => array('Good.hargajual')));
+				$good_price = $this->Sell->Good->find('first', array('conditions' => array('Good.namabarang LIKE' => '%galon%'), 'fields' => array('Good.hargajual')));
 				// $customers = $this->Sell->Team->PairTeamCustomer->Customer->get_customer_in_team($id);
 				// $jml_galon = $this->Sell->Team->find('first', array('conditions' => array('Team.idtim' => $id), 'fields' => array('Team.jmlgalon'), 'recursive' => -1));
 				$datas = $this->Sell->find('all', array('conditions' => array('DATE(Sell.date)' => date('Y-m-d'), 'Sell.idtim' => $id), 'recursive' => 0, 'order' => 'Sell.idcustomer', 'fields' => array('DISTINCT Sell.id','Sell.idtim', 'Sell.jmlbeli','Sell.jmlpinjam', 'Sell.jmlkembali', 'Sell.bayar', 'Sell.hutang','Sell.status', 'Customer.id', 'Customer.kdpelanggan', 'Customer.namapelanggan', 'Customer.alamat', 'Customer.galonterpinjam', 'Customer.hutang', 'Customer.transaksiterakhir')));
@@ -168,8 +168,8 @@ class SellsController extends AppController {
 
 	//accessed by user
 	public function add($idtim = null){
-		$this->set('title', 'Galon - Tambah Transaksi');
 		$this->check_admin_access('add');
+		$this->set('title', 'Galon - Tambah Transaksi');
 
 		if ($this->request->is('post')) {
 			$user = $this->Auth->user();
@@ -181,6 +181,8 @@ class SellsController extends AppController {
 			$this->request->data['Sell']['kodepenjualan'] = $this->generate_kodepenjualan();
 			$this->request->data['Sell']['date'] = '';
 			$this->request->data['Sell']['idmaster'] = $idmaster;
+			
+			$this->update_customer_hutang($this->request->data['Sell']['hutang'], $this->request->data['Sell']['idcustomer']);
 			
             $this->Sell->create();
             if ($this->Sell->save($this->request->data)) {
@@ -226,6 +228,10 @@ class SellsController extends AppController {
 			}
 		} else 
 		$this->redirect(array( 'action' => 'index'));
+	}
+
+	private function update_customer_hutang($hutang, $customer_id) {
+		$this->Sell->Customer->updateAll(array('Customer.hutang' => $hutang), array('Customer.id' => $customer_id));
 	}
 
 	private function array_to_list($datas, $main_field, $field1, $field2){
@@ -288,6 +294,10 @@ class SellsController extends AppController {
         if ($this->request->is('post') || $this->request->is('put')) {
             $this->Sell->id = $id;
             debug($this->request->data);
+            $this->_stop();
+            // restore customer data here (for utang duit n utang galon)
+            // restore customer data here (for utang duit n utang galon)
+            // restore customer data here (for utang duit n utang galon)
             if ($this->Sell->save($this->request->data)) {
                 $this->Session->setFlash('Data transaksi berhasil diubah', 'customflash', array('class' => 'success'));
                 $this->redirect(array('action' => 'index'));
@@ -300,7 +310,7 @@ class SellsController extends AppController {
             $this->request->data = $sell;
         }
         
-        $idgood = $this->Sell->Good->find('first', array('conditions' => array('Good.kdbarang' => 'CG0004'), 'fields' => array('Good.id', 'Good.hargajual'), 'recursive' => -1));
+        $idgood = $this->Sell->Good->find('first', array('conditions' => array('Good.namabarang LIKE' => '%galon%'), 'fields' => array('Good.id', 'Good.hargajual'), 'recursive' => -1));
 				
         $customers = $this->Sell->Customer->find('first', array('conditions' => array('Customer.id' => $sell['Sell']['idcustomer'])));
         $customer[$customers['Customer']['id']] = $customers['Customer']['namapelanggan'];
@@ -319,6 +329,10 @@ class SellsController extends AppController {
              
             $this->Sell->id = $id;
             if($this->Sell->exists()){
+            	$this->_stop();
+            	// restore customer data here (for utang duit n utang galon)
+            // restore customer data here (for utang duit n utang galon)
+            // restore customer data here (for utang duit n utang galon)
                 if ($this->Sell->delete()) {
                     $this->Session->setFlash('Data transaksi berhasil dihapus', 'customflash', array('class' => 'success'));
                     $this->redirect(array('action' => 'index'));
@@ -335,7 +349,7 @@ class SellsController extends AppController {
 			if($this->Sell->Team->find('first', array('conditions' => array('Team.idtim' => $idtim, 'Team.status' => 1), 'recursive' => -1))){
 				
 				$teams = $this->Sell->Team->User->get_user_with_idtim_and_attend($idtim);
-				$good_price = $this->Sell->Good->find('first', array('conditions' => array('Good.kdbarang' => 'CG0004'), 'fields' => array('Good.hargajual')));
+				$good_price = $this->Sell->Good->find('first', array('conditions' => array('Good.namabarang LIKE' => '%galon%'), 'fields' => array('Good.hargajual')));
 				
 				$customers = $this->Sell->Team->PairTeamCustomer->Customer->get_customer_in_team($idtim);
 				
@@ -362,6 +376,7 @@ class SellsController extends AppController {
 		if($this->request->is('post')){
 			
 			if($idtim && $dates){
+				$this->calculate_today_sells($idtim, $dates, $start);
 				if($this->Sell->updateAll(
 					array('Sell.status' => "1"),
 					array('Sell.idtim' => $idtim, 'DATE(Sell.date)' => $dates)
@@ -369,44 +384,6 @@ class SellsController extends AppController {
 					$this->Session->setFlash('Data transaksi berhasil dilock', 'customflash', array('class' => 'success'));
 				else 
 					$this->Session->setFlash('Data transaksi gagal dilock', 'customflash', array('class' => 'danger'));
-
-				$datas = $this->Sell->find('all', array('conditions' => array('DATE(Sell.date)' => $dates, 'Sell.idtim' => $idtim), 'recursive' => 0, 'order' => 'Sell.idcustomer', 'fields' => array('DISTINCT Sell.id', 'Sell.idcustomer', 'Sell.jmlbeli', 'Sell.jmlkembali', 'Sell.jmlpinjam', 'Sell.bayar','Sell.hutang','Customer.id', 'Customer.hutang', 'Customer.galonterpinjam')));
-				$good_price = $this->Sell->Good->find('first', array('conditions' => array('Good.kdbarang' => 'CG0004'), 'fields' => array('Good.hargajual')));
-
-				$galonkosong = 0;
-				$finish = 0;
-				$galonterjual = 0;
-				$array_id_customer = array();
-				foreach($datas as $data){
-					$galonkosong += $data['Sell']['jmlbeli'] + $data['Sell']['jmlkembali'] - $data['Sell']['jmlpinjam'];
-					$finish += $data['Sell']['jmlbeli'];
-					$galonterjual += $data['Sell']['bayar'];
-
-					$array_id_customer[] = $data['Sell']['idcustomer'];
-				}
-				$galonterjual = doubleval($galonterjual / $good_price['Good']['hargajual']);
-				$galontim = $this->Sell->Team->get_a_team_jmlgalon($idtim);
-				$galontim = $galontim[0];
-
-				$galontim['Team']['jmlgalon'] = $galontim['Team']['jmlgalon'] + $galonkosong - $start + ($start - $finish);
-				if($galonkosong < 0){
-					$galonkosong = 0;
-				}
-				// debug($galontim);
-				$this->Sell->Team->save($galontim);
-				$this->Sell->save_finish_master($idtim, $dates, $galonkosong, $galonterjual, ($start-$finish));
-
-				$array_update_customer_hutang_galonterpinjam = array();
-				foreach($datas as $data){
-					$array_update_customer_hutang_galonterpinjam[]['Customer'] = array(
-						'id' => $data['Customer']['id'],
-						'hutang' => $data['Customer']['hutang'] + $data['Sell']['hutang'],
-						'galonterpinjam' => $data['Customer']['galonterpinjam'] + $data['Sell']['jmlpinjam'] - $data['Sell']['jmlkembali'],
-						'transaksiterakhir' => ''
-					);
-				}
-				// debug($array_update_customer_hutang_galonterpinjam);
-				$this->Sell->Customer->saveAll($array_update_customer_hutang_galonterpinjam);
 			}
 		}
 		
@@ -415,5 +392,46 @@ class SellsController extends AppController {
 		else 
 			$this->redirect(array('action' => 'index'));
 		
+	}
+
+	private function calculate_today_sells($idtim, $dates, $start) {
+		if($idtim && $dates && $start){
+			$datas = $this->Sell->find('all', array('conditions' => array('DATE(Sell.date)' => $dates, 'Sell.idtim' => $idtim), 'recursive' => 0, 'order' => 'Sell.idcustomer', 'fields' => array('DISTINCT Sell.id', 'Sell.idcustomer', 'Sell.jmlbeli', 'Sell.jmlkembali', 'Sell.jmlpinjam', 'Sell.bayar','Sell.hutang','Customer.id', 'Customer.hutang', 'Customer.galonterpinjam')));
+			$good_price = $this->Sell->Good->find('first', array('conditions' => array('Good.namabarang LIKE' => '%galon%'), 'fields' => array('Good.hargajual')));
+
+			$galonkosong = 0;
+			$finish = 0;
+			$galonterjual = 0;
+			$array_id_customer = array();
+			foreach($datas as $data){
+				$galonkosong += $data['Sell']['jmlbeli'] + $data['Sell']['jmlkembali'] - $data['Sell']['jmlpinjam'];
+				$finish += $data['Sell']['jmlbeli'];
+				$galonterjual += $data['Sell']['bayar'];
+
+				$array_id_customer[] = $data['Sell']['idcustomer'];
+			}
+			$galonterjual = doubleval($galonterjual / $good_price['Good']['hargajual']);
+			$galontim = $this->Sell->Team->get_a_team_jmlgalon($idtim);
+			$galontim = $galontim[0];
+
+			$galontim['Team']['jmlgalon'] = $galontim['Team']['jmlgalon'] + $galonkosong - $start + ($start - $finish);
+			if($galonkosong < 0){
+				$galonkosong = 0;
+			}
+			// debug($galontim);
+			$this->Sell->Team->save($galontim);
+			$this->Sell->save_finish_master($idtim, $dates, $galonkosong, $galonterjual, ($start-$finish));
+
+			$array_update_customer_hutang_galonterpinjam = array();
+			foreach($datas as $data){
+				$array_update_customer_hutang_galonterpinjam[]['Customer'] = array(
+					'id' => $data['Customer']['id'],
+					'galonterpinjam' => $data['Customer']['galonterpinjam'] + $data['Sell']['jmlpinjam'] - $data['Sell']['jmlkembali'],
+					'transaksiterakhir' => ''
+				);
+			}
+			// debug($array_update_customer_hutang_galonterpinjam);
+			$this->Sell->Customer->saveAll($array_update_customer_hutang_galonterpinjam);
+		}
 	}
 }

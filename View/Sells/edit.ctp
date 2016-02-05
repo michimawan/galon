@@ -24,10 +24,22 @@
                                     'readonly',
                                     'class' => 'form-control'
                                     ));
+        ?>
+        <div class='form-input'>
+            <label for='hutang_customer'>Hutang Pelanggan</label>
+            <input class='form-control' id='hutang_customer' type='text' readonly>
+        </div>
+        <?php
         echo $this->Form->input('jmlbeli', array('label'=>'Jumlah beli air' ,'type' => 'number', 'max' => '100', 'min' => '0', 'id'=>'SellJmlBeli', 'class' => 'form-control'));
         echo $this->Form->input('jmlpinjam', array('label'=>'Jumlah pinjam galon' ,'type' => 'number', 'max' => '100', 'min' => '0', 'class' => 'form-control'));
         echo $this->Form->input('jmlkembali', array('label'=>'Jumlah kembali galon' ,'type' => 'number', 'max' => '100', 'min' => '0', 'class' => 'form-control'));
-        echo $this->Form->input('totalharga', array('label'=>'Total Harga' ,'type' => 'number', 'max' => '1000000', 'min' => '0', 'readonly', 'class' => 'form-control'));
+        echo $this->Form->input('totalharga', array('label'=>'Total Harga Galon' ,'type' => 'number', 'max' => '1000000', 'min' => '0', 'readonly', 'class' => 'form-control'));
+        ?>
+        <div class='form-input'>
+            <label for='bayar_customer'>Yang harus dibayarkan pelanggan</label>
+            <input class='form-control' id='bayar_customer' type='text' readonly>
+        </div>
+        <?php
         echo $this->Form->input('bayar', array('label'=>'Total Bayar' ,'type' => 'number', 'max' => '1000000', 'min' => '0', 'class' => 'form-control'));
         echo $this->Form->input('hutang', array('label'=>'Hutang' ,'type' => 'number', 'max' => '1000000', 'min' => '0', 'readonly', 'class' => 'form-control'));
         ?>
@@ -39,6 +51,15 @@
 </div>
 
 <script type="text/javascript">
+    var bill = 0;
+    $(document).ready(function() {
+        bill = $('#SellHutang').val();
+        if($('#SellBayar').val() - $('#SellTotalharga').val() > 0) {
+            bill = ($('#SellBayar').val() - $('#SellTotalharga').val() + parseInt(bill));
+            $('#hutang_customer').attr('value', bill);
+            $('#bayar_customer').attr('value', $());
+        }
+    });
     $(document).on('keyup', '#SellJmlBeli', function() {
         var amount = $('#SellJmlBeli').val();
         amount = amount * <?php echo $idgood['Good']['hargajual'];?>;
@@ -47,7 +68,8 @@
 
         var bayar = $('#SellBayar').val();
         var totalharga = $('#SellTotalharga').val();
-        var hutang = totalharga - bayar;
+        var hutang = totalharga - bayar
+        console.log((hutang+bill) + " " + bayar + " " + totalharga);
         if(hutang < 0) hutang = 0;
         $('#SellHutang').attr('value', hutang);
     });
@@ -66,6 +88,6 @@
             return false;
         } else 
             return true;
-
     }
+
 </script>
