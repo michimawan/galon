@@ -33,90 +33,29 @@ class SellsController extends AppController {
 	}
 
 	// accessed by user and admin
-	public function history(){
+	public function history($idtim = null){
+		
 		$this->set('title', 'Galon - Riwayat Transaksi');
 
 		$user = $this->Auth->user();
-		$idtim = 0;
-		$tanggal = 0;
-		$hari = 0;
-		$master = array();
-		$history_team = array();
-		$list_team = array();
-		$good_price = array();
+
+		$list_teams = $this->Sell->Customer->PairTeamCustomer->Team->find('all', array('order' => 'idtim','conditions' => array('Team.status' => 1), 'recursive' => 0));
+		$list_team = $this->to_list_team($list_teams);
 
 		if($user['role'] == 'pegawai')
 			$idtim = $user['Team']['idtim'];
 
-		if($this->request->is('post')){
-			$tanggal = $this->request->data['tanggal'];
-			$hari = $this->request->data['harikunjungan'];
-			$idtim = $this->request->data['idtim'];
-			
-			if($tanggal && $idtim && !$hari){
-				$master = $this->Sell->get_master_based_date_idtim($idtim, $tanggal);
-			}
+		$params = array('limit' => 20, 'recursive' => -1);
+		if($idtim > 0)
+			$params['conditions'] = array('idtim' => $idtim);
 
-			$condition_array = array();
-			if($tanggal)
-				$condition_array["DATE(Sell.date)"] = $tanggal;
-			if($idtim)
-				$condition_array['Sell.idtim'] = $idtim;
-			if($hari)
-				$condition_array['Customer.harikunjungan'] = $hari;
+		$this->paginate = $params;
 
-			$this->paginate = array(
-                    'limit' => 20,
-                    // 'conditions' => array('Sell.idtim' => $idtim, 'DATE(Sell.date)' => $tanggal),
-                    'conditions' => $condition_array,
-                    'fields' => array('DISTINCT Sell.id','Sell.idtim', 'Sell.idgood','Sell.jmlbeli','Sell.jmlpinjam', 'Sell.jmlkembali', 'Sell.bayar', 'Sell.hutang','Sell.status','Sell.date', 'Customer.id', 'Customer.kdpelanggan', 'Customer.namapelanggan', 'Customer.alamat', 'Customer.galonterpinjam', 'Customer.hutang', 'Customer.harikunjungan'),
-                    'order' => array('Sell.date' => 'DESC' )
-                );
-            $datas = $this->paginate('Sell');
-
-            $history_team = $this->Sell->Team->User->find('all', array(
-            	// 'conditions' => array('Team.idtim' => $idtim)), 
-            	'fields' => array('Team.id', 'Team.idtim', 'User.firstname', 'User.lastname', 'Attendance.idpegawai', 'Attendance.tanggal', 'Attendance.kehadiran'), 
-            	'joins' => array(
-			        'table' => 'teams',
-			        'alias' => 'Team',
-			        'type' => 'LEFT',
-			        'conditions' => array(
-			            'Team.idpegawai = User.id'
-			        )
-			    ),
-			    array(
-			        'table' => 'attendances',
-			        'alias' => 'Attendance',
-			        'type' => 'LEFT',
-			        'conditions' => array(
-			            'Attendance.idpegawai = User.id',
-			            'Attendance.tanggal' => $tanggal
-			        )
-			    )
-            	));
-            $good_price = $this->Sell->Good->find('first', array('conditions' => array('Good.id' => $datas[0]['Sell']['idgood']), 'fields' => array('Good.id', 'Good.hargajual')));
-		} else {
-			$this->paginate = array(
-                    'limit' => 20,
-                    'order' => array('Sell.date' => 'DESC' ),
-                    // 'recursive' => 0
-                );
-            $datas = $this->paginate('Sell');
-		}
+		$this->loadModel('Master');
+        $masters = $this->paginate('Master');
 		
-		if($user['role'] != 'pegawai'){
-			$list_teams = $this->Sell->Customer->PairTeamCustomer->Team->find('all', array('order' => 'idtim','conditions' => array('Team.status' => 1), 'recursive' => 0));
-	        $list_team = $this->to_list_team($list_teams);
-        }
-
-        $this->set(compact('list_team'));
-        $this->set(compact('datas'));
-        $this->set(compact('tanggal'));
-        $this->set(compact('hari'));
-        $this->set(compact('master'));
-        $this->set(compact('history_team'));
-        $this->set(compact('good_price'));
+		$this->set(compact('masters'));
+		$this->set(compact('list_team'));
 	}
 
 	private function to_list_team($list_teams){
@@ -428,7 +367,7 @@ class SellsController extends AppController {
 			if($galonkosong < 0){
 				$galonkosong = 0;
 			}
-			// debug($galontim);
+
 			$this->Sell->Team->save($galontim);
 			
 			$master = array(array('Master' => array(
@@ -453,7 +392,7 @@ class SellsController extends AppController {
 					'transaksiterakhir' => ''
 				);
 			}
-			// debug($array_update_customer_hutang_galonterpinjam);
+
 			$this->Sell->Customer->saveAll($array_update_customer_hutang_galonterpinjam);
 		}
 	}
