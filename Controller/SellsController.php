@@ -407,12 +407,18 @@ class SellsController extends AppController {
 			$finish = 0;
 			$galonterjual = 0;
 			$array_id_customer = array();
+
+			$total_harga = $total_terbayarkan = $total_hutang =0;
 			foreach($datas as $data){
 				$galonkosong += $data['Sell']['jmlbeli'] + $data['Sell']['jmlkembali'] - $data['Sell']['jmlpinjam'];
 				$finish += $data['Sell']['jmlbeli'];
 				$galonterjual += $data['Sell']['bayar'];
 
 				$array_id_customer[] = $data['Sell']['idcustomer'];
+
+				$total_harga += $data['Sell']['totalhargagalon'];
+				$total_terbayarkan += $data['Sell']['bayar'];
+				$total_hutang += $data['Sell']['hutang'];
 			}
 			$galonterjual = doubleval($galonterjual / $good_price['Good']['hargajual']);
 			$galontim = $this->Sell->Team->get_a_team_jmlgalon($idtim);
@@ -424,6 +430,18 @@ class SellsController extends AppController {
 			}
 			// debug($galontim);
 			$this->Sell->Team->save($galontim);
+			
+			$master = array(array('Master' => array(
+				'idtim' => $idtim,
+				'date' => $dates,
+				'galonkosong' => $galonkosong,
+				'galonterjual' => $galonterjual,
+				'finish' => ($start-$finish),
+				'total_harga' => $total_harga,
+				'total_terbayarkan' => $total_terbayarkan,
+				'total_hutang' => $total_hutang,
+				)));
+			$this->Sell->Master->saveAll($master);
 			$this->Sell->save_finish_master($idtim, $dates, $galonkosong, $galonterjual, ($start-$finish));
 
 			$array_update_customer_hutang_galonterpinjam = array();

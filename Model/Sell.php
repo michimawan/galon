@@ -46,13 +46,6 @@ class Sell extends AppModel {
         return $this->query($q);
     }
 
-    public function save_finish_master($idtim, $dates, $galonkosong, $galonterjual, $finish){
-
-        $q = "UPDATE `masters` SET `galonkosong`='$galonkosong',`galonterjual`='$galonterjual',`finish`='$finish', `status`='1' WHERE `date` LIKE '$dates' AND `idtim` LIKE '$idtim'";
-
-        return $this->query($q);
-    }
-
     public function get_master_based_date_idtim($idtim, $date){
         $q = "SELECT * FROM `masters` AS `Master` WHERE `date` LIKE '$date' AND `idtim` LIKE '$idtim'";
 
