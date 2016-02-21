@@ -1,0 +1,29 @@
+@media print {
+  * {
+    margin: 0 !important;
+    padding: 2px !important;
+  }
+  body {
+    height: 100%;
+    width: 100%;
+  }
+  div {
+    display: block;
+  }
+  .col-md-4, .col-md-6 {
+    width: 33.3%;
+  }
+  div.row {
+    display: block;
+    white-space: nowrap;
+  }
+  div.row > div {
+    display: inline-block;
+  }
+
+  .table-responsive {
+    display: block;
+    position: absolute;
+    width: 100%;
+  }
+}
