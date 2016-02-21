@@ -86,7 +86,7 @@
                         <td><?php echo $master['Master']['total_terbayarkan'];?></td>
                         <td><?php echo $master['Master']['total_hutang'];?></td>
                         <td><?php echo $this->Html->link( "Detail", 
-                            array('action'=>'detail', $master['Master']['date'], $master['Master']['idtim']), array('class' => 'btn btn-info')); ?> </td>
+                            array('action'=>'detail', $master['Master']['id']), array('class' => 'btn btn-info')); ?> </td>
                     </tr>
                     <?php
                     $harga += $master['Master']['total_harga'];

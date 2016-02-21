@@ -52,23 +52,11 @@ class SellsController extends AppController {
 		$this->set(compact('list_team'));
 	}
 
-	public function detail($date, $idtim) {
+	public function detail($idmaster) {
         $this->set('title', 'Galon - Detail Transaksi Tim');
-		$master = $this->Sell->Master->find('first', array(
-			'conditions' => array('Master.idtim' => $idtim, 'Master.date' => $date),
-			'recursive' => 2,
-		));
-        $team = $this->Sell->Team->find('all', array(
-            'conditions' => array('Team.idtim' => $idtim),
-            'recursive' => 0,
-        ));
-        foreach($team as &$user) {
-            $attendance = $this->Sell->Team->User->Attendance->find('first', array(
-                'conditions' => array('idpegawai' => $user['User']['id'], 'tanggal' => substr($master['Master']['date'], 0, 10)),
-                'recursive' => 0,
-            ));
-            $user['User']['kehadiran'] =  $attendance['Attendance']['kehadiran'];
-        }
+        $master = $this->get_master_data($idmaster);
+        $team = $this->get_team_data($master['Master']['idtim'], $master['Master']['date']);
+
 		$this->set(compact('master'));
 		$this->set(compact('team'));
 	}
@@ -321,6 +309,40 @@ class SellsController extends AppController {
 		} else
 			$this->redirect(array('action' => 'index'));
 	}
+
+    public function printfull($idmaster = null) {
+        $this->set('title', 'Galon - Cetak Data');
+        $master = $this->get_master_data($idmaster);
+        $team = $this->get_team_data($master['Master']['idtim'], $master['Master']['date']);
+
+		$this->set(compact('master'));
+		$this->set(compact('team'));
+
+        $this->layout = 'print';
+    }
+
+    private function get_master_data($idmaster = null) {
+		$master = $this->Sell->Master->find('first', array(
+			'conditions' => array('Master.id' => $idmaster),
+			'recursive' => 2,
+		));
+        return $master;
+    }
+
+    private function get_team_data($idtim = null, $date) {
+        $team = $this->Sell->Team->find('all', array(
+            'conditions' => array('Team.idtim' => $idtim),
+            'recursive' => 0,
+        ));
+        foreach($team as &$user) {
+            $attendance = $this->Sell->Team->User->Attendance->find('first', array(
+                'conditions' => array('idpegawai' => $user['User']['id'], 'tanggal' => substr($date, 0, 10)),
+                'recursive' => 0,
+            ));
+            $user['User']['kehadiran'] =  $attendance['Attendance']['kehadiran'];
+        }
+        return $team;
+    }
 
 
 	public function lock($idtim, $dates, $start){

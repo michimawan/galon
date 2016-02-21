@@ -26,10 +26,6 @@ echo $this->Html->script(array('jquery-2.1.3.min.js', 'bootstrap.min.js'));
 <script type="text/javascript">
 $(document).ready(function () {
     window.print();
-    setTimeout("closePrintView()", 1000);
 });
-function closePrintView() {
-    document.location.href = "<?php echo $this->Html->url(array('action' => 'index'))?>";
-}
 </script>
 </html>

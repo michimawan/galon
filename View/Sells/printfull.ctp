@@ -1,14 +1,9 @@
-<!-- app/View/Sells/detail.ctp -->
+<!-- app/View/Sells/printfull.ctp -->
 
 <?php $user = $this->Auth->user(); ?>
 <div class='row'>
-	<div class="col-md-3">
-        <?php echo $this->Html->link("<span class='glyphicon glyphicon-print' aria-hidden='true'></span> | Cetak Transaksi", array('action' => 'printfull', $master['Master']['id']), array('escape' => false,'class' => 'btn btn-success')); ?>
-	</div>
-</div>
-<div class='row'>
 	<div class="col-md-4 col-xs-6">
-		<h4>Tanggal: <?php echo date('d-m-Y');?></h4>
+		<h4>Tanggal: <?php echo $master['Master']['date'];?></h4>
 		<h4>Nama Sales 1: <?php echo $team[0]['User']['kehadiran']? $team[0]['User']['firstname'].' '.$team[0]['User']['lastname'] : $team[1]['User']['firstname'].' '.$team[1]['User']['lastname'] ;?></h4>
 	</div>
 	<div class="col-md-4 col-xs-6">
@@ -47,7 +42,6 @@
 					<th>Ttl Gln Pnjm</th>
 					<th>Bayar</th>
 					<th>Hutang</th>
-					<?php echo $master['Master']['status'] && $user['role'] == 'admin'? "<th>Action</th>" : "" ?>
 				</tr>
 			</thead>
 			<tbody>
@@ -74,11 +68,6 @@
 						<td><?php echo $data['Customer']['galonterpinjam'] ?></td>
 						<td><?php echo $data['bayar'];?></td>
 						<td><?php echo $data['hutang']?></td>
-						<td>
-						<?php
-						echo $user['role'] == 'admin'? ($this->Html->link('Edit', array('action' => 'edit', $data['id']), array('class'=>'btn btn-primary'))) : "";
-						?>
-						</td>
 					</tr>
 					<?php
 					$i++;
@@ -106,3 +95,4 @@
 		</table>
 	</div>
 </div>
+
