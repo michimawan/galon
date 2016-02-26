@@ -26,7 +26,8 @@ $(document).ready(function() {
         var chart = new CanvasJS.Chart("chart", {
             title: {text: "Grafik Trend Jumlah Galon Terjual"},
                 axisX: {
-                    interval: 5,
+                    interval: 1,
+                        dateFormat: "dd-mm-yy",
                         intervalType: "day",
                 },
                 data: [{
@@ -44,15 +45,10 @@ $(document).ready(function() {
             changeYear: true,
             showButtonPanel: true,
             dateFormat: 'yy-mm-dd',
-            onClose: function(dateText, inst) {
-                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                $(this).datepicker('setDate', new Date(year, month, 1));
-            }
     });
 
     $("#datepicker_awal").focus(function () {
-        $(".ui-datepicker-calendar").hide();
+        $(".ui-datepicker-calendar").show();
         $("#ui-datepicker-div").position({
             my: "left top",
                 at: "left bottom",
@@ -66,15 +62,10 @@ $(document).ready(function() {
             changeYear: true,
             showButtonPanel: true,
             dateFormat: 'yy-mm-dd',
-            onClose: function(dateText, inst) {
-                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                $(this).datepicker('setDate', new Date(year, month, 1));
-            }
     });
 
     $("#datepicker_akhir" ).focus(function () {
-        $(".ui-datepicker-calendar").hide();
+        $(".ui-datepicker-calendar").show();
         $("#ui-datepicker-div").position({
             my: "left top",
                 at: "left bottom",
