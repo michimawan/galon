@@ -105,7 +105,7 @@ $user = $this->Auth->user();
 					<?php } else { 
 						if(strpos($this->request->here(), "login") === FALSE)
 						echo $this->Html->link('Login',
-						    array('action'=>'login'),
+                            array('controller' => 'users', 'action'=>'login'),
 						    array('escape' => false)
 						);
 					} ?>
