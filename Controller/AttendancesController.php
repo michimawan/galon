@@ -47,8 +47,8 @@ class AttendancesController extends AppController {
                     $this->Session->setFlash('Pegawai sudah ditandai tidak masuk', 'customflash', array('class' => 'success'));
                 }
             }
-        } 
-        
+        }
+
         $this->redirect(array('action' => 'index'));
     }
 
@@ -56,7 +56,7 @@ class AttendancesController extends AppController {
         $this->check_user_access('present');
         $user_not_attend = $this->Attendance->User->getAllUserIDThatStillNotAttend();
         $data = $this->to1DArray($user_not_attend, 'users', 'id');
-        
+
         if(!$data){
             $this->redirect(array('action' => 'index'));
         }
@@ -79,7 +79,7 @@ class AttendancesController extends AppController {
 
         $user = $this->Attendance->User->find('first', array(
             'field' => array('User.id', 'User.username', 'User.firstname', 'User.lastname'),
-            'recursive' => -1, 
+            'recursive' => -1,
             'conditions' => array('User.id' => $id, 'User.status' => 1)
             )
         );
@@ -94,7 +94,7 @@ class AttendancesController extends AppController {
 
             $this->set(compact('count_present'));
             $this->set(compact('month_record'));
-            $this->set(compact('user'));            
+            $this->set(compact('user'));
     	} else {
             $this->Session->setFlash('User tidak ada', 'customflash', array('class' => 'warning'));
             $this->redirect(array('controller'=>'users','action' => 'index'));

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class TeamsController extends AppController {
 	public $layout = 'layout';
@@ -43,19 +43,19 @@ class TeamsController extends AppController {
 
 			// $id_user1 = $this->get_user_id($this->request->data['Team']['idpegawai_1']);
 			// $id_user2 = $this->get_user_id($this->request->data['Team']['idpegawai_2']);
-			
+
 			$free_team_id = $this->get_free_team_id();
 			$this->Team->insert_to_team($free_team_id, $this->request->data['Team']['idpegawai_1']);
 			$this->Team->insert_to_team($free_team_id, $this->request->data['Team']['idpegawai_2']);
 			$this->Session->setFlash('Tim baru berhasil dibuat,','customflash', array('class' => 'success'));
 			$this->redirect(array('action' => 'index'));
-			
+
 			//create new Array
 			// $datas = array();
 			// $datas[] = array('Team' => array('idpegawai' => $this->request->data['Team']['idpegawai_1'], 'idtim' => $free_team_id));
 
 			// $datas[] = array('Team' => array('idpegawai' => $this->request->data['Team']['idpegawai_2'], 'idtim' => $free_team_id));
-			
+
 			/*$datas = array('Team' => array('idpegawai' => $this->request->data['Team']['idpegawai_2'], 'idtim' => $free_team_id));
 			debug($datas);debug($datas);
 			$this->Team->create();
@@ -77,10 +77,10 @@ class TeamsController extends AppController {
 		$team_ids_now = $this->Team->getDistinctTeamID();
 		$counter = 1;
 		foreach ($team_ids_now as $single_team_id) {
-		
+
 			if($counter != $single_team_id['Team']['idtim'])
 				return $counter;
-			
+
 			$counter++;
 		}
 		return $counter;
@@ -99,7 +99,7 @@ class TeamsController extends AppController {
 	private function remove_behind_pipeline($str){
 		if(strlen($str) > 0)
 			return substr($str, 0, strrpos($str, " |"));
-		else 
+		else
 			return "";
 	}
 
@@ -118,7 +118,7 @@ class TeamsController extends AppController {
 		} else {
 			$this->redirect(array('action' => 'index'));
 		}
-		
+
 		//$this->redirect(array('action' => 'autocompletes'));
 	}
 
@@ -129,14 +129,14 @@ class TeamsController extends AppController {
 				if(!$this->Team->deleteTeam($id)){
 					if(!$this->Team->PairTeamCustomer->delete_related_customer_to_team($id))
 						$this->Session->setFlash('Tim sudah dihapus','customflash', array('class' => 'success'));
-					else 
+					else
 						$this->Session->setFlash('Tim gagal dihapus','customflash', array('class' => 'warning'));
 				}
-				else 
+				else
 					$this->Session->setFlash('Tim gagal dihapus','customflash', array('class' => 'warning'));
-			}	
+			}
 		}
-		
+
 		$this->redirect(array('action' => 'index'));
 	}
 
@@ -166,7 +166,7 @@ class TeamsController extends AppController {
 		            'recursive' => 0
 		        );
 		        $pair_data = $this->Paginator->paginate('PairTeamCustomer');
-				
+
 				$team = $this->Team->find('all', array('conditions' => array('Team.idtim' => $idtim), ));
 				$this->set(compact('pair_data'));
 				$this->set(compact('team'));
@@ -198,26 +198,26 @@ class TeamsController extends AppController {
 				$this->Session->setFlash('Data Pelanggan pada tim sudah dihapus','customflash', array('class' => 'success'));
 				$this->redirect(array('action' => 'pair_cust', $idtim));
 			} else {
-				$this->Session->setFlash('Data Pelanggan pada tim gagal dihapus','customflash', array('class' => 'danger')); 
+				$this->Session->setFlash('Data Pelanggan pada tim gagal dihapus','customflash', array('class' => 'danger'));
 				$this->redirect(array('action' => 'pair_cust', $idtim));
 			}
 		} else {
-			$this->Session->setFlash('Data Pelanggan pada tim gagal dihapus','customflash', array('class' => 'danger')); 
+			$this->Session->setFlash('Data Pelanggan pada tim gagal dihapus','customflash', array('class' => 'danger'));
 			$this->redirect(array('action' => 'index'));
 		}
-		
+
 	}
 
-	
+
 	public function change($idtim = null){
 		$this->layout = 'no_layout';
 		if($this->request->is('post')){
 			$data = $this->request->data;
 			$this->set(compact('data'));
 			if(!$this->Team->save_galon($data['idtim'], $data['jmlgalon']))
-				$this->Session->setFlash('Jumlah galon pada tim berhasil diubah','customflash', array('class' => 'success')); 
+				$this->Session->setFlash('Jumlah galon pada tim berhasil diubah','customflash', array('class' => 'success'));
 			else
-				$this->Session->setFlash('Jumlah galon pada tim gagal diubah','customflash', array('class' => 'danger')); 
+				$this->Session->setFlash('Jumlah galon pada tim gagal diubah','customflash', array('class' => 'danger'));
 			$this->redirect(array('action' => 'index'));
 		} else {
 			//$total_galon = $this->Team->Sell->Good->find('first', array('conditions' => array('Good.kdbarang' => 'CG0004'), 'fields' => array('Good.stokbarang')));
@@ -231,5 +231,5 @@ class TeamsController extends AppController {
 			$this->set(compact('idtim'));
 		}
 	}
-	
+
 }
