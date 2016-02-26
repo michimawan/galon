@@ -37,7 +37,7 @@ class AppController extends Controller {
     'Session',
     'Auth' => array(
         'loginRedirect' => array('controller' => 'users', 'action' => 'index'),
-        'logoutRedirect' => array('controller' => 'users', 'action' => 'login'),
+        'logoutRedirect' => array('controller' => 'pages', 'action' => 'index'),
         'authError' => 'Anda harus login untuk melihat halaman ini.',
         'loginError' => 'Username atau Password salah, coba dimasukkan lagi.',
         'authenticate' => array(
