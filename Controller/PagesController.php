@@ -77,6 +77,12 @@ class PagesController extends AppController {
 
 	public function index(){
 		$this->set('title', 'SIAO');
-		
+
 	}
+
+    public function beforeFilter()
+    {
+        parent::beforeFilter();
+        $this->Auth->allow('index');
+    }
 }
