@@ -1,6 +1,6 @@
 <!-- app/View/Sells/dashboard.ctp -->
 
-<?php $members = count($teams); ?>
+<?php $members = count($teams);?>
 
 <div class='row'>
 	<div class="col-md-3">
@@ -13,7 +13,10 @@
 		<?php echo  !$master? "": ($members == 0? "": ($master[0]['Master']['status']? "" : $this->Html->link("<span class='glyphicon glyphicon-print' aria-hidden='true'></span> | Cetak Halaman Transaksi", array('action' => 'printblank', $id, date('Y-m-d')), array('escape' => false, 'class' => 'btn btn-success'))));?>
 	</div>
 	<div class="col-md-3">
-		<?php echo !$master? "": ($members == 0? "": (!$master[0]['Master']['status']? "" : $this->Html->link("<span class='glyphicon glyphicon-print' aria-hidden='true'></span> | Cetak Transaksi", array('action' => 'printfull', $id, date('Y-m-d')), array('escape' => false,'class' => 'btn btn-success'))));?>
+        <?php echo !$master? "": ($members == 0? "": (!$master[0]['Master']['status']? "" : 
+        $this->Html->link("<span class='glyphicon glyphicon-print' aria-hidden='true'></span> | Cetak Transaksi", 
+        array('action' => 'printfull', $master[0]['Master']['id']), 
+        array('escape' => false,'class' => 'btn btn-success'))));?>
 	</div>
 </div>
 <div class='row'>

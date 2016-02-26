@@ -23,7 +23,7 @@ class Sell extends AppModel {
     );
 
     public function cek_lock($idtim){
-        $q = "SELECT `Master`.`start`,`Master`.`galonterjual`,`Master`.`finish`, `Master`.`status`, `Master`.`galonkosong` FROM `masters` AS `Master` WHERE `Master`.`idtim` = '$idtim' AND `Master`.`date` = SUBSTRING(NOW(), 1,10)";
+        $q = "SELECT `Master`.`id`, `Master`.`start`,`Master`.`galonterjual`,`Master`.`finish`, `Master`.`status`, `Master`.`galonkosong` FROM `masters` AS `Master` WHERE `Master`.`idtim` = '$idtim' AND `Master`.`date` = SUBSTRING(NOW(), 1,10)";
 
         return $this->query($q);
     }

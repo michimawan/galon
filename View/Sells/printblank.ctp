@@ -52,9 +52,9 @@
 						<td>&nbsp</td>
 						<td>&nbsp</td>
 						<td>&nbsp</td>
+						<td><?php echo $customer['Customer']['galonterpinjam'];?></td>
 						<td>&nbsp</td>
-						<td>&nbsp</td>
-						<td>&nbsp</td>
+						<td><?php echo $customer['Customer']['hutang'];?></td>
 					</tr>
 					<?php
 				$i++;}

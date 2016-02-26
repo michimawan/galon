@@ -18,7 +18,7 @@
 			tampilkan
 		</button>
 	</form>
-	
+
 </div>
 <div class='row'>
 	<div class="col-xs-12 col-md-12">
@@ -38,7 +38,7 @@
 	        			<th colspan = "31" class='center'>Tanggal</th>
         			</tr>
         			<tr>
-        				<?php 
+        				<?php
         				for($i = 1; $i <= 31; $i++){ ?>
 							<th><?php echo $i; ?></th>
         				<?php
@@ -48,7 +48,7 @@
         		</thead>
         		<tbody>
                     <?php if ($month_record): ?>
-                    <?php 
+                    <?php
                     $month_names = array(1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember');
 
                     $row_count = 1;
@@ -56,7 +56,7 @@
                     ?>
                     <tr>
                         <td><?php echo $month_names[(int) date('m', strtotime($month_record[0]['Attendance']['tanggal']))]; ?></td>
-                        <?php 
+                        <?php
                         for($i = 0; $i < 31; $i++){
 
                         if($date_count != count($month_record))
@@ -72,18 +72,18 @@
                         $date_count++;} else {
                         ?>
                         <td><span class="glyphicon glyphicon-remove text-danger" aria-hidden="true"></span></td>
-                        <?php 
-                        } 
+                        <?php
+                        }
                         ?>
                         <?php } ?>
                     </tr>
                     <?php else: ?>
                     <tr>
                         <td colspan='32'>Bulan ini belum ada presensi pegawai</td>
-                    </tr>    
+                    </tr>
                     <?php endif ?>
-        			
-        			
+
+
         		</tbody>
         	</table>
         </div>
@@ -92,7 +92,7 @@
 
 
 
-<?php 
+<?php
 echo $this->Html->script(array('jquery-ui.min.js'));
 echo $this->Html->css(array('jquery-ui.min.css'));
 ?>
@@ -110,7 +110,7 @@ echo $this->Html->css(array('jquery-ui.min.css'));
 	        changeYear: true,
 	        showButtonPanel: true,
 	        dateFormat: 'MM yy',
-	        onClose: function(dateText, inst) { 
+	        onClose: function(dateText, inst) {
 	            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
 	            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
 	            $(this).datepicker('setDate', new Date(year, month, 1));
@@ -124,7 +124,7 @@ echo $this->Html->css(array('jquery-ui.min.css'));
             	at: "left bottom",
             	collision: 'none',
             	of: $(this)
-	        });    
+	        });
 	    });
 
 	    function log( message ) {
@@ -136,7 +136,7 @@ echo $this->Html->css(array('jquery-ui.min.css'));
             source: function( request, response ) {
             $.ajax({
                 url:'<?= $this->Html->url(array('controller' => 'users', 'action'=>'autocompletes')); ?>/',
-                
+
                 data: {term: request.term},
                 success: function( data ) {
                     if(data != 'no') {
@@ -147,7 +147,7 @@ echo $this->Html->css(array('jquery-ui.min.css'));
                         autos.push(result[x]['User']['firstname'] + " " + result[x]['User']['lastname'] + " | " + result[x]['User']['username']);
                         mappingID[result[x]['User']['firstname'] + " " + result[x]['User']['lastname'] + " | " + result[x]['User']['username']] = result[x]['User']['id'];
                     }
-                    
+
                     response( autos );
                     }
                 }
@@ -168,7 +168,7 @@ echo $this->Html->css(array('jquery-ui.min.css'));
                 $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
             }
         });
-        var months = {"January" : '01', "February" : '02', "March" : '03', "April" : '04', "May" : '05', "June" : '06', 
+        var months = {"January" : '01', "February" : '02', "March" : '03', "April" : '04', "May" : '05', "June" : '06',
                "July" : '07', "August" : '08', "September" : '09', "October" : '10', "November" : '11', "December" : '12' };
 		$("#search").click(function(){
 			var tanggal = $("#datepicker").val();
@@ -179,7 +179,7 @@ echo $this->Html->css(array('jquery-ui.min.css'));
             if(pegawai != '' && month != '' && year != ''){
     			var loc = '<?php echo $this->Html->url(array('action' => 'rekapbulanan'))?>/' + pegawai + '/' + year + '/' + month;
                 window.location.assign(loc);
-            }		
+            }
 		});
   	});
 </script>
