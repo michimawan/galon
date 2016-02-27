@@ -15,7 +15,7 @@ foreach ($galons as $galon) {
             <?php 
             $current_user = $this->Auth->User();
             if($current_user['role'] != 'pegawai')
-            echo $this->Html->link( "Tambah Tim", array('action'=>'add'), array('escape' => false, 'class' => 'btn btn-default')); 
+            echo $this->Html->link( "Tambah Tim", array('action'=>'add'), array('escape' => false, 'class' => 'btn btn-primary')); 
             ?>
             </div>
         </div>

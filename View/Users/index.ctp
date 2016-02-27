@@ -4,7 +4,7 @@
     <div class="col-xs-3 col-md-2">
         <div class="btn-group-vertical" role="group">
             <div class='btn-group' role='group'>
-            <?php echo $this->Html->link( "Tambah Pegawai", array('action'=>'add'), array('escape' => false, 'class' => 'btn btn-default')); ?>
+            <?php echo $this->Html->link( "Tambah Pegawai", array('action'=>'add'), array('escape' => false, 'class' => 'btn btn-primary')); ?>
             </div>
         </div>
     </div>

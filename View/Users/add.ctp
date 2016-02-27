@@ -4,7 +4,7 @@
     <div class="col-xs-3 col-md-2">
         <?php 
             if($this->Session->check('Auth.User')){
-            echo $this->Html->link( "Lihat Daftar Pegawai",   array('action'=>'index'), array('class'=>'btn btn-default')); 
+            echo $this->Html->link( "Lihat Daftar Pegawai",   array('action'=>'index'), array('class'=>'btn btn-primary')); 
             }
         ?>
     </div>

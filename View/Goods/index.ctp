@@ -7,7 +7,7 @@
     <div class="col-xs-3 col-md-2">
         <div class="btn-group-vertical" role="group">
             <div class='btn-group' role='group'>
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal_addgoods">Tambah Barang</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_addgoods">Tambah Barang</button>
             </div>
         </div>
     </div>

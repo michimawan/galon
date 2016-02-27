@@ -3,10 +3,10 @@
 <div class="row">
     <div class="col-xs-3 col-md-2">
         <div class="btn-group-vertical" role="group">
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target=".bs-example-modal-lg">Tambah Pelanggan</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Tambah Pelanggan</button>
             <?php
-            echo $this->Html->link('Lihat Piutang Pelanggan', array('action' => 'debt'), array('escape' => false, 'class' => 'btn btn-default'));
-            ?>           
+            echo $this->Html->link('Lihat Piutang Pelanggan', array('action' => 'debt'), array('escape' => false, 'class' => 'btn btn-danger'));
+            ?>
         </div>
     </div>
 
@@ -26,8 +26,8 @@
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody> 
-            <?php 
+        <tbody>
+            <?php
             if(!$customers){
             ?>
             <tr>
@@ -36,7 +36,7 @@
             <?php
             }
             else {
-            ?>                             
+            ?>
             <?php $count=0; ?>
             <?php foreach($customers as $customer):
                 $count ++;
@@ -49,7 +49,7 @@
                 <td><?php echo $customer['Customer']['nohp']; ?></td>
                 <td><?php echo $customer['Customer']['harikunjungan'];?></td>
                 <td>
-                <?php echo $this->Html->link(    "Edit",   array('action'=>'edit', $customer['Customer']['id']), array('class' => 'btn btn-info')); ?> 
+                <?php echo $this->Html->link(    "Edit",   array('action'=>'edit', $customer['Customer']['id']), array('class' => 'btn btn-info')); ?>
                 <?php
                     echo $this->Form->postLink(    "Hapus", array('action'=>'delete', $customer['Customer']['id']), array('class' => 'btn btn-danger', 'confirm'=>'apakah yakin mau hapus '.$customer['Customer']['namapelanggan']));
                 ?>
@@ -61,13 +61,13 @@
     </table>
     </div>
     <div class="paging">
-        <?php 
+        <?php
             echo $this->Paginator->prev() .'  '. $this->Paginator->numbers(array('before'=>false, 'after'=>false,'separator'=> false)) .'  '. $this->Paginator->next();
         ?>
     </div>
-    
+
     </div>
-    
+
 </div>
 
 <?php echo $this->element('../Customers/add'); ?>

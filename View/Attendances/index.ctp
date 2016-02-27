@@ -16,10 +16,10 @@
 
     <div class="col-xs-12 col-md-10">
     <h1>Daftar Pegawai</h1>
-    <?php 
+    <?php
     if($users)
     echo $this->Html->link("Semua Pegawai Masuk", array('action'=>'present'), array('class' => 'btn btn-primary', 'confirm'=>"apakah yakin semua pegawai masuk?"));
-    ?> 
+    ?>
     <div class='table-responsive'>
     <table class='table table-condensed table-hover table-stripped'>
         <thead>
@@ -31,7 +31,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php 
+            <?php
             if(!$users){
             ?>
             <tr>
@@ -40,7 +40,7 @@
             <?php
             }
             else {
-            ?>                    
+            ?>
             <?php $count=0; ?>
             <?php foreach($users as $user):
             	$count ++;
@@ -50,9 +50,9 @@
                 <td><?php echo $this->Html->link( $user['User']['username'], array('controller'=>'attendances','action'=>'rekapbulanan', $user['User']['id'], date('Y'), date('m')), array('escape' => false)); ?></td>
                 <td><?php echo $user['User']['firstname']. " ". $user['User']['lastname']?></td>
                 <td>
-                <?php 
-                echo $this->Html->link(    "Tidak Masuk", array('action'=>'absent', $user['User']['id']), array('class' => 'btn btn-info', 'confirm'=>"apakah yakin pegawai ". $user['User']['firstname']. " tidak masuk?"));
-                ?> 
+                <?php
+                echo $this->Html->link(    "Tidak Masuk", array('action'=>'absent', $user['User']['id']), array('class' => 'btn btn-warning', 'confirm'=>"apakah yakin pegawai ". $user['User']['firstname']. " tidak masuk?"));
+                ?>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -61,10 +61,10 @@
     </table>
     </div>
     <div class="paging">
-        <?php 
+        <?php
             echo $this->Paginator->prev() .'  '. $this->Paginator->numbers(array('before'=>false, 'after'=>false,'separator'=> false)) .'  '. $this->Paginator->next();
         ?>
     </div>
-    
-    </div> 
+
+    </div>
 </div>

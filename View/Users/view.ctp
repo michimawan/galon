@@ -7,9 +7,9 @@
             <?php 
             $current_user = $this->Auth->User();
             if($current_user['role'] != 'pegawai')
-            echo $this->Html->link( "Daftar Pegawai", array('action'=>'index'), array('escape' => false, 'class' => 'btn btn-default')); 
+            echo $this->Html->link( "Daftar Pegawai", array('action'=>'index'), array('escape' => false, 'class' => 'btn btn-primary')); 
             else {
-                echo $this->Html->link( "Edit Profil", array('action'=>'edit', $current_user['id']), array('escape' => false, 'class' => 'btn btn-default')); 
+                echo $this->Html->link( "Edit Profil", array('action'=>'edit', $current_user['id']), array('escape' => false, 'class' => 'btn btn-primary')); 
             }
             ?>
             </div>
