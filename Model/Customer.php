@@ -8,7 +8,7 @@ class Customer extends AppModel {
                 'message' => 'Nama Pelanggan harus diisi.',
 				'allowEmpty' => false
             )
-			
+
         ),
         'alamat' => array(
             'nonEmpty' => array(
@@ -16,7 +16,7 @@ class Customer extends AppModel {
                 'message' => 'Alamat Pelanggan harus diisi.',
 				'allowEmpty' => false
             )
-			
+
         ),
         'nohp' => array(
             'nonEmpty' => array(
@@ -24,7 +24,7 @@ class Customer extends AppModel {
                 'message' => 'No. HP Pelanggan harus diisi.',
 				'allowEmpty' => false
             )
-			
+
         ),
     );
 
@@ -38,14 +38,14 @@ class Customer extends AppModel {
     public function get_names($query){
         $q = "SELECT `id`, `namapelanggan` FROM `customers` AS `Customer`
             WHERE (namapelanggan LIKE '%$query%') AND id NOT IN (SELECT idcustomer FROM pair_team_customers) AND status = 1 LIMIT 5";
-        
+
         return $this->query($q);
     }
 
     public function get_customer_in_team($idtim){
-        $q = "SELECT * FROM `customers` AS `Customer`  
-            WHERE `Customer`.`id` IN 
-                (SELECT `pair_team_customers`.`idcustomer` FROM `pair_team_customers` WHERE `pair_team_customers`.`idtim` = '$idtim') 
+        $q = "SELECT * FROM `customers` AS `Customer`
+            WHERE `Customer`.`id` IN
+                (SELECT `pair_team_customers`.`idcustomer` FROM `pair_team_customers` WHERE `pair_team_customers`.`idtim` = '$idtim')
             AND `Customer`.`status` = 1
             ORDER BY `Customer`.`id`";
 

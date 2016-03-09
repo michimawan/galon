@@ -10,16 +10,16 @@ class Attendance extends AppModel{
     );
 
     public function getMonthRecord($idpegawai, $month, $year){
-        $q = "SELECT id, tanggal, kehadiran 
+        $q = "SELECT id, tanggal, kehadiran
                 FROM `attendances` AS `Attendance`
-                WHERE EXTRACT( MONTH FROM `tanggal` ) = '$month' 
-                    AND EXTRACT( year FROM `tanggal` ) = '$year' 
-                    AND idpegawai = '$idpegawai' 
+                WHERE EXTRACT( MONTH FROM `tanggal` ) = '$month'
+                    AND EXTRACT( year FROM `tanggal` ) = '$year'
+                    AND idpegawai = '$idpegawai'
                 ORDER BY `tanggal` ASC";
 
         return $this->query($q);
     }
-    
+
     public function getUserIDThatAttend(){
         $q = "SELECT `idpegawai` FROM `attendances` WHERE tanggal LIKE curdate()";
 

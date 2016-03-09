@@ -10,7 +10,7 @@ class Team extends AppModel {
                 'message' => 'Nama Tim harus diisi.',
 				'allowEmpty' => false
             )
-			
+
         ),
         'unique' => array(
             'rule'    => array('isUniqueUsername'),
@@ -43,7 +43,7 @@ class Team extends AppModel {
                 ON `User`.`id` = `Team`.`idpegawai`
                 WHERE `Team`.idtim <> 'NULL'
                 ORDER BY `Team`.`idtim` ASC";
-                
+
         return $this->query($q);
     }
 
@@ -54,7 +54,7 @@ class Team extends AppModel {
     }
 
     public function deleteTeam($idtim){
-        $q = "UPDATE `galon`.`teams` SET `status` = '0'  WHERE idtim = ".$idtim;
+        $q = "UPDATE `teams` SET `status` = '0'  WHERE idtim = ".$idtim;
 
         return $this->query($q);
     }
@@ -78,7 +78,7 @@ class Team extends AppModel {
     }
 
     public function save_galon($idtim, $galon){
-        $q = "UPDATE `galon`.`teams` SET `jmlgalon` = '$galon' WHERE `teams`.`idtim` = '$idtim'";
+        $q = "UPDATE `teams` SET `jmlgalon` = '$galon' WHERE `teams`.`idtim` = '$idtim'";
 
         return $this->query($q);
     }

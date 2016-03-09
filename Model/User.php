@@ -190,7 +190,7 @@ class User extends AppModel {
 
 	public function get_user_with_idtim_and_attend($idtim){
 		$q = "SELECT `User`.`id`, `User`.`username`, `User`.`firstname`, `User`.`lastname` 
-			FROM `galon`.`users` AS `User` 
+			FROM `users` AS `User` 
 			WHERE `User`.`id` IN 
 				(SELECT `teams`.`idpegawai` FROM `teams` WHERE `teams`.`idtim` = '$idtim' AND `teams`.`status` = 1) 
 			AND `User`.`id` IN 

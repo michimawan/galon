@@ -29,7 +29,7 @@ class Sell extends AppModel {
     }
 
     public function save_start($idtim, $start, $dates){
-        $q = "INSERT INTO `galon`.`masters` (`idtim`, `start`, `galonkosong`, `finish`, `date`) 
+        $q = "INSERT INTO `masters` (`idtim`, `start`, `galonkosong`, `finish`, `date`) 
             VALUES ('$idtim', '$start', '0', '0', '$dates');";
 
         return $this->query($q);
