@@ -382,6 +382,39 @@ class SellsController extends AppController {
         return $team;
     }
 
+    public function unlock($idmaster = null)
+    {
+        if($this->request->is('post') && $idmaster != null){
+            $this->decalculate_sells($idmaster);
+            if($this->Sell->updateAll(
+                array('Sell.status' => 0),
+                array('Sell.idmaster' => $idmaster)
+            ))
+            $this->Session->setFlash('Data transaksi berhasil unlock', 'customflash', array('class' => 'success'));
+            else
+                $this->Session->setFlash('Data transaksi gagal di unlock', 'customflash', array('class' => 'danger'));
+            $this->redirect(array('action' => 'index'));
+        }
+
+        $this->redirect(array('action' => 'index'));
+    }
+
+    public function locking($idmaster = null)
+    {
+        if($this->request->is('post') && $idmaster != null){
+            $this->recalculate_sells($idmaster);
+            if($this->Sell->updateAll(
+                array('Sell.status' => 1),
+                array('Sell.idmaster' => $idmaster)
+            ))
+            $this->Session->setFlash('Data transaksi berhasil di-lock', 'customflash', array('class' => 'success'));
+            else
+                $this->Session->setFlash('Data transaksi gagal di lock', 'customflash', array('class' => 'danger'));
+            $this->redirect(array('action' => 'index'));
+        }
+
+        $this->redirect(array('action' => 'index'));
+    }
 
     public function lock($idtim, $dates, $start){
         $user = $this->Auth->user();
@@ -407,6 +440,130 @@ class SellsController extends AppController {
 
     }
 
+    private function recalculate_sells($idmaster)
+    {
+        $datas = $this->Sell->find('all', array('conditions' => array('Sell.idmaster' => $idmaster),
+            'recursive' => 0, 'order' => 'Sell.idcustomer',
+            'fields' => array('DISTINCT Sell.id', 'Sell.idtim', 'Sell.idcustomer', 'Sell.jmlbeli', 'Sell.jmlkembali',
+            'Sell.jmlpinjam', 'Sell.bayar','Sell.hutang', 'Sell.totalharga', 'Sell.totalhargagalon', 'Customer.id', 'Customer.hutang', 'Customer.galonterpinjam'))
+        );
+        $harga_galon = $datas[0]['Sell']['totalhargagalon'] / $datas[0]['Sell']['jmlbeli'];
+
+        $galonkosong = 0;
+        $finish = 0;
+        $galonterjual = 0;
+        $array_id_customer = array();
+        $total_harga = $total_terbayarkan = $total_hutang = 0;
+        foreach($datas as $data){
+            $galonkosong += $data['Sell']['jmlbeli'] + $data['Sell']['jmlkembali'] - $data['Sell']['jmlpinjam'];
+            $finish += $data['Sell']['jmlbeli'];
+            $galonterjual += $data['Sell']['bayar'];
+
+            $array_id_customer[] = $data['Sell']['idcustomer'];
+
+            $total_harga += $data['Sell']['totalhargagalon'];
+            $total_terbayarkan += $data['Sell']['bayar'];
+            $total_hutang += $data['Sell']['hutang'];
+        }
+        $galonterjual = doubleval($galonterjual / $harga_galon);
+        $teams = $this->Sell->Team->find('all', array(
+            'conditions' => array('Team.idtim' => $datas[0]['Sell']['idtim']),
+            'recursive' => -1,
+        ));
+        $master = $this->Sell->Master->find('first', array(
+            'conditions' => array('Master.id' => $idmaster),
+            'recursive' => -1,
+        ));
+
+        $teams[0]['Team']['jmlgalon'] = $teams[0]['Team']['jmlgalon'] + $galonkosong - $master['Master']['start'] + ($master['Master']['start'] - $finish);
+        $teams[1]['Team']['jmlgalon'] = $teams[0]['Team']['jmlgalon'];
+
+        $array_update_customer_hutang_galonterpinjam = array();
+        foreach($datas as $data){
+            $array_update_customer_hutang_galonterpinjam[]['Customer'] = array(
+                'id' => $data['Customer']['id'],
+                'galonterpinjam' => $data['Customer']['galonterpinjam'] + $data['Sell']['jmlpinjam'] - $data['Sell']['jmlkembali'],
+                'hutang' => $data['Sell']['hutang'],
+                'transaksiterakhir' => ''
+            );
+        }
+
+        if($galonkosong < 0){
+            $galonkosong = 0;
+        }
+        $master = array('Master' => array(
+            'id' => $idmaster,
+            'date' => date('Y-m-d'),
+            'galon_sales' => $teams[0]['Team']['jmlgalon'],
+            'harga_galon' => $harga_galon,
+            'galonkosong' => $galonkosong,
+            'galonterjual' => $galonterjual,
+            'finish' => ($master['Master']['start']-$finish),
+            'total_harga' => $total_harga,
+            'total_terbayarkan' => $total_terbayarkan,
+            'total_hutang' => $total_hutang,
+            'status' => 1,
+        ));
+
+        $this->Sell->Team->updateAll(
+            array('Team.jmlgalon' => $teams[0]['Team']['jmlgalon']),
+            array('Team.idtim' => $teams[0]['Team']['idtim'])
+        );
+        $this->Sell->Master->save($master);
+        $this->Sell->Customer->saveAll($array_update_customer_hutang_galonterpinjam);
+    }
+
+    private function decalculate_sells($idmaster)
+    {
+        $datas = $this->Sell->find('all', array('conditions' => array('Sell.idmaster' => $idmaster),
+            'recursive' => 0, 'order' => 'Sell.idcustomer',
+            'fields' => array('DISTINCT Sell.id', 'Sell.idtim', 'Sell.idcustomer', 'Sell.jmlbeli', 'Sell.jmlkembali',
+            'Sell.jmlpinjam', 'Sell.bayar','Sell.hutang', 'Sell.totalharga', 'Sell.totalhargagalon', 'Customer.id', 'Customer.hutang', 'Customer.galonterpinjam'))
+        );
+        $master = $this->Sell->Master->find('first', array(
+            'conditions' => array('Master.id' => $idmaster),
+            'recursive' => -1,
+        ));
+
+        $teams = $this->Sell->Team->find('all', array(
+            'conditions' => array('Team.idtim' => $datas[0]['Sell']['idtim']),
+            'recursive' => -1,
+        ));
+        $teams[0]['Team']['jmlgalon'] = $teams[0]['Team']['jmlgalon'] - $master['Master']['galonkosong'] + $master['Master']['start'] - $master['Master']['finish'];
+        $teams[1]['Team']['jmlgalon'] = $teams[0]['Team']['jmlgalon'];
+
+        $array_update_customer_hutang_galonterpinjam = array();
+        foreach($datas as $data){
+            $array_update_customer_hutang_galonterpinjam[]['Customer'] = array(
+                'id' => $data['Customer']['id'],
+                'galonterpinjam' => $data['Customer']['galonterpinjam'] - $data['Sell']['jmlpinjam'] + $data['Sell']['jmlkembali'],
+                'hutang' => $data['Sell']['totalharga'] - $data['Sell']['totalhargagalon'],
+                'transaksiterakhir' => ''
+            );
+        }
+
+        $master = array('Master' => array(
+            'id' => $idmaster,
+            'galon_sales' => 0,
+            'harga_galon' => 0,
+            'galonkosong' => 0,
+            'galonterjual' => 0,
+            'finish' => 0,
+            'total_harga' => 0,
+            'total_terbayarkan' => 0,
+            'total_hutang' => 0,
+            'status' => 0,
+        ));
+        debug($teams);
+        debug($array_update_customer_hutang_galonterpinjam);
+        $this->Sell->Team->updateAll(
+            array('Team.jmlgalon' => $teams[0]['Team']['jmlgalon']),
+            array('Team.idtim' => $teams[0]['Team']['idtim'])
+        );
+        $this->Sell->Master->save($master);
+        $this->Sell->Customer->saveAll($array_update_customer_hutang_galonterpinjam);
+    }
+
     private function calculate_today_sells($idtim, $dates, $start) {
         if($idtim && $dates && $start){
             $datas = $this->Sell->find('all', array('conditions' => array('DATE(Sell.date)' => $dates, 'Sell.idtim' => $idtim),
@@ -422,7 +579,7 @@ class SellsController extends AppController {
             $galonterjual = 0;
             $array_id_customer = array();
 
-            $total_harga = $total_terbayarkan = $total_hutang =0;
+            $total_harga = $total_terbayarkan = $total_hutang = 0;
             foreach($datas as $data){
                 $galonkosong += $data['Sell']['jmlbeli'] + $data['Sell']['jmlkembali'] - $data['Sell']['jmlpinjam'];
                 $finish += $data['Sell']['jmlbeli'];

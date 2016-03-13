@@ -3,7 +3,7 @@
 <div class='row'>
 	<form class="form-inline" method="get" action="<?php echo $this->Html->url(array('action'=>'history'));?>">
         <div class="form-group">
-            <?php 
+            <?php
             if($user['role'] != 'pegawai'){
                 if($this->params->pass != null){
                 echo $this->Form->input('idtim', array(
@@ -27,7 +27,7 @@
                     'empty' => 'Tampilkan Semua',
                     'required'
                     )
-                );  
+                );
                 }
                 ?>
             <button type="button" class="btn btn-default" id="search" aria-label="Left Align">
@@ -41,7 +41,7 @@
             ?>
         </div>
 	</form>
-	
+
 </div>
 <div class='row'>
     <div class="col-xs-12 col-md-12">
@@ -68,8 +68,8 @@
                         <td colspan='11'>Tidak ada transaksi untuk tim ini.</td>
                     </tr>
                     <?php else: ?>
-                    
-                    <?php 
+
+                    <?php
                     $i = 1;
                     $harga = $bayar = $hutang = 0;
                     foreach ($masters as $master) {
@@ -85,8 +85,18 @@
                         <td><?php echo $master['Master']['total_harga'];?></td>
                         <td><?php echo $master['Master']['total_terbayarkan'];?></td>
                         <td><?php echo $master['Master']['total_hutang'];?></td>
-                        <td><?php echo $this->Html->link( "Detail", 
-                            array('action'=>'detail', $master['Master']['id']), array('class' => 'btn btn-info')); ?> </td>
+                        <td><?php
+                        if($master['Master']['status']) {
+                            echo $this->Form->postLink( "Un-Lock",
+                                array('action'=>'unlock', $master['Master']['id']), array('class' => 'btn btn-danger', 'confirm' => 'Anda yakin ingin meng-unlock transaksi ini?'));
+                            echo $this->Html->link( "Detail",
+                                array('action'=>'detail', $master['Master']['id']), array('class' => 'btn btn-info'));
+                        }
+                        else
+                            echo $this->Form->postLink( "Lock",
+                                array('action'=>'locking', $master['Master']['id']), array('class' => 'btn btn-danger', 'confirm' => 'Anda yakin ingin me-lock transaksi ini?'));
+                        ?>
+                        </td>
                     </tr>
                     <?php
                     $harga += $master['Master']['total_harga'];

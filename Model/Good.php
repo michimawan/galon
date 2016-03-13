@@ -8,7 +8,7 @@ class Good extends AppModel {
                 'message' => 'Nama Barang harus diisi.',
                 'allowEmpty' => false
             )
-            
+
         ),
         'hargabeli' => array(
             'nonEmpty' => array(
@@ -16,7 +16,7 @@ class Good extends AppModel {
                 'message' => 'Harga beli harus diisi.',
                 'allowEmpty' => false
             )
-            
+
         ),
         'hargajual' => array(
             'nonEmpty' => array(
