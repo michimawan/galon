@@ -487,7 +487,7 @@ class SellsController extends AppController {
             $array_update_customer_hutang_galonterpinjam[]['Customer'] = array(
                 'id' => $data['Customer']['id'],
                 'galonterpinjam' => $data['Customer']['galonterpinjam'] + $data['Sell']['jmlpinjam'] - $data['Sell']['jmlkembali'],
-                'hutang' => $data['Sell']['hutang'],
+                'hutang' => $data['Customer']['hutang'] - $data['Sell']['bayar'] + $data['Sell']['totalhargagalon'],
                 'transaksiterakhir' => ''
             );
         }
@@ -543,7 +543,7 @@ class SellsController extends AppController {
             $array_update_customer_hutang_galonterpinjam[]['Customer'] = array(
                 'id' => $data['Customer']['id'],
                 'galonterpinjam' => $data['Customer']['galonterpinjam'] - $data['Sell']['jmlpinjam'] + $data['Sell']['jmlkembali'],
-                'hutang' => $data['Sell']['totalharga'] - $data['Sell']['totalhargagalon'],
+                'hutang' => $data['Customer']['hutang'] + $data['Sell']['bayar'] - $data['Sell']['totalhargagalon'],
                 'transaksiterakhir' => ''
             );
         }
@@ -560,8 +560,6 @@ class SellsController extends AppController {
             'total_hutang' => 0,
             'status' => 0,
         ));
-        debug($teams);
-        debug($array_update_customer_hutang_galonterpinjam);
         $this->Sell->Team->updateAll(
             array('Team.jmlgalon' => $teams[0]['Team']['jmlgalon']),
             array('Team.idtim' => $teams[0]['Team']['idtim'])
