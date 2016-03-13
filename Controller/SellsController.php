@@ -493,7 +493,6 @@ class SellsController extends AppController {
         }
         $master = array('Master' => array(
             'id' => $idmaster,
-            'date' => date('Y-m-d'),
             'galon_sales' => $teams[0]['Team']['jmlgalon'],
             'harga_galon' => $harga_galon,
             'galonkosong' => $galonkosong,
