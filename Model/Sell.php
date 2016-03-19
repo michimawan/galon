@@ -40,7 +40,6 @@ class Sell extends AppModel {
             WHERE `Customer`.`id` IN 
                 (SELECT `pair_team_customers`.`idcustomer` FROM `pair_team_customers` 
                     WHERE `pair_team_customers`.`idtim` = '$idtim')
-            AND `Customer`.`id` NOT IN (SELECT idcustomer FROM sells WHERE idtim = '$idtim' AND DATE(`date`) = SUBSTRING(NOW(), 1, 10))
             ORDER BY `Customer`.`id`";
 
         return $this->query($q);

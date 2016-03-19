@@ -47,7 +47,6 @@
 					<th>Ttl Gln Pnjm</th>
 					<th>Bayar</th>
 					<th>Hutang</th>
-					<?php echo $master['Master']['status'] && $user['role'] == 'admin'? "<th>Action</th>" : "" ?>
 				</tr>
 			</thead>
 			<tbody>
@@ -74,11 +73,6 @@
 						<td><?php echo $data['Customer']['galonterpinjam'] ?></td>
 						<td><?php echo $data['bayar'];?></td>
 						<td><?php echo $data['hutang']?></td>
-						<td>
-						<?php
-						echo $user['role'] == 'admin'? ($this->Html->link('Edit', array('action' => 'edit', $data['id']), array('class'=>'btn btn-primary'))) : "";
-						?>
-						</td>
 					</tr>
 					<?php
 					$i++;

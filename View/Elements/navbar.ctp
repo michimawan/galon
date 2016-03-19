@@ -8,7 +8,7 @@ $attendances= '';
 $customers= '';
 $goods= '';
 $sells= '';
-$histories = '';
+$graphs = '';
 $logouturl= $this->Html->url(array('controller'=>'users', 'action'=>'logout'));
 $usersurl= $this->Html->url(array('controller'=>'users', 'action'=>'index'));
 $teamsurl= $this->Html->url(array('controller'=>'teams', 'action'=>'index'));
@@ -16,6 +16,7 @@ $attendancesurl= $this->Html->url(array('controller'=>'attendances', 'action'=>'
 $customersurl= $this->Html->url(array('controller'=>'customers', 'action'=>'index'));
 $goodsurl= $this->Html->url(array('controller'=>'goods', 'action'=>'index'));
 $sellsurl= $this->Html->url(array('controller'=>'sells', 'action'=>'index'));
+$graphurl= $this->Html->url(array('controller'=>'sells', 'action'=>'graph'));
 
 if($menu === 'main') {
 	$main = 'class="active"';
@@ -29,8 +30,8 @@ if($menu === 'main') {
 	$customers= 'class="active"';
 } else if ($menu === 'goods') {
 	$goods= 'class="active"';
-} else if($menu === 'histories'){
-	$histories = 'class=active';
+} else if($menu === 'graphs'){
+	$graphs = 'class=active';
 } else if ($menu === 'sells') {
 	$sells= 'class="active"';
 }
@@ -76,14 +77,8 @@ $user = $this->Auth->user();
         		<?php 
         		if ($user['role'] == 'pegawai')
         			if(isset($user['Team']['idtim']))
-        			$historiesurl = $this->Html->url(
-        				array('controller'=>'sells', 'action'=>'history', $user['Team']['idtim']));
-        			else
-        				$historiesurl = $this->Html->url(
-        				array('controller'=>'sells', 'action'=>'history'));
-        		else
-        			$historiesurl = $this->Html->url(
-        				array('controller'=>'sells', 'action'=>'history'));
+        			$sellsurl = $this->Html->url(
+        				array('controller'=>'sells', 'action'=>'index', $user['Team']['idtim']));
         		?>
         		<li class="dropdown">
 		         	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -92,7 +87,7 @@ $user = $this->Auth->user();
 		         	</a>
 		          	<ul class="dropdown-menu">
 		            	<li <?php echo $sells; ?>><a href="<?php echo $sellsurl; ?>">Transaksi</a></li>
-		            	<li <?php echo $histories; ?>><a href="<?php echo $historiesurl; ?>">Riwayat Transaksi</a></li>
+                        <li <?php echo $graphs; ?>><a href="<?php echo $graphurl; ?>">Grafik Transaksi</a></li>
 		          	</ul>
         		</li>
         		<?php } ?>

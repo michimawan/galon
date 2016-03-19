@@ -77,7 +77,7 @@ $(document).ready(function() {
     $("#search").click(function(){
         var date1 = $('#datepicker_awal').val();
         var date2 = $('#datepicker_akhir').val();
-        var loc = '<?php echo $this->Html->url(array('action' => 'index'))?>/index/' + date2 + '/' + date1;
+        var loc = '<?php echo $this->Html->url(array('action' => 'graph'))?>/' + date2 + '/' + date1;
         window.location.assign(loc);
         // var tanggal = $("#datepicker").val();
         // var pegawai = $("#idpegawai").val();

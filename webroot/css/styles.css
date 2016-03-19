@@ -26,3 +26,11 @@ select{
 .add-5{
 	margin-top: 5%;
 }
+
+.form-inline-collapse {
+  display: inline;
+}
+
+.bottom {
+  margin-bottom: 5px;
+}

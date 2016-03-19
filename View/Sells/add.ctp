@@ -9,7 +9,8 @@
         <?php
 
             if($this->Session->check('Auth.User')){
-            echo $this->Html->link( "Lihat Penjualan",   array('action'=>'index'), array('class'=>'btn btn-default'));
+                $user = $this->Auth->user();
+                echo $this->Html->link( "Lihat Penjualan", array('action'=>'dashboard', $user['Team']['idtim']), array('class'=>'btn btn-default'));
             }
         ?>
     </div>

@@ -80,12 +80,12 @@
 					<th>Ttl Gln Pnjm</th>
 					<th>Bayar</th>
 					<th>Hutang</th>
-					<?php echo !$datas? "" : (!$datas[0]['Sell']['status']? "<th>Action</th>" : ""); ?>
+					<?php echo !isset($master[0]['Master']['status'])? "" : (!$master[0]['Master']['status']? "<th>Action</th>" : ""); ?>
 				</tr>
 			</thead>
 			<tbody>
 				<?php $i = 1;
-				if($datas){
+				if(count($datas)){
 					$jmlbeli = 0;
 					$jmlpinjam = 0;
 					$jmlkembali = 0;

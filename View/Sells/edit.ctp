@@ -5,7 +5,10 @@
     <div class="col-xs-3 col-md-2">
         <div class="btn-group-vertical" role="group">
             <div class='btn-group' role='group'>
-            <?php echo $this->Html->link( "Lihat Penjualan", array('action'=>'index'), array('class' => 'btn btn-default')); ?>
+            <?php
+                $user = $this->Auth->user();
+                echo $this->Html->link( "Lihat Penjualan", array('action'=>'dashboard', $user['Team']['idtim']), array('class'=>'btn btn-default'));
+            ?>
             </div>
         </div>
     </div>
