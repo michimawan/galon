@@ -99,9 +99,12 @@
                                 array('action'=>'detail', $master['Master']['id']), array('class' => 'btn btn-info'));
                         }
                         else
-                            if($user['role'] == 'admin')
+                            if($user['role'] == 'admin') {
                             echo $this->Form->postLink( "Lock",
                                 array('action'=>'locking', $master['Master']['id']), array('class' => 'btn btn-danger', 'confirm' => 'Anda yakin ingin me-lock transaksi ini?'));
+                            echo $this->Html->link( "Detail",
+                                array('action'=>'detail', $master['Master']['id']), array('class' => 'btn btn-info'));
+                            }
                         ?>
                         </td>
                     </tr>

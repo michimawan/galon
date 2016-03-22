@@ -56,6 +56,49 @@ class CustomersController extends AppController {
         }
     }
 
+    public function ranks($limit = null) {
+        $this->set('title', 'Galon - Rangking Pelanggan');
+
+        if(!$limit)
+            $limit = 20;
+
+        $this->paginate = array(
+            'fields' => array('Sell.idcustomer', 'SUM(Sell.jmlbeli) as beli', 'SUM(Sell.jmlpinjam) as pinjam', 'SUM(Sell.jmlkembali) as kembali', 'Customer.namapelanggan', 'Customer.alamat', 'Customer.kdpelanggan'),
+            'group' => 'Sell.idcustomer',
+            'order' => array('beli' => 'desc'),
+            'conditions' => array('NOT' => array('Sell.status' => '0')),
+            'recursive' => -1,
+            'limit' => $limit,
+            'joins' => array(
+                array(
+                'table' => 'customers',
+                'alias' => 'Customer',
+                'type' => 'LEFT',
+                'conditions' => array('Customer.id = Sell.idcustomer')
+            ),
+        ));
+        $this->loadModel('Sell');
+        $customers = $this->paginate('Sell');
+
+        // $customers = $this->Customer->Sell->find('all', array(
+        //     'fields' => array('Sell.idcustomer', 'SUM(Sell.jmlbeli) as beli', 'SUM(Sell.jmlpinjam) as pinjam', 'SUM(Sell.jmlkembali) as kembali', 'Customer.namapelanggan', 'Customer.alamat', 'Customer.kdpelanggan'),
+        //     'group' => 'Sell.idcustomer',
+        //     'order' => array('beli' => 'desc' ),
+        //     'conditions' => array('NOT' => array('Sell.status' => '0')),
+        //     'recursive' => -1,
+        //     'joins' => array(
+        //         array(
+        //         'table' => 'customers',
+        //         'alias' => 'Customer',
+        //         'type' => 'LEFT',
+        //         'conditions' => array('Customer.id = Sell.idcustomer')
+        //     )
+        //     )
+        // ));
+        //
+        $this->set(compact('customers'));
+    }
+
     public function delete($id = null) {
         if($this->request->is('post')){
             if (!$id) {

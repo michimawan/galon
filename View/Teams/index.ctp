@@ -12,10 +12,10 @@ foreach ($galons as $galon) {
     <div class="col-xs-3 col-md-2">
         <div class="btn-group-vertical" role="group">
             <div class='btn-group' role='group'>
-            <?php 
+            <?php
             $current_user = $this->Auth->User();
             if($current_user['role'] != 'pegawai')
-            echo $this->Html->link( "Tambah Tim", array('action'=>'add'), array('escape' => false, 'class' => 'btn btn-primary')); 
+            echo $this->Html->link( "Tambah Tim", array('action'=>'add'), array('escape' => false, 'class' => 'btn btn-primary'));
             ?>
             </div>
         </div>
@@ -35,8 +35,8 @@ foreach ($galons as $galon) {
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody> 
-            <?php 
+        <tbody>
+            <?php
             if(!$teams){
             ?>
             <tr>
@@ -45,7 +45,7 @@ foreach ($galons as $galon) {
             <?php
             }
             else {
-            ?>                             
+            ?>
             <?php $count=0; ?>
             <?php foreach($teams as $team):
                 $count ++;
@@ -54,24 +54,23 @@ foreach ($galons as $galon) {
                 <td><?php echo $count; ?></td>
                 <td><?php echo $team['User']['firstname']. " ".$team['User']['lastname'];?></td>
                 <?php
-                if($count % 2){ 
+                if($count % 2){
                 ?>
                 <td rowspan='2'><?php echo $team['Team']['idtim']?></td>
                 <td rowspan='2'><?php echo $team['Team']['jmlgalon']?></td>
                 <td rowspan='2'>
                 <?php // echo $this->Html->link(    "Tambah Pelanggan",   array('action'=>'pair_cust', $team['Team']['idtim']), array('class' => 'btn btn-primary overlay', 'data-toggle' => 'modal', 'data-target' => '#modal_addcust')); ?>
-                <?php 
+                <?php
                 if($current_user['role'] != 'pegawai'){
                 echo $this->Html->link(    "Ubah Jml Galon",  array('action'=>'change', $team['Team']['idtim']), array('class' => 'btn btn-success', 'data-toggle' => 'modal', 'data-action' => $this->Html->url(array('action'=>'change', $team['Team']['idtim'])),'data-target' => '#modal_addcust'));
                 echo $this->Html->link(    "Tambah Pelanggan",   array('action'=>'pair_cust', $team['Team']['idtim']), array('class' => 'btn btn-primary'));
-                echo $this->Form->postLink(    "Hapus Tim",   array('action'=>'delete', $team['Team']['idtim']), array('class' => 'btn btn-danger', 'confirm' => 'Apakah sudah yakin ingin menghapus tim ini?')); 
+                echo $this->Form->postLink(    "Hapus Tim",   array('action'=>'delete', $team['Team']['idtim']), array('class' => 'btn btn-danger', 'confirm' => 'Apakah sudah yakin ingin menghapus tim ini?'));
                 } else if($current_user['role'] == 'pegawai'){
                     if($current_user['Team']['idtim'] == $team['Team']['idtim']){
-                    echo $this->Html->link(    "Ubah Jml Galon",  array('action'=>'change', $team['Team']['idtim']), array('class' => 'btn btn-success', 'data-toggle' => 'modal', 'data-action' => $this->Html->url(array('action'=>'change', $team['Team']['idtim'])),'data-target' => '#modal_addcust'));
                     echo $this->Html->link(    "Tambah Pelanggan",   array('action'=>'pair_cust', $team['Team']['idtim']), array('class' => 'btn btn-primary'));
                     }
                 }
-                ?> 
+                ?>
                 </td>
                 <?php } ?>
             </tr>
@@ -81,12 +80,12 @@ foreach ($galons as $galon) {
     </table>
     </div>
     <div class="paging">
-        <?php 
+        <?php
             echo $this->Paginator->prev() .'  '. $this->Paginator->numbers(array('before'=>false, 'after'=>false,'separator'=> false)) .'  '. $this->Paginator->next();
         ?>
     </div>
-    
-    </div> 
+
+    </div>
 </div>
 
 
@@ -120,7 +119,7 @@ foreach ($galons as $galon) {
         </div>
     </div>
 </div>
-<?php 
+<?php
 echo $this->Html->script(array('jquery-ui.min.js'));
 //echo $this->Html->css(array('jquery-ui.min.css'));
 ?>
@@ -130,11 +129,11 @@ echo $this->Html->script(array('jquery-ui.min.js'));
         var target = $(this).attr("href");
 
         // load the url and show modal on success
-        $("#modal_addcust #index").load(target, function() { 
+        $("#modal_addcust #index").load(target, function() {
              $("#modal_addcust").modal("show");
         });
     });
-   
+
 </script>
 
 

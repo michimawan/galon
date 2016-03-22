@@ -6,6 +6,7 @@ $users = '';
 $teams= '';
 $attendances= '';
 $customers= '';
+$ranks= '';
 $goods= '';
 $sells= '';
 $graphs = '';
@@ -14,6 +15,7 @@ $usersurl= $this->Html->url(array('controller'=>'users', 'action'=>'index'));
 $teamsurl= $this->Html->url(array('controller'=>'teams', 'action'=>'index'));
 $attendancesurl= $this->Html->url(array('controller'=>'attendances', 'action'=>'index'));
 $customersurl= $this->Html->url(array('controller'=>'customers', 'action'=>'index'));
+$ranksurl= $this->Html->url(array('controller'=>'customers', 'action'=>'ranks'));
 $goodsurl= $this->Html->url(array('controller'=>'goods', 'action'=>'index'));
 $sellsurl= $this->Html->url(array('controller'=>'sells', 'action'=>'index'));
 $graphurl= $this->Html->url(array('controller'=>'sells', 'action'=>'graph'));
@@ -28,6 +30,8 @@ if($menu === 'main') {
 	$attendances= 'class="active"';
 } else if ($menu === 'customers') {
 	$customers= 'class="active"';
+} else if ($menu === 'ranks') {
+	$ranks= 'class="active"';
 } else if ($menu === 'goods') {
 	$goods= 'class="active"';
 } else if($menu === 'graphs'){
@@ -68,8 +72,15 @@ $user = $this->Auth->user();
 			            <li <?php echo $teams; ?>><a href="<?php echo $teamsurl; ?>">Team</a></li>
 		          	</ul>
         		</li>
-        		<li <?php echo $customers?> >
-        			<a href="<?php echo $customersurl; ?>">Pelanggan</a>
+        		<li class="dropdown">
+		         	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+		         		Pelanggan
+		         		<span class="caret"></span>
+		         	</a>
+		          	<ul class="dropdown-menu">
+                    <li <?php echo $customers; ?>><a href="<?php echo $customersurl; ?>">Pelanggan</a></li>
+                    <li <?php echo $ranks; ?>><a href="<?php echo $ranksurl; ?>">Rangking Pelanggan</a></li>
+		          	</ul>
         		</li>
         		<li <?php echo $goods?> >
         			<a href="<?php echo $goodsurl; ?>">Barang</a>

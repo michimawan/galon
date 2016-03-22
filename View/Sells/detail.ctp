@@ -8,7 +8,7 @@
 </div>
 <div class='row'>
 	<div class="col-md-4 col-xs-6">
-		<h4>Tanggal: <?php echo date('d-m-Y');?></h4>
+		<h4>Tanggal: <?php echo $master['Master']['date'];?></h4>
 		<h4>Nama Sales 1: <?php echo $team[0]['User']['kehadiran']? $team[0]['User']['firstname'].' '.$team[0]['User']['lastname'] : $team[1]['User']['firstname'].' '.$team[1]['User']['lastname'] ;?></h4>
 	</div>
 	<div class="col-md-4 col-xs-6">
@@ -37,7 +37,7 @@
 			<thead>
 				<tr>
 					<th>No.</th>
-					<th>Tanggal</th>
+					<th>Waktu</th>
 					<th>Kode Pelanggan</th>
 					<th>Nama Pelanggan</th>
 					<th>Alamat</th>
@@ -63,7 +63,7 @@
 					?>
 					<tr>
 						<td><?php echo $i?></td>
-						<td><?php echo substr($data['date'],0,10);?></td>
+						<td><?php echo substr($data['date'],10);?></td>
 						<td><?php echo $data['Customer']['kdpelanggan'];?></td>
 						<td><?php echo $data['Customer']['namapelanggan'];?></td>
 						<td><?php echo $data['Customer']['alamat'];?></td>

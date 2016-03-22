@@ -35,6 +35,11 @@ class Customer extends AppModel {
         )
     );
 
+	public $hasMany = array('Sell' => array(
+    	'className' => 'Sell',
+       	'foreignKey' => 'idcustomer'
+    ));
+
     public function get_names($query){
         $q = "SELECT `id`, `namapelanggan` FROM `customers` AS `Customer`
             WHERE (namapelanggan LIKE '%$query%') AND id NOT IN (SELECT idcustomer FROM pair_team_customers) AND status = 1 LIMIT 5";
