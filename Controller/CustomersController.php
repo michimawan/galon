@@ -64,39 +64,34 @@ class CustomersController extends AppController {
 
         $this->paginate = array(
             'fields' => array('Sell.idcustomer', 'SUM(Sell.jmlbeli) as beli', 'SUM(Sell.jmlpinjam) as pinjam', 'SUM(Sell.jmlkembali) as kembali', 'Customer.namapelanggan', 'Customer.alamat', 'Customer.kdpelanggan'),
-            'group' => 'Sell.idcustomer',
-            'order' => array('beli' => 'desc'),
+            'group' => array('Sell.idcustomer'),
             'conditions' => array('NOT' => array('Sell.status' => '0')),
             'recursive' => -1,
             'limit' => $limit,
+            'order' => 'beli desc',
             'joins' => array(
                 array(
                 'table' => 'customers',
                 'alias' => 'Customer',
                 'type' => 'LEFT',
-                'conditions' => array('Customer.id = Sell.idcustomer')
-            ),
-        ));
+                'conditions' => array('Customer.id = Sell.idcustomer'),
+            )),
+        );
         $this->loadModel('Sell');
         $customers = $this->paginate('Sell');
 
-        // $customers = $this->Customer->Sell->find('all', array(
-        //     'fields' => array('Sell.idcustomer', 'SUM(Sell.jmlbeli) as beli', 'SUM(Sell.jmlpinjam) as pinjam', 'SUM(Sell.jmlkembali) as kembali', 'Customer.namapelanggan', 'Customer.alamat', 'Customer.kdpelanggan'),
-        //     'group' => 'Sell.idcustomer',
-        //     'order' => array('beli' => 'desc' ),
-        //     'conditions' => array('NOT' => array('Sell.status' => '0')),
-        //     'recursive' => -1,
-        //     'joins' => array(
-        //         array(
-        //         'table' => 'customers',
-        //         'alias' => 'Customer',
-        //         'type' => 'LEFT',
-        //         'conditions' => array('Customer.id = Sell.idcustomer')
-        //     )
-        //     )
-        // ));
-        //
+        $option = array(
+            5 => 5,
+            10 => 10,
+            25 => 25,
+            50 => 50,
+            100 => 100,
+            500 => 500,
+            1000 => 1000,
+        );
+
         $this->set(compact('customers'));
+        $this->set(compact('option'));
     }
 
     public function delete($id = null) {

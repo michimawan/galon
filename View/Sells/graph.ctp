@@ -18,6 +18,19 @@ foreach($data as $date => $value) {
     		<label for="datepicker_akhir">Pilih Tanggal Terakhir</label>
     		<input type="text" class="form-control" id="datepicker_akhir" name='date2' placeholder="Pilih Tanggal">
   		</div>
+        <?php 
+        echo $this->Form->input('idtim', array(
+            'type' => 'select',
+            'options' => $list_team,
+            'class' => 'form-control',
+            'label' => false,
+            'div' => false,
+            'value' => $this->params->pass,
+            'empty' => 'Tampilkan Semua',
+            'required'
+            )
+        );
+        ?>
   		<button type="button" class="btn btn-default" id="search" aria-label="Left Align">
 			<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 			tampilkan

@@ -77,17 +77,17 @@ $(document).ready(function() {
     $("#search").click(function(){
         var date1 = $('#datepicker_awal').val();
         var date2 = $('#datepicker_akhir').val();
-        var loc = '<?php echo $this->Html->url(array('action' => 'graph'))?>/' + date2 + '/' + date1;
+        var idtim = $('#idtim').val();
+        var loc = '<?php echo $this->Html->url(array('action' => 'graph'))?>?';
+        if(date1 !== '')
+            loc += 'date1=' + date1;
+        if(date2 !== '')
+            loc += '&date2=' + date2;
+        if(idtim !== '')
+            loc += '&tim=' + idtim;
+
+        console.log(loc);
         window.location.assign(loc);
-        // var tanggal = $("#datepicker").val();
-        // var pegawai = $("#idpegawai").val();
-        // var spl = tanggal.split(" ");
-        // var month = months[spl[0]];
-        // var year = spl[1];
-        // if(pegawai != '' && month != '' && year != ''){
-        //     var loc = '<?php echo $this->Html->url(array('action' => 'rekapbulanan'))?>/' + pegawai + '/' + year + '/' + month;
-        //     window.location.assign(loc);
-        // }
     });
 });
 </script>

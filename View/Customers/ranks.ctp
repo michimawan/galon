@@ -9,6 +9,40 @@
             ?>
         </div>
     </div>
+	<form class="form-inline form-inline-collapse" method="get" action="<?php echo $this->Html->url(array('action'=>'ranks'));?>">
+        <div class="form-group">
+            <?php
+                if($this->params->pass != null){
+                echo $this->Form->input('idtim', array(
+                    'type' => 'select',
+                    'options' => $option,
+                    'class' => 'form-control',
+                    'label' => false,
+                    'div' => false,
+                    'value' => $this->params->pass,
+                    'empty' => 'Tampilkan Semua',
+                    'required'
+                    )
+                );
+                } else {
+                  echo $this->Form->input('idtim', array(
+                    'type' => 'select',
+                    'options' => $option,
+                    'class' => 'form-control',
+                    'label' => false,
+                    'div' => false,
+                    'empty' => 'Tampilkan Semua',
+                    'required'
+                    )
+                );
+                }
+                ?>
+            <button type="button" class="btn btn-default" id="search" aria-label="Left Align">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                tampilkan
+            </button>
+        </div>
+	</form>
     <div class="col-xs-12 col-md-10">
     <h1>Rangking Pelanggan</h1>
     <div class='table-responsive'>
@@ -56,3 +90,4 @@
     </div>
 </div>
 <?php echo $this->element('../Customers/add'); ?>
+<?php echo $this->element('search_team', array('controller' => 'customers', 'action' => 'ranks')); ?>

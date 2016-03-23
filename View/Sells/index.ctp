@@ -132,10 +132,4 @@
         ?>
     </div>
 </div>
-<script type="text/javascript">
-    $('#search').click(function() {
-        var idtim = $('#idtim').val();
-        var loc = '<?php echo $this->Html->url(array('action' => 'index', 'controller' => 'sells'));?>' + '/index/' + idtim;
-        window.location = loc;
-    });
-</script>
+<?php echo $this->element('search_team', array('controller' => 'sells', 'action' => 'index')); ?>

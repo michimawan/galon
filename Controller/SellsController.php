@@ -20,8 +20,12 @@ class SellsController extends AppController {
         }
     }
 
-    public function graph($startdate = null, $enddate = null, $idtim = null){
+    public function graph(){
         $this->set('title', 'Galon - Daftar Transaksi');
+
+        $enddate = isset($this->params['url']['date1']) ? $this->params['url']['date1'] : null;
+        $startdate = isset($this->params['url']['date2']) ? $this->params['url']['date2'] : null;
+        $idtim = isset($this->params['url']['tim']) ? $this->params['url']['tim'] : null;
 
         if(!$startdate)
             $startdate = date('Y-m-d');
@@ -44,14 +48,6 @@ class SellsController extends AppController {
             ),
             'recursive' => -1
         ));
-        // $masters = $this->Sell->Master->find('all', array(
-        //     'recursive' => -1
-        // ));
-        // $maxs = $this->Sell->Master->find('all', array(
-        //     'recursive' => -1,
-        //     'group' => array('Master.date'),
-        //     'fields' => array('MAX(Master.galonterjual)', 'Master.date', 'Master.idtim'),
-        // ));
 
         $data = array();
         foreach($masters as $master) {
@@ -59,7 +55,12 @@ class SellsController extends AppController {
                 $data[$master['Master']['date']] = 0;
             $data[$master['Master']['date']] += $master['Master']['galonterjual'];
         }
+
+        $list_teams = $this->Sell->Customer->PairTeamCustomer->Team->find('all', array('order' => 'idtim','conditions' => array('Team.status' => 1), 'recursive' => 0));
+        $list_team = $this->to_list_team($list_teams);
+
         $this->set(compact('data'));
+        $this->set(compact('list_team'));
     }
 
     // accessed by user and admin
