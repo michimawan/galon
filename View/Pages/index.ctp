@@ -7,8 +7,5 @@
 		<p>
 		Sistem Informasi Adikarya Okane(SIAO) merupakan sistem informasi yang digunakan untuk melakukan penjualan dan pembelian galon. Sistem informasi ini dapat digunakan untuk melakukan proses transaksi penjualan, peminjaman, dan pengembalian galon. 
 		</p>
-		<p>
-		Adikarya Okane merupakan perusahaan yang bergerak dibidang Air Mineral, ada banyak merk yang dilayani oleh perusahaan ini. Selain itu area yang dilayani Adikarya Okane cukup luas, Klaten salah satunya.
-		</p>
 	</div>
 </div>
