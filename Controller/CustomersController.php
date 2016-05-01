@@ -10,7 +10,12 @@ class CustomersController extends AppController {
             'conditions' => array('NOT' => array('Customer.status' => '0'))
         );
         $customers = $this->paginate('Customer');
+
+        $list_teams = $this->Customer->PairTeamCustomer->Team->find('all', array('order' => 'idtim','conditions' => array('Team.status' => 1), 'recursive' => 0));
+        $list_team = $this->to_list_team($list_teams);
+
         $this->set(compact('customers'));
+        $this->set(array('list_team' => $list_team));
     }
 
     public function add(){
@@ -19,13 +24,23 @@ class CustomersController extends AppController {
 
             $this->Customer->create();
             $this->request->data['Customer']['kdpelanggan'] = $this->generate_kodepelanggan();
-            if ($this->Customer->save($this->request->data)) {
+            $customer = $this->Customer->save($this->request->data);
+
+            $this->Customer->PairTeamCustomer->create();
+            $this->request->data['PairTeamCustomer']['idcustomer'] = $customer['Customer']['id'];
+            $pair_team_cust = $this->Customer->PairTeamCustomer->save($this->request->data);
+            if ($pair_team_cust['PairTeamCustomer']['id']) {
                 $this->Session->setFlash('Pelanggan baru berhasil dibuat', 'customflash', array('class' => 'success'));
                 $this->redirect(array('action' => 'index'));
             } else {
                 $this->Session->setFlash('Pelanggan baru gagal dibuat, silahkan dicoba lagi', 'customflash', array('class' => 'warning'));
             }
         }
+
+        $list_teams = $this->Customer->PairTeamCustomer->Team->find('all', array('order' => 'idtim','conditions' => array('Team.status' => 1), 'recursive' => 0));
+        $list_team = $this->to_list_team($list_teams);
+
+        $this->set(array('list_team' => $list_team));
     }
 
     public function edit($id = null){
@@ -43,13 +58,18 @@ class CustomersController extends AppController {
 
         if ($this->request->is('post') || $this->request->is('put')) {
             $this->Customer->id = $id;
-            if ($this->Customer->save($this->request->data)) {
+            if ($this->Customer->saveAll($this->request->data)) {
                 $this->Session->setFlash('Data pelanggan berhasil diubah', 'customflash', array('class' => 'success'));
                 $this->redirect(array('action' => 'index'));
             } else {
                 $this->Session->setFlash('Gagal mengedit data pelanggan', 'customflash', array('class' => 'warning'));
             }
         }
+
+        $list_teams = $this->Customer->PairTeamCustomer->Team->find('all', array('order' => 'idtim','conditions' => array('Team.status' => 1), 'recursive' => 0));
+        $list_team = $this->to_list_team($list_teams);
+
+        $this->set(array('list_team' => $list_team));
 
         if (!$this->request->data) {
             $this->request->data = $customer;
