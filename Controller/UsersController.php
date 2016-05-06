@@ -1,5 +1,6 @@
 <?php
-App::uses('File', 'Utility');
+App::import('Factory', 'FilterFactory');
+App::import('Factory', 'ModelConditionFactory');
 
 // in case forget password
 // debug(Security::hash('users', 'sha1', true));
@@ -62,7 +63,7 @@ class UsersController extends AppController {
             'recursive' => -1
         );
         $users = $this->paginate('User');
-        $this->set(compact('users'));
+        $this->set(['users' => $users, 'filters' => $this->getFilters()]);
     }
 
     public function add() {
@@ -198,4 +199,39 @@ class UsersController extends AppController {
         }
     }
 
+    public function filter()
+    {
+        $this->set('title','Galon - Data Pengguna');
+
+        $filter = $this->params['url']['filter'];
+        $text = $this->params['url']['text'];
+
+        if($filter == null || $text == null) {
+            $this->redirect(['action' => 'index']);
+        }
+
+        $filterConditions = $this->getModelCondition($filter, $text);
+        $this->paginate = [
+            'limit' => 20,
+            'order' => ['User.id' => 'asc' ],
+            'conditions' => ['NOT' => ['User.status' => '0'], $filterConditions]
+        ];
+        $users = $this->paginate('User');
+        $this->set(['users' => $users, 'filters' => $this->getFilters()]);
+        return $this->render('index');
+    }
+
+    private function getFilters()
+    {
+        return (new FilterFactory('User'))->produce();
+    }
+
+    private function getModelCondition($filter, $text)
+    {
+        $params = [
+            'filter' => $filter,
+            'text' => $text
+        ];
+        return (new ModelConditionFactory('User', $params))->produce();
+    }
 }

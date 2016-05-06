@@ -9,21 +9,18 @@ foreach ($galons as $galon) {
 */
 ?>
 <div class="row">
-    <div class="col-xs-3 col-md-2">
-        <div class="btn-group-vertical" role="group">
-            <div class='btn-group' role='group'>
+    <div class="col-xs-12 col-md-12">
+        <div class="btn-group" role="group">
             <?php
             $current_user = $this->Auth->User();
             if($current_user['role'] != 'pegawai')
             echo $this->Html->link( "Tambah Tim", array('action'=>'add'), array('escape' => false, 'class' => 'btn btn-primary'));
             ?>
-            </div>
         </div>
     </div>
 
-    <div class="col-xs-12 col-md-10">
+    <div class="col-xs-12 col-md-12">
     <h1>Daftar Tim</h1>
-    <h4>Menampilkan <?php echo $this->params['paging']['Team']['count'] < 20? ($this->params['paging']['Team']['count']." dari ".$this->params['paging']['Team']['count']." record") : ("20 dari ".$this->params['paging']['Team']['count']." record") ?></h4>
     <div class='table-responsive'>
     <table class='table table-condensed table-hover table-stripped'>
         <thead>
@@ -59,18 +56,19 @@ foreach ($galons as $galon) {
                 <td rowspan='2'><?php echo $team['Team']['idtim']?></td>
                 <td rowspan='2'><?php echo $team['Team']['jmlgalon']?></td>
                 <td rowspan='2'>
-                <?php // echo $this->Html->link(    "Tambah Pelanggan",   array('action'=>'pair_cust', $team['Team']['idtim']), array('class' => 'btn btn-primary overlay', 'data-toggle' => 'modal', 'data-target' => '#modal_addcust')); ?>
-                <?php
-                if($current_user['role'] != 'pegawai'){
-                echo $this->Html->link(    "Ubah Jml Galon",  array('action'=>'change', $team['Team']['idtim']), array('class' => 'btn btn-success', 'data-toggle' => 'modal', 'data-action' => $this->Html->url(array('action'=>'change', $team['Team']['idtim'])),'data-target' => '#modal_addcust'));
-                echo $this->Html->link(    "Tambah Pelanggan",   array('action'=>'pair_cust', $team['Team']['idtim']), array('class' => 'btn btn-primary'));
-                echo $this->Form->postLink(    "Hapus Tim",   array('action'=>'delete', $team['Team']['idtim']), array('class' => 'btn btn-danger', 'confirm' => 'Apakah sudah yakin ingin menghapus tim ini?'));
-                } else if($current_user['role'] == 'pegawai'){
-                    if($current_user['Team']['idtim'] == $team['Team']['idtim']){
+                    <div class="btn-group" role="group">
+                    <?php
+                    if($current_user['role'] != 'pegawai'){
+                    echo $this->Html->link(    "Ubah Jml Galon",  array('action'=>'change', $team['Team']['idtim']), array('class' => 'btn btn-success', 'data-toggle' => 'modal', 'data-action' => $this->Html->url(array('action'=>'change', $team['Team']['idtim'])),'data-target' => '#modal_addcust'));
                     echo $this->Html->link(    "Tambah Pelanggan",   array('action'=>'pair_cust', $team['Team']['idtim']), array('class' => 'btn btn-primary'));
+                    echo $this->Form->postLink(    "Hapus Tim",   array('action'=>'delete', $team['Team']['idtim']), array('class' => 'btn btn-danger', 'confirm' => 'Apakah sudah yakin ingin menghapus tim ini?'));
+                    } else if($current_user['role'] == 'pegawai'){
+                        if($current_user['Team']['idtim'] == $team['Team']['idtim']){
+                        echo $this->Html->link(    "Tambah Pelanggan",   array('action'=>'pair_cust', $team['Team']['idtim']), array('class' => 'btn btn-primary'));
+                        }
                     }
-                }
-                ?>
+                    ?>
+                    </div>
                 </td>
                 <?php } ?>
             </tr>

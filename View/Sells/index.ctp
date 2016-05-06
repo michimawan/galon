@@ -48,6 +48,15 @@
 	</form>
     </div>
 </div>
+<?php
+$params = [
+    'action' => 'filter',
+    'controllers' => 'sells',
+    'filters' => $filters,
+    'model' => 'Sell'
+];
+echo $this->element('filter', $params);
+?>
 <div class='row'>
     <div class="col-xs-12 col-md-12">
         <div class='table-responsive'>
@@ -90,22 +99,35 @@
                         <td><?php echo $master['Master']['total_harga'];?></td>
                         <td><?php echo $master['Master']['total_terbayarkan'];?></td>
                         <td><?php echo $master['Master']['total_hutang'];?></td>
-                        <td><?php
-                        if($master['Master']['status']) {
-                            if($user['role'] == 'admin')
-                            echo $this->Form->postLink( "Un-Lock",
-                                array('action'=>'unlock', $master['Master']['id']), array('class' => 'btn btn-danger', 'confirm' => 'Anda yakin ingin meng-unlock transaksi ini?'));
-                            echo $this->Html->link( "Detail",
-                                array('action'=>'detail', $master['Master']['id']), array('class' => 'btn btn-info'));
-                        }
-                        else
-                            if($user['role'] == 'admin') {
-                            echo $this->Form->postLink( "Lock",
-                                array('action'=>'locking', $master['Master']['id']), array('class' => 'btn btn-danger', 'confirm' => 'Anda yakin ingin me-lock transaksi ini?'));
-                            echo $this->Html->link( "Detail",
-                                array('action'=>'detail', $master['Master']['id']), array('class' => 'btn btn-info'));
+                        <td>
+                            <div class="btn-group" role="group">
+                            <?php
+                            if($master['Master']['status']) {
+                                if($user['role'] == 'admin')
+                                echo $this->Form->postLink( "Un-Lock",
+                                    array('action'=>'unlock',
+                                    $master['Master']['id']),
+                                    array('class' => 'lock-btn btn btn-danger',
+                                        'confirm' => 'Anda yakin ingin meng-unlock transaksi ini?'));
+                                echo $this->Html->link( "Detail",
+                                    array('action'=>'detail',
+                                    $master['Master']['id']),
+                                    array('class' => 'btn btn-info'));
                             }
-                        ?>
+                            else
+                                if($user['role'] == 'admin') {
+                                echo $this->Form->postLink( "Lock",
+                                    array('action'=>'locking',
+                                    $master['Master']['id']),
+                                    array('class' => 'lock-btn btn btn-danger',
+                                    'confirm' => 'Anda yakin ingin me-lock transaksi ini?'));
+                                echo $this->Html->link( "Detail",
+                                    array('action'=>'detail',
+                                    $master['Master']['id']),
+                                    array('class' => 'btn btn-info'));
+                                }
+                            ?>
+                            </div>
                         </td>
                     </tr>
                     <?php

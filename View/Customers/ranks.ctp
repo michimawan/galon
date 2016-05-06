@@ -1,14 +1,6 @@
 <!-- app/View/Customers/ranks.ctp -->
 
 <div class="row">
-    <div class="col-xs-3 col-md-2">
-        <div class="btn-group-vertical" role="group">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Tambah Pelanggan</button>
-            <?php
-            echo $this->Html->link('Lihat Pelanggan', array('action' => 'index'), array('class' => 'btn btn-info'));
-            ?>
-        </div>
-    </div>
 	<form class="form-inline form-inline-collapse" method="get" action="<?php echo $this->Html->url(array('action'=>'ranks'));?>">
         <div class="form-group">
             <?php
@@ -43,7 +35,15 @@
             </button>
         </div>
 	</form>
-    <div class="col-xs-12 col-md-10">
+    <div class="col-xs-12 col-md-12">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Tambah Pelanggan</button>
+            <?php
+            echo $this->Html->link('Lihat Pelanggan', array('action' => 'index'), array('class' => 'btn btn-info'));
+            ?>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12">
     <h1>Rangking Pelanggan</h1>
     <div class='table-responsive'>
     <table class='table table-condensed table-hover table-stripped'>

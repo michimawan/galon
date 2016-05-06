@@ -1,4 +1,6 @@
 <?php
+App::import('Factory', 'FilterFactory');
+App::import('Factory', 'ModelConditionFactory');
 
 class SellsController extends AppController {
     public $layout = 'layout';
@@ -64,8 +66,7 @@ class SellsController extends AppController {
     }
 
     // accessed by user and admin
-    public function index($idtim = null){
-
+    public function index($idtim = null) {
         $this->set('title', 'Galon - Riwayat Transaksi');
 
         $user = $this->Auth->user();
@@ -87,6 +88,7 @@ class SellsController extends AppController {
 
         $this->set(compact('masters'));
         $this->set(compact('list_team'));
+        $this->set(array('filters' => $this->getFilters()));
     }
 
     public function detail($idmaster) {
@@ -645,5 +647,58 @@ class SellsController extends AppController {
 
             $this->Sell->Customer->saveAll($array_update_customer_hutang_galonterpinjam);
         }
+    }
+
+    public function filter()
+    {
+        $this->set('title', 'Galon - Riwayat Transaksi');
+
+        $user = $this->Auth->user();
+
+        $list_teams = $this->Sell->Customer->PairTeamCustomer->Team->find('all', array('order' => 'idtim','conditions' => array('Team.status' => 1), 'recursive' => 0));
+        $list_team = $this->to_list_team($list_teams);
+
+        if($user['role'] == 'pegawai')
+            $idtim = $user['Team']['idtim'];
+
+        $filter = $this->params['url']['filter'];
+        $text = $this->params['url']['text'];
+
+        if($filter == null || $text == null) {
+            $this->redirect(['action' => 'index']);
+        }
+
+        $filterConditions = $this->getModelCondition($filter, $text);
+        $params = array('limit' => 20,
+            'recursive' => -1,
+            'order' => 'Master.date DESC',
+            'conditions' => ['NOT' => ['Master.status' => '0'], $filterConditions]
+        );
+        if($idtim > 0)
+            $params['conditions'] = array('idtim' => $idtim);
+
+        $this->paginate = $params;
+
+        $this->loadModel('Master');
+        $masters = $this->paginate('Master');
+
+        $this->set(compact('masters'));
+        $this->set(compact('list_team'));
+        $this->set(array('filters' => $this->getFilters()));
+        return $this->render('index');
+    }
+
+    private function getFilters()
+    {
+        return (new FilterFactory('Sell'))->produce();
+    }
+
+    private function getModelCondition($filter, $text)
+    {
+        $params = [
+            'filter' => $filter,
+            'text' => $text
+        ];
+        return (new ModelConditionFactory('Sell', $params))->produce();
     }
 }

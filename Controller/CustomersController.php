@@ -1,7 +1,11 @@
 <?php
+App::import('Factory', 'FilterFactory');
+App::import('Factory', 'ModelConditionFactory');
+
 class CustomersController extends AppController {
     public $layout = 'layout';
     public $uses = array('PairTeamCustomer', 'Customer');
+
     public function index() {
         $this->set('title','Galon - Data Pelanggan');
         $this->paginate = array(
@@ -16,6 +20,7 @@ class CustomersController extends AppController {
 
         $this->set(compact('customers'));
         $this->set(array('list_team' => $list_team));
+        $this->set(array('filters' => $this->getFilters()));
     }
 
     public function add(){
@@ -263,5 +268,41 @@ class CustomersController extends AppController {
                 $list_team[$team['Team']['idtim']] .= $team['User']['firstname'];
         }
         return $list_team;
+    }
+
+    public function filter()
+    {
+        $this->set('title','Galon - Data Pelanggan');
+
+        $filter = $this->params['url']['filter'];
+        $text = $this->params['url']['text'];
+
+        if($filter == null || $text == null) {
+            $this->redirect(['action' => 'index']);
+        }
+
+        $filterConditions = $this->getModelCondition($filter, $text);
+        $this->paginate = [
+            'limit' => 20,
+            'order' => ['Customer.id' => 'asc' ],
+            'conditions' => ['NOT' => ['Customer.status' => '0'], $filterConditions]
+        ];
+        $customers = $this->paginate('Customer');
+        $this->set(['customers' => $customers, 'filters' => $this->getFilters()]);
+        return $this->render('index');
+    }
+
+    private function getFilters()
+    {
+        return (new FilterFactory('Customer'))->produce();
+    }
+
+    private function getModelCondition($filter, $text)
+    {
+        $params = [
+            'filter' => $filter,
+            'text' => $text
+        ];
+        return (new ModelConditionFactory('Customer', $params))->produce();
     }
 }

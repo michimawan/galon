@@ -1,8 +1,17 @@
 <!-- app/View/Customers/index.ctp -->
 
+<?php
+$params = [
+    'action' => 'filter',
+    'controllers' => 'customers',
+    'filters' => $filters,
+    'model' => 'Customer'
+];
+echo $this->element('filter', $params);
+?>
 <div class="row">
-    <div class="col-xs-3 col-md-2">
-        <div class="btn-group-vertical" role="group">
+    <div class="col-xs-12 col-md-12">
+        <div class="btn-group" role="group">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Tambah Pelanggan</button>
             <?php
             echo $this->Html->link('Lihat Piutang Pelanggan', array('action' => 'debt'), array('escape' => false, 'class' => 'btn btn-danger'));
@@ -10,9 +19,8 @@
         </div>
     </div>
 
-    <div class="col-xs-12 col-md-10">
+    <div class="col-xs-12 col-md-12">
     <h1>Daftar Pelanggan</h1>
-    <h4>Menampilkan <?php echo $this->params['paging']['Customer']['count'] < 20? ($this->params['paging']['Customer']['count']." dari ".$this->params['paging']['Customer']['count']." record") : ("20 dari ".$this->params['paging']['Customer']['count']." record") ?></h4>
     <div class='table-responsive'>
     <table class='table table-condensed table-hover table-stripped'>
         <thead>
@@ -49,10 +57,12 @@
                 <td><?php echo $customer['Customer']['nohp']; ?></td>
                 <td><?php echo $customer['Customer']['harikunjungan'];?></td>
                 <td>
-                <?php echo $this->Html->link(    "Edit",   array('action'=>'edit', $customer['Customer']['id']), array('class' => 'btn btn-info')); ?>
-                <?php
+                    <div class="btn-group" role="group">
+                    <?php
+                    echo $this->Html->link(    "Edit",   array('action'=>'edit', $customer['Customer']['id']), array('class' => 'btn btn-info'));
                     echo $this->Form->postLink(    "Hapus", array('action'=>'delete', $customer['Customer']['id']), array('class' => 'btn btn-danger', 'confirm'=>'apakah yakin mau hapus '.$customer['Customer']['namapelanggan']));
-                ?>
+                    ?>
+                    </div>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -65,9 +75,7 @@
             echo $this->Paginator->prev() .'  '. $this->Paginator->numbers(array('before'=>false, 'after'=>false,'separator'=> false)) .'  '. $this->Paginator->next();
         ?>
     </div>
-
     </div>
-
 </div>
 
 <?php echo $this->element('../Customers/add'); ?>

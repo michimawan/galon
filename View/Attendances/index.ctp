@@ -1,20 +1,16 @@
 <!-- app/View/Attendances/index.ctp -->
 
+<?php
+$params = [
+    'action' => 'filter',
+    'controllers' => 'attendances',
+    'filters' => $filters,
+    'model' => 'Attendance'
+];
+echo $this->element('filter', $params);
+?>
 <div class="row">
-    <div class="col-xs-3 col-md-2">
-        <!--
-        <div class="btn-group-vertical" role="group">
-            <div class='btn-group' role='group'>
-            <?php echo $this->Html->link( "Rekap Bulanan", array('action'=>'rekapbulanan'), array('escape' => false, 'class' => 'btn btn-default')); ?>
-            </div>
-            <div class='btn-group' role='group'>
-            <?php echo $this->Html->link( "Rekap Tahunan", array('action'=>'rekaptahunan'), array('escape' => false, 'class' => 'btn btn-default')); ?>
-            </div>
-        </div>
-    -->
-    </div>
-
-    <div class="col-xs-12 col-md-10">
+    <div class="col-xs-12 col-md-12">
     <h1>Daftar Pegawai</h1>
     <?php
     if($users)
@@ -65,6 +61,5 @@
             echo $this->Paginator->prev() .'  '. $this->Paginator->numbers(array('before'=>false, 'after'=>false,'separator'=> false)) .'  '. $this->Paginator->next();
         ?>
     </div>
-
     </div>
 </div>

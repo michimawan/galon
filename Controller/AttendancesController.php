@@ -1,4 +1,6 @@
 <?php
+App::import('Factory', 'FilterFactory');
+App::import('Factory', 'ModelConditionFactory');
 
 class AttendancesController extends AppController {
 	public $layout = 'layout';
@@ -16,13 +18,7 @@ class AttendancesController extends AppController {
         //get all user that has been checked
         $user_attend = $this->Attendance->getUserIDThatAttend();
         $data = $this->to1DArray($user_attend, 'attendances', 'idpegawai');
-/*
-        //convert the result array to normal array
-        $users_attend = array();
-        foreach($user_attend as $id){
-            $users_attend[] = $id['attendances']['idpegawai'];
-        }
-*/
+
         //paginate it
         $this->paginate = array(
             'limit' => 20,
@@ -31,7 +27,7 @@ class AttendancesController extends AppController {
             'recursive' => -1
         );
         $users = $this->paginate('User');
-        $this->set(compact('users'));
+        $this->set(['users' => $users, 'filters' => $this->getFilters()]);
     }
 
     public function absent($id = null){
@@ -107,5 +103,47 @@ class AttendancesController extends AppController {
              $users_not_attend[] = $id_user[$field_1][$field_2];
         }
         return $users_not_attend;
+    }
+
+    public function filter()
+    {
+        $this->set('title', 'Galon - Presensi Kehadiran Pegawai');
+        $this->check_user_access('index');
+        //get all user that has been checked
+        $user_attend = $this->Attendance->getUserIDThatAttend();
+        $data = $this->to1DArray($user_attend, 'attendances', 'idpegawai');
+
+        $filter = $this->params['url']['filter'];
+        $text = $this->params['url']['text'];
+
+        if($filter == null || $text == null) {
+            $this->redirect(['action' => 'index']);
+        }
+
+        $filterConditions = $this->getModelCondition($filter, $text);
+        $this->paginate = [
+            'limit' => 20,
+            'order' => ['User.id' => 'asc' ],
+            'conditions' => ['NOT' => ['User.status' => '0'], $filterConditions],
+            'recursive' => -1,
+        ];
+        $users = $this->paginate('User');
+        $this->set(['users' => $users, 'filters' => $this->getFilters()]);
+        return $this->render('index');
+
+    }
+
+    private function getFilters()
+    {
+        return (new FilterFactory('Attendance'))->produce();
+    }
+
+    private function getModelCondition($filter, $text)
+    {
+        $params = [
+            'filter' => $filter,
+            'text' => $text
+        ];
+        return (new ModelConditionFactory('Attendance', $params))->produce();
     }
 }
