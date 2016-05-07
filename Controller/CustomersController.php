@@ -147,7 +147,7 @@ class CustomersController extends AppController {
     }
 
     private function get_missing_number(){
-        $datas = $this->Customer->find('all', array('fields' => 'SUBSTRING(kdpelanggan, 3) AS kdpelanggan', 'order' => 'kdpelanggan'));
+        $datas = $this->Customer->find('all', array('fields' => 'DISTINCT(SUBSTRING(kdpelanggan, 3)) AS kdpelanggan', 'order' => 'kdpelanggan'));
 
         $missing_code = 1;
         if(count($datas) == 0)
