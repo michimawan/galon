@@ -29,6 +29,7 @@ class CustomersController extends AppController {
 
             $this->Customer->create();
             $this->request->data['Customer']['kdpelanggan'] = $this->generate_kodepelanggan();
+            $this->request->data['Customer']['galonterpinjam'] = $this->request->data['Customer']['galonterpinjam'] > 0 ?: 1;
             $customer = $this->Customer->save($this->request->data);
 
             $this->Customer->PairTeamCustomer->create();

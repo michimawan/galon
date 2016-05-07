@@ -1,6 +1,7 @@
 <!-- app/View/Customers/edit.ctp -->
 
 <?php
+$user = $this->Auth->user();
 $days = array(
     'senin' => 'Senin',
     'selasa' => 'Selasa',
@@ -42,6 +43,14 @@ $days = array(
                 'label' => 'Pilih hari',
                 'options' => $days,
                 'class' => 'form-control',
+                'div' => array('class' => 'form-group')
+            ));
+            if($user['role'] == 'admin')
+            echo $this->Form->input('Customer.galonterpinjam', array(
+                'label' => 'Galon Dipinjamkan',
+                'class' => 'form-control',
+                'min' => 0,
+                'max' => 1000,
                 'div' => array('class' => 'form-group')
             ));
             echo $this->Form->submit('Edit Pelanggan', array('class' => 'form-submit',  'title' => 'klik untuk mengedit pelanggan') );

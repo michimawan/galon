@@ -38,6 +38,14 @@ $days = array(
                 'class' => 'form-control',
                 'div' => array('class' => 'form-group')
             ));
+            echo $this->Form->input('Customer.galonterpinjam', array(
+                'label' => 'Galon Dipinjamkan',
+                'class' => 'form-control',
+                'min' => 0,
+                'max' => 1000,
+                'value' => 1,
+                'div' => array('class' => 'form-group')
+            ));
             echo $this->Form->submit('Tambah Pelanggan', array('class' => 'form-submit',  'title' => 'klik untuk menambah data pelanggan') ); 
             ?>
         <?php echo $this->Form->end(); ?>
