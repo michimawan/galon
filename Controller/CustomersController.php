@@ -15,8 +15,7 @@ class CustomersController extends AppController {
         );
         $customers = $this->paginate('Customer');
 
-        $list_teams = $this->Customer->PairTeamCustomer->Team->find('all', array('order' => 'idtim','conditions' => array('Team.status' => 1), 'recursive' => 0));
-        $list_team = $this->to_list_team($list_teams);
+        $list_team = $this->get_list_team();
 
         $this->set(compact('customers'));
         $this->set(array('list_team' => $list_team));
@@ -43,8 +42,7 @@ class CustomersController extends AppController {
             }
         }
 
-        $list_teams = $this->Customer->PairTeamCustomer->Team->find('all', array('order' => 'idtim','conditions' => array('Team.status' => 1), 'recursive' => 0));
-        $list_team = $this->to_list_team($list_teams);
+        $list_team = $this->get_list_team();
 
         $this->set(array('list_team' => $list_team));
     }
@@ -72,9 +70,7 @@ class CustomersController extends AppController {
             }
         }
 
-        $list_teams = $this->Customer->PairTeamCustomer->Team->find('all', array('order' => 'idtim','conditions' => array('Team.status' => 1), 'recursive' => 0));
-        $list_team = $this->to_list_team($list_teams);
-
+        $list_team = $this->get_list_team();
         $this->set(array('list_team' => $list_team));
 
         if (!$this->request->data) {
@@ -116,6 +112,9 @@ class CustomersController extends AppController {
             1000 => 1000,
         );
 
+        $list_team = $this->get_list_team();
+
+        $this->set(compact('list_team'));
         $this->set(compact('customers'));
         $this->set(compact('option'));
     }
@@ -249,14 +248,18 @@ class CustomersController extends AppController {
             $customers = $this->paginate('PairTeamCustomer');
         }
 
-        $list_teams = $this->Customer->PairTeamCustomer->Team->find('all', array('order' => 'idtim','conditions' => array('Team.status' => 1), 'recursive' => 0));
-        $list_team = $this->to_list_team($list_teams);
+        $list_team = $this->get_list_team();
 
         $this->set(compact('idtim'));
         $this->set(compact('customers'));
         $this->set(compact('teams'));
         $this->set(compact('list_team'));
-        // $this->set(compact('list_teams'));
+    }
+
+    private function get_list_team()
+    {
+        $list_teams = $this->Customer->PairTeamCustomer->Team->find('all', array('order' => 'idtim','conditions' => array('Team.status' => 1), 'recursive' => 0));
+        return $this->to_list_team($list_teams);
     }
 
     private function to_list_team($list_teams){
