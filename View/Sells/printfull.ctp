@@ -33,14 +33,14 @@
 				<tr>
 					<th>No.</th>
 					<th>Tanggal</th>
-					<th>Kode Pelanggan</th>
 					<th>Nama Pelanggan</th>
 					<th>Alamat</th>
+					<th>Kode Pelanggan</th>
 					<th>Beli Air</th>
+					<th>Bayar</th>
 					<th>Pnjm Galon</th>
 					<th>Kmbl Galon</th>
 					<th>Ttl Gln Pnjm</th>
-					<th>Bayar</th>
 					<th>Hutang</th>
 				</tr>
 			</thead>
@@ -59,14 +59,14 @@
 					<tr>
 						<td><?php echo $i?></td>
 						<td><?php echo substr($data['date'],0,10);?></td>
-						<td><?php echo $data['Customer']['kdpelanggan'];?></td>
 						<td><?php echo $data['Customer']['namapelanggan'];?></td>
 						<td><?php echo $data['Customer']['alamat'];?></td>
+						<td><?php echo $data['Customer']['kdpelanggan'];?></td>
 						<td><?php echo $data['jmlbeli'];?></td>
+						<td><?php echo $data['bayar'];?></td>
 						<td><?php echo $data['jmlpinjam'];?></td>
 						<td><?php echo $data['jmlkembali'];?></td>
 						<td><?php echo $data['Customer']['galonterpinjam'] ?></td>
-						<td><?php echo $data['bayar'];?></td>
 						<td><?php echo $data['hutang']?></td>
 					</tr>
 					<?php
