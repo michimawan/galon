@@ -26,7 +26,10 @@ $days = array(
             <?php
             echo $this->Form->hidden('id', array('value' => $this->data['Customer']['id'], 'class' => 'form-control'));
             echo $this->Form->input('kdpelanggan', array('readonly' => 'readonly', 'label' => 'Kode Pelanggan tidak dapat diubah!', 'class' => 'form-control'));
-            echo $this->Form->input('namapelanggan', array('readonly' => 'readonly', 'label' => 'Nama Pelanggan tidak dapat diubah!', 'class' => 'form-control'));
+            if($user['role'] == 'admin')
+                echo $this->Form->input('namapelanggan', array('label' => 'Nama Pelanggan', 'class' => 'form-control'));
+            else
+                echo $this->Form->input('namapelanggan', array('readonly' => 'readonly', 'label' => 'Nama Pelanggan tidak dapat diubah!', 'class' => 'form-control'));
             echo $this->Form->input('alamat', array('class' => 'form-control'));
             echo $this->Form->input('nohp', array('label' => 'No. HP', 'type' => 'number', 'class' => 'form-control'));
             echo $this->Form->input('PairTeamCustomer.id', array('class' => 'form-control hidden'));
