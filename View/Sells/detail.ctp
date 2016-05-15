@@ -51,7 +51,7 @@
 			</thead>
 			<tbody>
 				<?php $i = 1;
-				if($master['Sell']){
+				if($sells){
 					$jmlbeli = 0;
 					$jmlpinjam = 0;
 					$jmlkembali = 0;
@@ -59,31 +59,54 @@
 					$totalbayar = 0;
 					$totalhutang = 0;
 
-				foreach ($master['Sell'] as $data) {
+				foreach ($sells as $data) {
 					?>
 					<tr>
 						<td><?php echo $i?></td>
-						<td><?php echo substr($data['date'],10);?></td>
+						<td><?php echo substr($data['Sell']['date'],10);?></td>
 						<td><?php echo $data['Customer']['namapelanggan'];?></td>
 						<td><?php echo $data['Customer']['alamat'];?></td>
 						<td><?php echo $data['Customer']['kdpelanggan'];?></td>
-						<td><?php echo $data['jmlbeli'];?></td>
-						<td><?php echo $data['bayar'];?></td>
-						<td><?php echo $data['jmlpinjam'];?></td>
-						<td><?php echo $data['jmlkembali'];?></td>
+						<td><?php echo $data['Sell']['jmlbeli'];?></td>
+						<td><?php echo $data['Sell']['bayar'];?></td>
+						<td><?php echo $data['Sell']['jmlpinjam'];?></td>
+						<td><?php echo $data['Sell']['jmlkembali'];?></td>
 						<td><?php echo $data['Customer']['galonterpinjam'] ?></td>
-						<td><?php echo $data['hutang']?></td>
+						<td><?php echo $data['Sell']['hutang']?></td>
 					</tr>
 					<?php
 					$i++;
-					$jmlbeli = $jmlbeli + $data['jmlbeli'];
-					$jmlpinjam = $jmlpinjam + $data['jmlpinjam'];
-					$jmlkembali = $jmlkembali + $data['jmlkembali'];
+					$jmlbeli = $jmlbeli + $data['Sell']['jmlbeli'];
+					$jmlpinjam = $jmlpinjam + $data['Sell']['jmlpinjam'];
+					$jmlkembali = $jmlkembali + $data['Sell']['jmlkembali'];
 					$totalgalonpinjam = $totalgalonpinjam + $data['Customer']['galonterpinjam'];
-					$totalbayar = $totalbayar + $data['bayar'];
-					$totalhutang = $totalhutang + $data['hutang'] ;
+					$totalbayar = $totalbayar + $data['Sell']['bayar'];
+					$totalhutang = $totalhutang + $data['Sell']['hutang'] ;
 				}
-				?>
+                }
+                ?>
+                <?php
+                if($customers) {
+                    foreach($customers as $customer) {
+					?>
+					<tr>
+						<td><?php echo $i?></td>
+						<td></td>
+						<td><?php echo $customer['Customer']['namapelanggan'];?></td>
+						<td><?php echo $customer['Customer']['alamat'];?></td>
+						<td><?php echo $customer['Customer']['kdpelanggan'];?></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><?php echo $customer['Customer']['galonterpinjam'] ?></td>
+						<td></td>
+					</tr>
+                    <?php
+					$i++;
+                    }
+                }
+                ?>
 					<tr>
 						<td colspan='5'>Total</td>
 						<td><?php echo $jmlbeli?></td>
@@ -93,9 +116,6 @@
 						<td><?php echo $totalbayar?></td>
 						<td><?php echo $totalhutang?></td>
 					</tr>
-				<?php
-                }
-                ?>
 			</tbody>
 		</table>
 	</div>

@@ -46,7 +46,26 @@ class SellRepository
             'order' => 'Sell.idcustomer',
             'fields' => [
                 'DISTINCT Sell.id','Sell.idtim', 'Sell.jmlbeli', 'Sell.jmlpinjam',
-                'Sell.jmlkembali', 'Sell.bayar', 'Sell.hutang','Sell.status',
+                'Sell.jmlkembali', 'Sell.bayar', 'Sell.hutang','Sell.status','Sell.date',
+                'Customer.id', 'Customer.kdpelanggan', 'Customer.namapelanggan',
+                'Customer.alamat', 'Customer.galonterpinjam', 'Customer.hutang',
+                'Customer.transaksiterakhir']
+        ]);
+    }
+
+    public function getLockedSellTransactionFor($idmaster)
+    {
+        if(!$idmaster)
+            return [];
+
+        $this->sellModel->unbindModel(['belongsTo' => ['Good', 'Team', 'Master']]);
+        return $this->sellModel->find('all', [
+            'conditions' => ['Sell.status' => 1, 'Sell.idmaster' => $idmaster],
+            'recursive' => 0,
+            'order' => 'Sell.idcustomer',
+            'fields' => [
+                'DISTINCT Sell.id','Sell.idtim', 'Sell.jmlbeli', 'Sell.jmlpinjam',
+                'Sell.jmlkembali', 'Sell.bayar', 'Sell.hutang','Sell.status', 'Sell.date',
                 'Customer.id', 'Customer.kdpelanggan', 'Customer.namapelanggan',
                 'Customer.alamat', 'Customer.galonterpinjam', 'Customer.hutang',
                 'Customer.transaksiterakhir']

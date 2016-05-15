@@ -24,6 +24,17 @@ class MasterRepository
         ]);
     }
 
+    public function getMasterDataFor($idmaster = null)
+    {
+        if(!$idmaster)
+            return [];
+
+        return $this->masterModel->find('first', [
+            'conditions' => ['Master.id' => $idmaster],
+            'recursive' => -1,
+        ]);
+    }
+
     public function getModel()
     {
         return $this->masterModel;
