@@ -1,6 +1,10 @@
 <?php
 App::import('Factory', 'FilterFactory');
 App::import('Factory', 'ModelConditionFactory');
+App::import('Repository', 'TeamRepository');
+App::import('Repository', 'CustomerRepository');
+App::import('Repository', 'SellRepository');
+App::import('Repository', 'MasterRepository');
 
 class SellsController extends AppController {
     public $layout = 'layout';
@@ -58,8 +62,7 @@ class SellsController extends AppController {
             $data[$master['Master']['date']] += $master['Master']['galonterjual'];
         }
 
-        $list_teams = $this->Sell->Customer->PairTeamCustomer->Team->find('all', array('order' => 'idtim','conditions' => array('Team.status' => 1), 'recursive' => 0));
-        $list_team = $this->to_list_team($list_teams);
+        $list_team = $this->get_list_all_team();
 
         $this->set(compact('data'));
         $this->set(compact('list_team'));
@@ -71,8 +74,7 @@ class SellsController extends AppController {
 
         $user = $this->Auth->user();
 
-        $list_teams = $this->Sell->Customer->PairTeamCustomer->Team->find('all', array('order' => 'idtim','conditions' => array('Team.status' => 1), 'recursive' => 0));
-        $list_team = $this->to_list_team($list_teams);
+        $list_team = $this->get_list_all_team();
 
         if($user['role'] == 'pegawai')
             $idtim = $user['Team']['idtim'];
@@ -80,7 +82,6 @@ class SellsController extends AppController {
         $params = array('limit' => 20, 'recursive' => -1, 'order' => 'Master.date DESC');
         if($idtim > 0)
             $params['conditions'] = array('idtim' => $idtim);
-
         $this->paginate = $params;
 
         $this->loadModel('Master');
@@ -100,50 +101,33 @@ class SellsController extends AppController {
         $this->set(compact('team'));
     }
 
-    private function to_list_team($list_teams){
-        $list_team = array();
-        foreach ($list_teams as $team) {
-            if(!isset($list_team[$team['Team']['idtim']])){
-                $list_team[$team['Team']['idtim']] = $team['User']['firstname']." ";
-            }
-            else
-                $list_team[$team['Team']['idtim']] .= $team['User']['firstname'];
-        }
-        return $list_team;
-    }
-
     // accessed by user
-    public function dashboard($id = null){
+    public function dashboard($idtim = null){
         $this->set('title', 'Galon - Transaksi Tim');
         $this->check_admin_access('dashboard');
 
-        if($id){
-            if($this->Sell->Team->find('first', array('conditions' => array('Team.idtim' => $id, 'Team.status' => 1), 'recursive' => -1))){
+        if($idtim){
+            $team_galon = $this->Sell->Team->find('first', array('conditions' => array('Team.idtim' => $idtim, 'Team.status' => 1), 'recursive' => -1));
+            if($team_galon){
 
-                $teams = $this->Sell->Team->User->get_user_with_idtim_and_attend($id);
-                $team_galon = $this->Sell->Team->find('first', array('conditions' => array('Team.idtim' => $id), 'recursive' => -1));
-                $good_price = $this->Sell->Good->find('first', array('conditions' => array('Good.namabarang LIKE' => '%galon%'), 'fields' => array('Good.hargajual')));
-                $datas = $this->Sell->find('all', array('conditions' => array('Sell.status' => 0, 'Sell.idtim' => $id), 'recursive' => 0, 'order' => 'Sell.idcustomer', 'fields' => array('DISTINCT Sell.id','Sell.idtim', 'Sell.jmlbeli','Sell.jmlpinjam', 'Sell.jmlkembali', 'Sell.bayar', 'Sell.hutang','Sell.status', 'Customer.id', 'Customer.kdpelanggan', 'Customer.namapelanggan', 'Customer.alamat', 'Customer.galonterpinjam', 'Customer.hutang', 'Customer.transaksiterakhir')));
-                $customers = array();
-                if(!$datas)
-                    $customers = $this->Sell->Team->PairTeamCustomer->Customer->get_customer_in_team($id);
-
-                // $master = $this->Sell->cek_lock($id);
-                $master = $this->Sell->Master->find('all', array(
-                    'conditions' => array('Master.idtim' => $id, 'Master.status' => 0),
-                    'recursive' => 0,
+                $teams = $this->Sell->Team->User->get_user_with_idtim_and_attend_today($idtim);
+                $good_price = $this->Sell->Good->find('first', array(
+                    'conditions' => array('Good.namabarang LIKE' => '%galon%'),
+                    'fields' => array('Good.hargajual')
                 ));
+                $datas = (new SellRepository())->getUnlockedSellTransactionFor($idtim);
+                $customers = (new CustomerRepository())->getCustomerInTeamNotDoingTransaction($idtim, $datas);
+                $master = (new MasterRepository())->getUnlockedMasterDataFor($idtim);
 
-                if(!$master)
-                    $customers = $this->Sell->Team->PairTeamCustomer->Customer->get_customer_in_team($id);
-
-                $this->set(compact('master'));
-                $this->set(compact('datas'));
-                $this->set(compact('id'));
-                $this->set(compact('teams'));
-                $this->set(compact('good_price'));
-                $this->set(compact('team_galon'));
-                $this->set(compact('customers'));
+                $this->set([
+                    'idtim' => $idtim,
+                    'team_galon' => $team_galon,
+                    'teams' => $teams,
+                    'good_price' => $good_price,
+                    'datas' => $datas,
+                    'customers' => $customers,
+                    'master' => $master,
+                ]);
             } else
                 $this->redirect(array('action' => 'index'));
         } else
@@ -151,58 +135,50 @@ class SellsController extends AppController {
     }
 
     //accessed by user
-    public function add($idtim = null){
+    public function add($masterId = null){
         $this->check_admin_access('add');
         $this->set('title', 'Galon - Tambah Transaksi');
+        $user = $this->Auth->user();
 
         if ($this->request->is('post')) {
-            $user = $this->Auth->user();
-            $master = $this->Sell->Master->find('all',
-                array('conditions' => array('Master.idtim' => $user['Team']['idtim'], 'Master.status' => 0)
-            ));
+            $saveStatus = (new SellRepository())->save($this->request->data);
 
-            $idmaster = $master[0]['Master']['id'];
-            $this->request->data['Sell']['kodepenjualan'] = $this->generate_kodepenjualan();
-            $this->request->data['Sell']['date'] = '';
-            $this->request->data['Sell']['idmaster'] = $idmaster;
-
-            $this->Sell->create();
-            if ($this->Sell->save($this->request->data)) {
+            if ($saveStatus) {
                 $this->Session->setFlash('Data transaksi berhasil ditambahkan', 'customflash', array('class' => 'success'));
                 $this->redirect(array('action' => 'dashboard', $user['Team']['idtim']));
             } else {
                 $this->Session->setFlash('Data transaksi gagal ditambahkan, silahkan dicoba lagi', 'customflash', array('class' => 'warning'));
             }
 
+        }
+
+        if($masterId){
+            $goods = $this->Sell->Good->find('all', array('fields' => array('Good.id', 'Good.hargajual', 'Good.namabarang'), 'recursive' => -1, 'conditions' => array('Good.status' => 1)));
+            $idtim = $user['Team']['idtim'];
+
+            $prices = $this->array_to_list($goods, 'Good', 'id', 'hargajual');
+            $reverse_prices = $this->array_to_list($goods, 'Good', 'hargajual', 'id');
+            $goods = $this->array_to_list($goods, 'Good', 'id', 'namabarang');
+
+            $this->set(compact('prices'));
+            $this->set(compact('reverse_prices'));
+            $this->set(compact('goods'));
+            $this->set(compact('customers'));
+            $this->set(compact('idtim'));
+            $this->set(compact('masterId'));
         } else {
-
-            if($idtim){
-                // $idgood = $this->Sell->Good->find('first', array('conditions' => array('Good.kdbarang' => 'CG0004'), 'fields' => array('Good.id', 'Good.hargajual'), 'recursive' => -1));
-                $goods = $this->Sell->Good->find('all', array('fields' => array('Good.id', 'Good.hargajual', 'Good.namabarang'), 'recursive' => -1, 'conditions' => array('Good.status' => 1)));
-
-                // $customers = $this->Sell->Team->PairTeamCustomer->find('list', array('fields' => array('PairTeamCustomer.id','PairTeamCustomer.idcustomer'), 'conditions' => array('PairTeamCustomer.idtim' => $idtim)));
-                $customers = $this->array_to_list($this->Sell->list_customer_to_team($idtim), 'Customer', 'id', 'namapelanggan');
-                $prices = $this->array_to_list($goods, 'Good', 'id', 'hargajual');
-                $reverse_prices = $this->array_to_list($goods, 'Good', 'hargajual', 'id');
-                $goods = $this->array_to_list($goods, 'Good', 'id', 'namabarang');
-
-
-                $this->set(compact('prices'));
-                $this->set(compact('reverse_prices'));
-                $this->set(compact('goods'));
-                $this->set(compact('customers'));
-                //$this->set(compact('idgood'));
-                $this->set(compact('idtim'));
-            } else
-                $this->redirect(array('action' => 'index'));
-
+            $this->redirect(array('action' => 'dashboard', $user['Team']['idtim']));
         }
     }
 
-    public function get_hutang_customer($idcustomer = null){
+    public function get_hutang_customer($kdpelanggan = null, $idtim = null){
         $this->autoRender = false;
-        if($this->request->is('get')){
-            $user_data = $this->Sell->Customer->find('first', array('conditions' => array('Customer.id' => $idcustomer), 'fields'=>array('Customer.id', 'Customer.namapelanggan', 'Customer.hutang')));
+        if($this->request->is('ajax')){
+            $user_data = $this->Sell->Customer->find('first', array(
+                'conditions' => ['Customer.kdpelanggan' => $kdpelanggan, 'PairTeamCustomer.idtim' => $idtim],
+                'fields' => ['Customer.id', 'Customer.namapelanggan', 'Customer.hutang'],
+                'recursive' => 0
+            ));
             if($user_data){
                 echo json_encode($user_data);
             } else {
@@ -232,30 +208,6 @@ class SellsController extends AppController {
         }
 
         $this->redirect(array('action' => 'dashboard', $idtim));
-    }
-
-    private function generate_kodepenjualan(){
-        $kodepenjualan = 'KJ';
-
-        $missing_code = str_pad($this->get_missing_number(), 10, '0', STR_PAD_LEFT);
-
-        return $kodepenjualan.$missing_code;
-    }
-
-    private function get_missing_number(){
-        $datas = $this->Sell->find('all', array('fields' => 'DISTINCT(SUBSTRING(kodepenjualan, 3)) AS kodepenjualan', 'order' => 'kodepenjualan'));
-
-        $missing_code = 1;
-        if(count($datas) == 0)
-            return $missing_code;
-        for ($i = 0; $i < number_format($datas[count($datas)-1][0]['kodepenjualan']); $i++ ) {
-            if(number_format($datas[$i][0]['kodepenjualan']) != $missing_code)
-                return $missing_code;
-
-            $missing_code++;
-        }
-
-        return $missing_code;
     }
 
     //accessed by user and admin
@@ -333,25 +285,24 @@ class SellsController extends AppController {
     public function printblank($idtim = null, $date = null){
         $this->set('title', 'Galon - Cetak Blanko Transaksi');
         if($idtim){
-            if($this->Sell->Team->find('first', array('conditions' => array('Team.idtim' => $idtim, 'Team.status' => 1), 'recursive' => -1))){
+            $teams = $this->Sell->Team->User->get_user_with_idtim_and_attend_today($idtim);
+            $good_price = $this->Sell->Good->find('first', array(
+                'conditions' => array('Good.namabarang LIKE' => '%galon%'),
+                'fields' => array('Good.hargajual')
+            ));
+            $datas = (new SellRepository())->getUnlockedSellTransactionFor($idtim);
+            $customers = (new CustomerRepository())->getCustomerInTeamNotDoingTransaction($idtim, $datas);
 
-                $teams = $this->Sell->Team->User->get_user_with_idtim_and_attend($idtim);
-                $good_price = $this->Sell->Good->find('first', array('conditions' => array('Good.namabarang LIKE' => '%galon%'), 'fields' => array('Good.hargajual')));
+            $lock = $this->Sell->cek_lock($idtim);
 
-                $customers = $this->Sell->Team->PairTeamCustomer->Customer->get_customer_in_team($idtim);
+            $this->set(compact('datas'));
+            $this->set(compact('lock'));
+            $this->set(compact('idtim'));
+            $this->set(compact('teams'));
+            $this->set(compact('good_price'));
+            $this->set(compact('customers'));
 
-                $lock = $this->Sell->cek_lock($idtim);
-
-                $this->set(compact('datas'));
-                $this->set(compact('lock'));
-                $this->set(compact('idtim'));
-                $this->set(compact('teams'));
-                $this->set(compact('good_price'));
-                $this->set(compact('customers'));
-
-                $this->layout = 'print';
-            } else
-                $this->redirect(array('action' => 'index'));
+            $this->layout = 'print';
         } else
             $this->redirect(array('action' => 'index'));
     }
@@ -649,14 +600,17 @@ class SellsController extends AppController {
         }
     }
 
+    private function get_list_all_team()
+    {
+        return (new TeamRepository())->getListAllTeam();
+    }
+
     public function filter()
     {
         $this->set('title', 'Galon - Riwayat Transaksi');
 
         $user = $this->Auth->user();
-
-        $list_teams = $this->Sell->Customer->PairTeamCustomer->Team->find('all', array('order' => 'idtim','conditions' => array('Team.status' => 1), 'recursive' => 0));
-        $list_team = $this->to_list_team($list_teams);
+        $list_team = $this->get_list_all_team();
 
         if($user['role'] == 'pegawai')
             $idtim = $user['Team']['idtim'];
@@ -672,9 +626,9 @@ class SellsController extends AppController {
         $params = array('limit' => 20,
             'recursive' => -1,
             'order' => 'Master.date DESC',
-            'conditions' => ['NOT' => ['Master.status' => '0'], $filterConditions]
+            'conditions' => [$filterConditions]
         );
-        if($idtim > 0)
+        if(isset($idtim))
             $params['conditions'] = array('idtim' => $idtim);
 
         $this->paginate = $params;

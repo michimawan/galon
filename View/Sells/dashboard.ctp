@@ -1,16 +1,17 @@
 <!-- app/View/Sells/dashboard.ctp -->
 
 <?php $members = count($teams);?>
+<?php $masterId = !$master? "" : $master[0]['Master']['id']; ?>
 
 <div class='row'>
 	<div class="col-md-3">
-		<?php echo !$master? "": ($members == 0? "": ($master[0]['Master']['status']? "" : $this->Html->link("<span class='glyphicon glyphicon-plus' aria-hidden='true'></span> | Tambah Data Transaksi", array('action' => 'add', $id), array('escape' => false,'class' => 'btn btn-primary'))));?>
+		<?php echo !$master? "": ($members == 0? "": ($master[0]['Master']['status']? "" : $this->Html->link("<span class='glyphicon glyphicon-plus' aria-hidden='true'></span> | Tambah Data Transaksi", array('action' => 'add', $masterId), array('escape' => false,'class' => 'btn btn-primary'))));?>
 	</div>
 	<div class="col-md-3">
 		<?php echo !$master? "": ($members == 0? "": ($master[0]['Master']['status']? "" : $this->Form->postLink("<span class='glyphicon glyphicon-lock' aria-hidden='true'></span> | Kunci Data Transaksi", array('action' => 'lock', $master[0]['Master']['id'], date('Y-m-d')),  array('escape' => false,'class' => 'btn btn-danger', 'confirm' => 'Anda yakin semua transaksi sudah selesai?'))));?>
 	</div>
 	<div class="col-md-3">
-		<?php echo  !$master? "": ($members == 0? "": ($master[0]['Master']['status']? "" : $this->Html->link("<span class='glyphicon glyphicon-print' aria-hidden='true'></span> | Cetak Halaman Transaksi", array('action' => 'printblank', $id, date('Y-m-d')), array('escape' => false, 'class' => 'btn btn-success'))));?>
+		<?php echo  !$master? "": ($members == 0? "": ($master[0]['Master']['status']? "" : $this->Html->link("<span class='glyphicon glyphicon-print' aria-hidden='true'></span> | Cetak Halaman Transaksi", array('action' => 'printblank', $idtim, date('Y-m-d')), array('escape' => false, 'class' => 'btn btn-success'))));?>
 	</div>
 	<div class="col-md-3">
         <?php echo !$master? "": ($members == 0? "": (!$master[0]['Master']['status']? "" : 
@@ -42,7 +43,7 @@
 		<?php if ($members != 0 && !$master): ?>
 		<form class="form-inline" method="post" action="<?php echo $this->Html->url(array('action'=>'set_start_galon'));?>" accept-charset="utf-8">
 			<div class="form-group">
-				<input type="hidden" name="data[Master][idtim]" value="<?php echo $id?>"/>
+				<input type="hidden" name="data[Master][idtim]" value="<?php echo $idtim?>"/>
 			</div>
   			<div class="form-group">
 			    <label for="MasterStart">Start</label>

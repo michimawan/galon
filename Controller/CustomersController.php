@@ -141,7 +141,7 @@ class CustomersController extends AppController {
     private function generate_kodepelanggan(){
         $kdpelanggan = 'PG';
 
-        $missing_code = str_pad($this->get_missing_number(), 4, '0', STR_PAD_LEFT);
+        $missing_code = str_pad($this->get_missing_number(), 8, '0', STR_PAD_LEFT);
 
         return $kdpelanggan.$missing_code;
     }
@@ -153,8 +153,10 @@ class CustomersController extends AppController {
         if(count($datas) == 0)
             return $missing_code;
 
-        for ($i = 0; $i < number_format($datas[count($datas)-1][0]['kdpelanggan']); $i++ ) {
-            if(number_format($datas[$i][0]['kdpelanggan']) != $missing_code)
+        $maxKdpelanggan = (int) $datas[count($datas)-1][0]['kdpelanggan'];
+        for ($i = 0; $i < $maxKdpelanggan; $i++ ) {
+            $currentNumber = (int) $datas[$i][0]['kdpelanggan'];
+            if($currentNumber != $missing_code)
                 return $missing_code;
 
             $missing_code++;

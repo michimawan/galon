@@ -60,8 +60,10 @@ class GoodsController extends AppController {
 		if(count($datas) == 0)
 			return $missing_code;
 
-		for ($i = 0; $i < number_format($datas[count($datas)-1][0]['kdbarang']); $i++ ) {
-			if(number_format($datas[$i][0]['kdbarang']) != $missing_code)
+        $maxKdbarang = (int) $datas[count($datas)-1][0]['kdbarang'];
+		for ($i = 0; $i < $maxKdbarang; $i++ ) {
+            $currentNumber = (int) $datas[$i][0]['kdbarang'];
+			if($currentNumber != $missing_code)
 				return $missing_code;
 
 			$missing_code++;

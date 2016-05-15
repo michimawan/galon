@@ -188,7 +188,7 @@ class User extends AppModel {
 		return $this->query($q);
 	}
 
-	public function get_user_with_idtim_and_attend($idtim){
+	public function get_user_with_idtim_and_attend_today($idtim){
 		$q = "SELECT `User`.`id`, `User`.`username`, `User`.`firstname`, `User`.`lastname` 
 			FROM `users` AS `User` 
 			WHERE `User`.`id` IN 

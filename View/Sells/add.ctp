@@ -19,7 +19,8 @@
         <?php echo $this->Form->create('Sell', array('action'=>'add', 'enctype'=>'multipart/form-data', 'onsubmit' => 'return formcheck()'));?>
         <h1><?php echo __('Tambah Penjualan'); ?></h1>
         <?php
-        echo $this->Form->input('idtim', array('type' => 'hidden','value'=>$idtim));
+        echo $this->Form->input('idtim', array('type' => 'hidden','value' => $idtim));
+        echo $this->Form->input('idmaster', array('type' => 'hidden','value' => $masterId));
         echo $this->Form->input('idgood', array(
                                     'label'=>'Pilih Barang ',
                                     'type' => 'select',
@@ -29,14 +30,16 @@
                                     'class' => 'form-control'
                                     ));
 
-        echo $this->Form->input('idcustomer', array(
-                                    'label'=>'Pilih Pelanggan ',
-                                    'type' => 'select',
-                                    'options' => $customers,
+        echo $this->Form->input('Sell.idcustomer', array(
+                                    'class' => 'form-control hidden',
+                                    'div' => 'hidden'
+        ));
+        echo $this->Form->input('Customer.kdpelanggan', array(
+            'label' => 'Masukkan Kode Pelanggan <span class="js-customer-not-found text-danger hidden">*Pelanggan dengan ID itu tidak ditemukan</span>',
+                                    'type' => 'text',
                                     'required',
-                                    'class' => 'form-control',
-                                    'empty' => 'Pilih Pelanggan'
-                                    ));
+                                    'class' => 'form-control'
+        ));
         ?>
         <div class='form-input'>
             <label for='hutang_customer'>Hutang Pelanggan</label>
@@ -59,6 +62,7 @@
 </div>
 
 <script type="text/javascript">
+    var idtim = '<?php echo $idtim ?>';
     $(document).on('keyup', '#SellJmlBeli', function() {
         var tot_galon = $('#SellJmlBeli').val();
         var last_cust_debt = $('#hutang_customer').val() ? $('#hutang_customer').val() : 0;
@@ -95,19 +99,25 @@
             $('#SellJmlkembali').attr('value', '0');
     }
 
-    $('#SellIdcustomer').change(function(){
-        var idcustomer = $(this).val();
-        if(idcustomer != ''){
+    $('#CustomerKdpelanggan').keyup(function(){
+        var kdpelanggan = $(this).val();
+        if(kdpelanggan != ''){
             $.ajax({
-                url:'<?= $this->Html->url(array('action'=>'get_hutang_customer')); ?>/' +  idcustomer,
-                data: idcustomer,
+                url:'<?= $this->Html->url(array('action'=>'get_hutang_customer')); ?>/' +  kdpelanggan + '/' + idtim,
+                data: kdpelanggan, idtim,
                 success: function( data ) {
                 data = JSON.parse(data);
-                for(x in data){
-                    $('#hutang_customer').attr('value', data[x]['hutang']);
-                    $('#SellTotalharga').attr('value', data[x]['hutang']);
-                }
-                reset();
+                  if(data != 'no') {
+                    $('.js-customer-not-found').addClass('hidden');
+                    for(x in data){
+                      $('#SellIdcustomer').attr('value', data[x]['id']);
+                      $('#hutang_customer').attr('value', data[x]['hutang']);
+                      $('#SellTotalharga').attr('value', data[x]['hutang']);
+                    }
+                    reset();
+                  } else {
+                    $('.js-customer-not-found').removeClass('hidden');
+                  }
                 }
             });
         }
