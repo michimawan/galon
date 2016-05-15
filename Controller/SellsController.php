@@ -290,7 +290,7 @@ class SellsController extends AppController {
                 'conditions' => array('Good.namabarang LIKE' => '%galon%'),
                 'fields' => array('Good.hargajual')
             ));
-            $datas = (new SellRepository())->getUnlockedSellTransactionFor($idtim);
+            $datas = [];
             $customers = (new CustomerRepository())->getCustomerInTeamNotDoingTransaction($idtim, $datas);
 
             $lock = $this->Sell->cek_lock($idtim);
