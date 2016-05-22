@@ -22,12 +22,6 @@ class Sell extends AppModel {
         ),
     );
 
-    public function cek_lock($idtim){
-        $q = "SELECT `Master`.`id`, `Master`.`start`,`Master`.`galonterjual`,`Master`.`finish`, `Master`.`status`, `Master`.`galonkosong` FROM `masters` AS `Master` WHERE `Master`.`idtim` = '$idtim' AND `Master`.`date` = SUBSTRING(NOW(), 1,10)";
-
-        return $this->query($q);
-    }
-
     public function save_start($idtim, $start, $dates){
         $q = "INSERT INTO `masters` (`idtim`, `start`, `galonkosong`, `finish`, `date`) 
             VALUES ('$idtim', '$start', '0', '0', '$dates');";

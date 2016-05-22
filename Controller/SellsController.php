@@ -296,17 +296,17 @@ class SellsController extends AppController {
                 'conditions' => array('Good.namabarang LIKE' => '%galon%'),
                 'fields' => array('Good.hargajual')
             ));
-            $datas = [];
-            $customers = (new CustomerRepository())->getCustomerInTeamNotDoingTransaction($idtim, $datas);
+            $customers = (new CustomerRepository())->getCustomerInTeamNotDoingTransaction($idtim, []);
 
-            $lock = $this->Sell->cek_lock($idtim);
+            $master = (new MasterRepository())->getUnlockedMasterDataFor($idtim);
 
-            $this->set(compact('datas'));
-            $this->set(compact('lock'));
-            $this->set(compact('idtim'));
-            $this->set(compact('teams'));
-            $this->set(compact('good_price'));
-            $this->set(compact('customers'));
+            $this->set([
+                'master' => $master,
+                'idtim' => $idtim,
+                'teams' => $teams,
+                'good_price' => $good_price,
+                'customers' => $customers,
+            ]);
 
             $this->layout = 'print';
         } else

@@ -1,11 +1,9 @@
 
-
 <?php $members = count($teams); ?>
 
 <div class='row'>
 	<div class="col-md-4">
 		<h4>Tanggal: <?php echo date('d-m-Y');?></h4>
-		<h4>Galon Sales: <?php echo ''; // $jml_galon['Team']['jmlgalon'];?></h4>
 		<h4>Harga: <?php echo $good_price['Good']['hargajual'];?></h4>
 	</div>
 	<div class="col-md-4">
@@ -15,7 +13,7 @@
 </div>
 <div class='row'>
 	<div class="col-md-6">
-		<h4>Start: <?php echo $lock[0]['Master']['start']?></h4>
+		<h4>Start: <?php echo $master[0]['Master']['start']?></h4>
 		<h4>Finish: </h4>
 	</div>
 	<div class="col-md-6">
