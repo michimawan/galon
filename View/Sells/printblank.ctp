@@ -40,12 +40,7 @@
 			</thead>
 			<tbody>
 				<?php $i = 1;
-                $day = '';
 				foreach ($customers as $customer) {
-                    if($day != $customer['Customer']['harikunjungan']) {
-                        $day = $customer['Customer']['harikunjungan'];
-                        echo "<tr><td colspan='11'>". $day ."</td></tr>";
-                    }
 					?>
 					<tr>
 						<td><?php echo $i?></td>

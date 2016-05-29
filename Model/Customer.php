@@ -52,7 +52,7 @@ class Customer extends AppModel {
             WHERE `Customer`.`id` IN
                 (SELECT `pair_team_customers`.`idcustomer` FROM `pair_team_customers` WHERE `pair_team_customers`.`idtim` = '$idtim')
             AND `Customer`.`status` = 1
-            ORDER BY FIELD (`Customer`.`harikunjungan`, 'senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'minggu')";
+            GROUP BY `Customer`.`alamat`";
 
         return $this->query($q);
     }
