@@ -27,6 +27,7 @@
 			<thead>
 				<tr>
 					<th>No.</th>
+                    <th>Hari</th>
 					<th>Kd Plgn</th>
 					<th>Nama Plgn</th>
 					<th>Alamat</th>
@@ -44,6 +45,7 @@
 					?>
 					<tr>
 						<td><?php echo $i?></td>
+						<td><?php echo $customer['Customer']['harikunjungan'];?></td>
 						<td><?php echo $customer['Customer']['kdpelanggan'];?></td>
 						<td><?php echo $customer['Customer']['namapelanggan'];?></td>
 						<td><?php echo $customer['Customer']['alamat'];?></td>

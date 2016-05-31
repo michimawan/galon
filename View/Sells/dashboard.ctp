@@ -71,6 +71,7 @@
 			<thead>
 				<tr>
 					<th>No.</th>
+					<th>Hari</th>
 					<th>Tanggal</th>
 					<th>Kode Pelanggan</th>
 					<th>Nama Pelanggan</th>
@@ -98,6 +99,7 @@
 					?>
 					<tr>
 						<td><?php echo $i?></td>
+						<td><?php echo $data['Customer']['harikunjungan'];?></td>
 						<td><?php echo substr($data['Customer']['transaksiterakhir'],0,10);?></td>
 						<td><?php echo $data['Customer']['kdpelanggan'];?></td>
 						<td><?php echo $data['Customer']['namapelanggan'];?></td>
@@ -136,11 +138,12 @@
 						<td><?php echo $totalhutang?></td>
 					</tr>
 				<?php
-				} else {
+                } else {
 					foreach ($customers as $customer) {
 					?>
 					<tr>
 						<td><?php echo $i?></td>
+						<td><?php echo $customer['Customer']['harikunjungan'];?></td>
 						<td><?php echo substr($customer['Customer']['transaksiterakhir'],0,10);?></td>
 						<td><?php echo $customer['Customer']['kdpelanggan'];?></td>
 						<td><?php echo $customer['Customer']['namapelanggan'];?></td>

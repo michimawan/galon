@@ -52,7 +52,9 @@ class Customer extends AppModel {
             WHERE `Customer`.`id` IN
                 (SELECT `pair_team_customers`.`idcustomer` FROM `pair_team_customers` WHERE `pair_team_customers`.`idtim` = '$idtim')
             AND `Customer`.`status` = 1
-            GROUP BY `Customer`.`alamat`";
+            ORDER BY `Customer`.`alamat`, 
+            FIELD (`Customer`.`harikunjungan`, 'senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'minggu')
+            COLLATE `latin1_general_ci`";
 
         return $this->query($q);
     }
