@@ -7,7 +7,7 @@ App::import('Factory', 'ModelConditionFactory');
 class UsersController extends AppController {
     public $layout = "layout";
 
-	public $paginate = array(
+    public $paginate = array(
         'limit' => 20,
         'conditions' => array('status' => '1'),
         'order' => array('User.username' => 'asc' )

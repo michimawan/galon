@@ -3,7 +3,7 @@ App::import('Factory', 'FilterFactory');
 App::import('Factory', 'ModelConditionFactory');
 
 class AttendancesController extends AppController {
-	public $layout = 'layout';
+    public $layout = 'layout';
 
     private function check_user_access($location){
         $user = $this->Auth->User();
@@ -12,7 +12,7 @@ class AttendancesController extends AppController {
                 $this->redirect(array('action' => 'rekapbulanan', $user['id'], date('Y'), date('m')));
     }
 
-	public function index($search = null) {
+    public function index($search = null) {
         $this->set('title', 'Galon - Presensi Kehadiran Pegawai');
         $this->check_user_access('index');
         //get all user that has been checked
@@ -38,7 +38,6 @@ class AttendancesController extends AppController {
 
                 $data = array('Attendance' => array('idpegawai' => $id, 'tanggal' => date('Y-m-d'), 'kehadiran' => '0'));
                 $this->Attendance->create();
-                //$this->set(compact('data'));
                 if($this->Attendance->save($data)){
                     $this->Session->setFlash('Pegawai sudah ditandai tidak masuk', 'customflash', array('class' => 'success'));
                 }
@@ -91,7 +90,7 @@ class AttendancesController extends AppController {
             $this->set(compact('count_present'));
             $this->set(compact('month_record'));
             $this->set(compact('user'));
-    	} else {
+        } else {
             $this->Session->setFlash('User tidak ada', 'customflash', array('class' => 'warning'));
             $this->redirect(array('controller'=>'users','action' => 'index'));
         }
@@ -100,7 +99,7 @@ class AttendancesController extends AppController {
     private function to1DArray($_3D_array, $field_1, $field_2){
         $users_not_attend = array();
         foreach($_3D_array as $id_user){
-             $users_not_attend[] = $id_user[$field_1][$field_2];
+            $users_not_attend[] = $id_user[$field_1][$field_2];
         }
         return $users_not_attend;
     }
