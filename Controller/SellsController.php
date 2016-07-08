@@ -369,7 +369,7 @@ class SellsController extends AppController {
             'Sell.jmlpinjam', 'Sell.bayar','Sell.hutang', 'Sell.totalharga', 'Sell.totalhargagalon', 'Customer.id', 'Customer.hutang', 'Customer.galonterpinjam'))
         );
 
-        if($datas[0]['Sell']['jmlbeli'] == 0) {
+        if(count($datas) == 0 || $datas[0]['Sell']['jmlbeli'] == 0) {
             $harga_galon = $this->Sell->Good->find('first', array('conditions' => array('Good.namabarang LIKE' => '%galon%'), 'fields' => array('Good.hargajual')));
             $harga_galon = $harga_galon['Good']['hargajual'];
         }
@@ -393,12 +393,14 @@ class SellsController extends AppController {
             $total_hutang += $data['Sell']['hutang'];
         }
         $galonterjual = doubleval($galonterjual / $harga_galon);
-        $teams = $this->Sell->Team->find('all', array(
-            'conditions' => array('Team.idtim' => $datas[0]['Sell']['idtim']),
-            'recursive' => -1,
-        ));
+
         $master = $this->Sell->Master->find('first', array(
             'conditions' => array('Master.id' => $idmaster),
+            'recursive' => -1,
+        ));
+
+        $teams = $this->Sell->Team->find('all', array(
+            'conditions' => array('Team.idtim' => $master['Master']['idtim']),
             'recursive' => -1,
         ));
 
