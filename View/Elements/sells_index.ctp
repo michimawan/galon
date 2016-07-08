@@ -26,9 +26,9 @@ $(document).ready(function() {
         var chart = new CanvasJS.Chart("chart", {
             title: {text: "Grafik Trend Jumlah Galon Terjual"},
                 axisX: {
-                    interval: 1,
-                        dateFormat: "dd-mm-yy",
-                        intervalType: "day",
+                    interval: 5,
+                    valueFormatString: "DD-MMM",
+                    intervalType: "day",
                 },
                 data: [{
                     type: "line",

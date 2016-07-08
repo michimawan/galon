@@ -35,6 +35,45 @@ class MasterRepository
         ]);
     }
 
+    private function getSelledGalonForDate($idtim, $startDate, $endDate)
+    {
+        $masters = $this->masterModel->find('all', [
+            'conditions' => [
+                'and' => [
+                    ['Master.date <= ' => $startDate, 'Master.date >= ' => $endDate ],
+                    $idtim,
+                ]
+            ],
+            'recursive' => -1
+        ]);
+
+        $data = [];
+        foreach($masters as $master) {
+            if(!isset($data[$master['Master']['date']]))
+                $data[$master['Master']['date']] = 0;
+            $data[$master['Master']['date']] += $master['Master']['galonterjual'];
+        }
+
+        return $data;
+    }
+
+    public function getGraphDataFor($idtim, $startDate, $endDate)
+    {
+        if(!$startDate)
+            $startDate = date('Y-m-d');
+        if(!$endDate) {
+            $endDate = (new Datetime($startDate))->sub(DateInterval::createFromDateString('28 days'));
+            $ed = new ReflectionObject($endDate);
+            $e = $ed->getProperty('date');
+            $endDate = substr($e->getValue($endDate), 0, 10);
+        }
+
+        if($idtim)
+            $idtim = array('Master.idtim' => $idtim);
+
+        return $this->getSelledGalonForDate($idtim, $startDate, $endDate);
+    }
+
     public function getModel()
     {
         return $this->masterModel;

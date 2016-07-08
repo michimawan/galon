@@ -33,34 +33,7 @@ class SellsController extends AppController {
         $startdate = isset($this->params['url']['date2']) ? $this->params['url']['date2'] : null;
         $idtim = isset($this->params['url']['tim']) ? $this->params['url']['tim'] : null;
 
-        if(!$startdate)
-            $startdate = date('Y-m-d');
-        if(!$enddate) {
-            $enddate = (new Datetime($startdate))->sub(DateInterval::createFromDateString('28 days'));
-            $ed = new ReflectionObject($enddate);
-            $e = $ed->getProperty('date');
-            $enddate = substr($e->getValue($enddate), 0, 10);
-        }
-
-        if($idtim)
-            $idtim = array('Master.idtim' => $idtim);
-
-        $masters = $this->Sell->Master->find('all', array(
-            'conditions' => array(
-                'and' => array(
-                    array('Master.date <= ' => $startdate, 'Master.date >= ' => $enddate ),
-                    $idtim,
-                )
-            ),
-            'recursive' => -1
-        ));
-
-        $data = array();
-        foreach($masters as $master) {
-            if(!isset($data[$master['Master']['date']]))
-                $data[$master['Master']['date']] = 0;
-            $data[$master['Master']['date']] += $master['Master']['galonterjual'];
-        }
+        $data = (new MasterRepository())->getGraphDataFor($idtim, $startdate, $enddate);
 
         $list_team = $this->get_list_all_team();
 
