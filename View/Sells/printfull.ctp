@@ -7,7 +7,6 @@
 		<h4>Nama Sales 1: <?php echo $team[0]['User']['kehadiran']? $team[0]['User']['firstname'].' '.$team[0]['User']['lastname'] : $team[1]['User']['firstname'].' '.$team[1]['User']['lastname'] ;?></h4>
 	</div>
 	<div class="col-md-4 col-xs-6">
-
 		<h4>&nbsp</h4>
         <h4>Galon Sales: <?php echo $master['Master']['galon_sales'];?></h4>
 	</div>
@@ -17,11 +16,11 @@
 	</div>
 </div>
 <div class='row'>
-	<div class="col-md-6">
+	<div class="col-md-4 col-xs-6">
 		<h4>Start: <?php echo $master['Master']['start']?></h4>
 		<h4>Finish: <?php echo $master['Master']['finish'] ?></h4>
 	</div>
-	<div class="col-md-6">
+	<div class="col-md-4 col-xs-6">
 		<h4>Air galon terjual: <?php echo substr($master['Master']['galonterjual'], 0, 5)  ?></h4>
 		<h4>Galon kosong masuk: <?php echo $master['Master']['galonkosong']  ?></h4>
 	</div>
@@ -45,17 +44,17 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?php $i = 1;
-				if($sells){
+                <?php $i = 1; ?>
+                <?php
 					$jmlbeli = 0;
 					$jmlpinjam = 0;
 					$jmlkembali = 0;
 					$totalgalonpinjam = 0;
 					$totalbayar = 0;
 					$totalhutang = 0;
-
-				foreach ($sells as $data) {
-					?>
+                ?>
+                <?php if ($sells) : ?>
+                    <?php foreach ($sells as $data) : ?>
 					<tr>
 						<td><?php echo $i?></td>
 						<td><?php echo substr($data['Sell']['date'],10);?></td>
@@ -77,13 +76,11 @@
 					$totalgalonpinjam = $totalgalonpinjam + $data['Customer']['galonterpinjam'];
 					$totalbayar = $totalbayar + $data['Sell']['bayar'];
 					$totalhutang = $totalhutang + $data['Sell']['hutang'] ;
-				}
-                }
-                ?>
-                <?php
-                if($customers) {
-                    foreach($customers as $customer) {
-					?>
+                    ?>
+                    <?php endforeach ?>
+                <?php endif ?>
+                <?php if ($customers) : ?>
+                    <?php foreach ($customers as $customer) : ?>
 					<tr>
 						<td><?php echo $i?></td>
 						<td></td>
@@ -97,11 +94,9 @@
 						<td><?php echo $customer['Customer']['galonterpinjam'] ?></td>
 						<td></td>
 					</tr>
-                    <?php
-					$i++;
-                    }
-                }
-                ?>
+                    <?php $i++; ?>
+                    <?php endforeach ?>
+                <?php endif ?>
 					<tr>
 						<td colspan='5'>Total</td>
 						<td><?php echo $jmlbeli?></td>

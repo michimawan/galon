@@ -1,3 +1,9 @@
+@media {
+  .container {
+    width: 100%;
+  }
+}
+
 @media print {
   * {
     margin: 0 !important;
@@ -7,23 +13,11 @@
     height: 100%;
     width: 100%;
   }
-  div {
-    display: block;
-  }
-  .col-md-4, .col-md-6 {
-    width: 33.3%;
-  }
-  div.row {
-    display: block;
-    white-space: nowrap;
-  }
-  div.row > div {
-    display: inline-block;
+  .col-md-4 {
+    width: 30%;
   }
 
-  .table-responsive {
-    display: block;
-    position: absolute;
-    width: 100%;
+  td, th, tr {
+    border: 1px solid #eee;
   }
 }
