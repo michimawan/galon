@@ -16,11 +16,11 @@
 	</div>
 </div>
 <div class='row'>
-	<div class="col-md-4 col-xs-6">
+	<div class="col-md-6">
 		<h4>Start: <?php echo $master['Master']['start']?></h4>
 		<h4>Finish: <?php echo $master['Master']['finish'] ?></h4>
 	</div>
-	<div class="col-md-4 col-xs-6">
+	<div class="col-md-6">
 		<h4>Air galon terjual: <?php echo substr($master['Master']['galonterjual'], 0, 5)  ?></h4>
 		<h4>Galon kosong masuk: <?php echo $master['Master']['galonkosong']  ?></h4>
 	</div>
