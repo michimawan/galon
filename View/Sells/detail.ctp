@@ -51,13 +51,13 @@
 			</thead>
 			<tbody>
 				<?php $i = 1;
+                $jmlbeli = 0;
+                $jmlpinjam = 0;
+                $jmlkembali = 0;
+                $totalgalonpinjam = 0;
+                $totalbayar = 0;
+                $totalhutang = 0;
 				if($sells){
-					$jmlbeli = 0;
-					$jmlpinjam = 0;
-					$jmlkembali = 0;
-					$totalgalonpinjam = 0;
-					$totalbayar = 0;
-					$totalhutang = 0;
 
 				foreach ($sells as $data) {
 					?>
@@ -91,7 +91,7 @@
 					?>
 					<tr>
 						<td><?php echo $i?></td>
-						<td></td>
+						<td>Belum ada transaksi</td>
 						<td><?php echo $customer['Customer']['namapelanggan'];?></td>
 						<td><?php echo $customer['Customer']['alamat'];?></td>
 						<td><?php echo $customer['Customer']['kdpelanggan'];?></td>
