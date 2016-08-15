@@ -1,5 +1,7 @@
 <?php
 
+App::import('Repository', 'CustomerRepository');
+
 class TeamsController extends AppController {
     public $layout = 'layout';
 
@@ -146,6 +148,27 @@ class TeamsController extends AppController {
                 $this->redirect(array('action' => 'index'));
             }
         }
+    }
+
+    public function print_customer_in_team($idtim = null)
+    {
+        if (! $idtim)
+            return $this->redirect(['action' => 'index']);
+
+        $this->set('title', 'Galon - Cetak Blanko Transaksi');
+        $teams = $this->Team->find('all', [
+            'conditions' => ['Team.idtim' => $idtim, 'Team.status' => 1],
+            'recursive' => 0
+        ]);
+        $customers = (new CustomerRepository())->getCustomerInTeamNotDoingTransaction($idtim, []);
+
+        $this->set([
+            'idtim' => $idtim,
+            'teams' => $teams,
+            'customers' => $customers,
+        ]);
+
+        $this->layout = 'print';
     }
 
     public function customer_not_teamed(){

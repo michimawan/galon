@@ -59,6 +59,7 @@ foreach ($galons as $galon) {
                     <div class="btn-group" role="group">
                     <?php
                     if($current_user['role'] != 'pegawai'){
+                    echo $this->Html->link(    "Cetak Data",   array('action'=>'print_customer_in_team', $team['Team']['idtim']), array('class' => 'btn btn-default'));
                     echo $this->Html->link(    "Ubah Jml Galon",  array('action'=>'change', $team['Team']['idtim']), array('class' => 'btn btn-success', 'data-toggle' => 'modal', 'data-action' => $this->Html->url(array('action'=>'change', $team['Team']['idtim'])),'data-target' => '#modal_addcust'));
                     echo $this->Html->link(    "Tambah Pelanggan",   array('action'=>'pair_cust', $team['Team']['idtim']), array('class' => 'btn btn-primary'));
                     echo $this->Form->postLink(    "Hapus Tim",   array('action'=>'delete', $team['Team']['idtim']), array('class' => 'btn btn-danger', 'confirm' => 'Apakah sudah yakin ingin menghapus tim ini?'));
