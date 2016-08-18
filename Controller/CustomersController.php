@@ -8,11 +8,11 @@ class CustomersController extends AppController {
 
     public function index() {
         $this->set('title','Galon - Data Pelanggan');
-        $this->paginate = array(
+        $this->paginate = [
             'limit' => 20,
             'order' => array('Customer.kdpelanggan' => 'asc' ),
-            'conditions' => array('NOT' => array('Customer.status' => '0'))
-        );
+            'conditions' => ['NOT' => ['Customer.status' => '0']]
+        ];
         $customers = $this->paginate('Customer');
 
         $list_team = $this->get_list_team();
@@ -260,12 +260,13 @@ class CustomersController extends AppController {
 
     private function get_list_team()
     {
-        $list_teams = $this->Customer->PairTeamCustomer->Team->find('all', array('order' => 'idtim','conditions' => array('Team.status' => 1), 'recursive' => 0));
+        $list_teams = $this->Customer->PairTeamCustomer->Team->find('all', ['order' => 'idtim','conditions' => ['Team.status' => 1], 'recursive' => 0]);
         return $this->to_list_team($list_teams);
     }
 
-    private function to_list_team($list_teams){
-        $list_team = array();
+    private function to_list_team($list_teams = [])
+    {
+        $list_team = [];
         foreach ($list_teams as $team) {
             if(!isset($list_team[$team['Team']['idtim']])){
                 $list_team[$team['Team']['idtim']] = $team['User']['firstname']." ";

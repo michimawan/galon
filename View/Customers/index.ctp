@@ -29,7 +29,7 @@ echo $this->element('filter', $params);
                 <th><?php echo $this->Paginator->sort('kdpelanggan', 'Kode Pelanggan');?></th>
                 <th><?php echo $this->Paginator->sort('namapelanggan', 'Nama Pelanggan', array('direction' => 'asc'));?>  </th>
                 <th><?php echo $this->Paginator->sort('alamat', 'Alamat');?></th>
-                <th><?php echo $this->Paginator->sort('nohp', 'No. Hp');?></th>
+                <th><?php echo $this->Paginator->sort('PairTeamCustomer.idtim', 'Sales');?></th>
                 <th><?php echo $this->Paginator->sort('harikunjungan', 'Hari Kunjungan');?></th>
                 <th>Actions</th>
             </tr>
@@ -54,7 +54,7 @@ echo $this->element('filter', $params);
                 <td><?php echo $customer['Customer']['kdpelanggan'];?></td>
                 <td><?php echo $customer['Customer']['namapelanggan'];?></td>
                 <td><?php echo $customer['Customer']['alamat']?></td>
-                <td><?php echo $customer['Customer']['nohp']; ?></td>
+                <td><?php echo isset($customer['PairTeamCustomer']['idtim']) && ! empty($customer['PairTeamCustomer']['idtim']) ? $list_team[$customer['PairTeamCustomer']['idtim']] : "belum ada sales"; ?></td>
                 <td><?php echo $customer['Customer']['harikunjungan'];?></td>
                 <td>
                     <div class="btn-group" role="group">
