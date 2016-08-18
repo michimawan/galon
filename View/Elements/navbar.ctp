@@ -10,15 +10,15 @@ $ranks= '';
 $goods= '';
 $sells= '';
 $graphs = '';
-$logouturl= $this->Html->url(array('controller'=>'users', 'action'=>'logout'));
-$usersurl= $this->Html->url(array('controller'=>'users', 'action'=>'index'));
-$teamsurl= $this->Html->url(array('controller'=>'teams', 'action'=>'index'));
-$attendancesurl= $this->Html->url(array('controller'=>'attendances', 'action'=>'index'));
-$customersurl= $this->Html->url(array('controller'=>'customers', 'action'=>'index'));
-$ranksurl= $this->Html->url(array('controller'=>'customers', 'action'=>'ranks'));
-$goodsurl= $this->Html->url(array('controller'=>'goods', 'action'=>'index'));
-$sellsurl= $this->Html->url(array('controller'=>'sells', 'action'=>'index'));
-$graphurl= $this->Html->url(array('controller'=>'sells', 'action'=>'graph'));
+$logouturl= $this->Html->url(['controller'=>'users', 'action'=>'logout']);
+$usersurl= $this->Html->url(['controller'=>'users', 'action'=>'index']);
+$teamsurl= $this->Html->url(['controller'=>'teams', 'action'=>'index']);
+$attendancesurl= $this->Html->url(['controller'=>'attendances', 'action'=>'index']);
+$customersurl= $this->Html->url(['controller'=>'customers', 'action'=>'index']);
+$ranksurl= $this->Html->url(['controller'=>'customers', 'action'=>'ranks']);
+$goodsurl= $this->Html->url(['controller'=>'goods', 'action'=>'index']);
+$sellsurl= $this->Html->url(['controller'=>'sells', 'action'=>'index']);
+$graphurl= $this->Html->url(['controller'=>'sells', 'action'=>'graph']);
 
 if($menu === 'main') {
 	$main = 'class="active"';
@@ -41,7 +41,7 @@ if($menu === 'main') {
 }
 ?>
 
-<?php 
+<?php
 $user = $this->Auth->user();
 ?>
 <div class="navbar navbar-default navbar-fixed-top">
@@ -54,7 +54,7 @@ $user = $this->Auth->user();
 				<span class="icon-bar"></span>
 			</button>
 			<div>
-				<?php echo $this->Html->image('adikarya_okane.png', array('class' => 'navbar-brand img-responsive', 'alt' => 'Adikarya Okane', 'title' => 'Adikarya Okane'));?>
+				<?php echo $this->Html->image('adikarya_okane.png', ['class' => 'navbar-brand img-responsive', 'alt' => 'Adikarya Okane', 'title' => 'Adikarya Okane']);?>
 			</div>
 		</div>
 
@@ -85,11 +85,11 @@ $user = $this->Auth->user();
         		<li <?php echo $goods?> >
         			<a href="<?php echo $goodsurl; ?>">Barang</a>
         		</li>
-        		<?php 
+        		<?php
         		if ($user['role'] == 'pegawai')
-        			if(isset($user['Team']['idtim']))
+        			if (isset($user['Team']['idtim']))
         			$sellsurl = $this->Html->url(
-        				array('controller'=>'sells', 'action'=>'index', $user['Team']['idtim']));
+        				['controller'=>'sells', 'action'=>'index', $user['Team']['idtim']]);
         		?>
         		<li class="dropdown">
 		         	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -106,13 +106,13 @@ $user = $this->Auth->user();
 
 			<ul class="nav navbar-nav navbar-right">
 				<li id='navbar-login'>
-					<?php if($user){?>
+					<?php if($user) { ?>
 					<a href="<?php echo $logouturl; ?>" class='logout'><span>Logout, <?php echo $user['firstname'];?></span></a>
-					<?php } else { 
+					<?php } else {
 						if(strpos($this->request->here(), "login") === FALSE)
 						echo $this->Html->link('Login',
-                            array('controller' => 'users', 'action'=>'login'),
-						    array('escape' => false)
+                            ['controller' => 'users', 'action'=>'login'],
+                            ['escape' => false, 'rel' => 'nofollow']
 						);
 					} ?>
 				</li>
