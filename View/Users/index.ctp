@@ -35,7 +35,7 @@ echo $this->element('filter', $params);
             if(!$users){
             ?>
             <tr>
-                <td colspan=4>Belum ada pegawai yang ditambahkan</td>
+                <td colspan=6>Belum ada pegawai yang ditambahkan</td>
             </tr>
             <?php
             }

@@ -39,7 +39,7 @@ echo $this->element('filter', $params);
             if(!$customers){
             ?>
             <tr>
-                <td colspan=4>Belum ada pelanggan yang ditambahkan</td>
+                <td colspan=7>Belum ada pelanggan yang ditambahkan</td>
             </tr>
             <?php
             }

@@ -22,7 +22,7 @@
 
     <form class="form-inline" action="<?php echo $this->Html->url(array('action' => 'debt'));?>" method='post'>
         <div class="form-group">
-            <?php 
+            <?php
             if($this->params->pass != null){
             echo $this->Form->input('idtim', array(
                 'type' => 'select',
@@ -43,7 +43,7 @@
                 'div' => false,
                 'empty' => 'Tampilkan Semua'
                 )
-            );  
+            );
             }
             ?>
         </div>
@@ -51,7 +51,7 @@
     <?php endif ?>
     <?php if($teams){?>
     <?php foreach ($teams as $team): ?>
-    <h4><?php echo $team['User']['firstname'].' '.$team['User']['lastname']?></h4>    
+    <h4><?php echo $team['User']['firstname'].' '.$team['User']['lastname']?></h4>
     <?php endforeach ?>
     <?php } else {
         echo "<h4>Semua Sales</h4>";
@@ -72,17 +72,17 @@
                 <th><?php echo $this->Paginator->sort('Customer.transaksiterakhir', 'Transaksi Terakhir');?></th>
             </tr>
         </thead>
-        <tbody> 
-            <?php 
+        <tbody>
+            <?php
             if(!$customers){
             ?>
             <tr>
-                <td colspan=4>Belum ada pelanggan yang memiliki piutang</td>
+                <td colspan=8>Belum ada pelanggan yang memiliki piutang</td>
             </tr>
             <?php
             }
             else {
-            ?>                             
+            ?>
             <?php $count=0; ?>
             <?php foreach($customers as $customer):
                 $count ++;
@@ -104,12 +104,12 @@
     </div>
 
     <div class="paging">
-        <?php 
+        <?php
             echo $this->Paginator->prev() .'  '. $this->Paginator->numbers(array('before'=>false, 'after'=>false,'separator'=> false)) .'  '. $this->Paginator->next();
         ?>
     </div>
-    
-    </div> 
+
+    </div>
 </div>
 
 <?php echo $this->element('../Customers/add'); ?>
@@ -120,7 +120,7 @@
             var location = '<?php echo $this->Html->url(array('action' => 'debt'))?>/';
             if(!idtim)
                 window.location.assign(location);
-            else 
+            else
                 window.location.assign(location + idtim);
         });
     });

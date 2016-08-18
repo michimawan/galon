@@ -29,7 +29,7 @@
             if(!$goods){
             ?>
             <tr>
-                <td colspan=4>Belum ada data barang yang ditambahkan</td>
+                <td colspan=6>Belum ada data barang yang ditambahkan</td>
             </tr>
             <?php
             }

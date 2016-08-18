@@ -61,7 +61,7 @@
             if(!$customers){
             ?>
             <tr>
-                <td colspan=4>Belum ada pelanggan yang ditambahkan</td>
+                <td colspan=5>Belum ada pelanggan yang ditambahkan</td>
             </tr>
             <?php
             }

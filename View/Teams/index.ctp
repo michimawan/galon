@@ -37,7 +37,7 @@ foreach ($galons as $galon) {
             if(!$teams){
             ?>
             <tr>
-                <td colspan=4>Belum ada tim yang ditambahkan</td>
+                <td colspan=5>Belum ada tim yang ditambahkan</td>
             </tr>
             <?php
             }

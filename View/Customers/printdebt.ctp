@@ -25,7 +25,7 @@
             if(!$customers){
             ?>
             <tr>
-                <td colspan=4>Belum ada pelanggan yang memiliki piutang</td>
+                <td colspan=8>Belum ada pelanggan yang memiliki piutang</td>
             </tr>
             <?php
             }
