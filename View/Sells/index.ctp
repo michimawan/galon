@@ -2,10 +2,14 @@
 <?php $user = $this->Auth->User(); ?>
 <div class='row'>
     <div class="col-xs-12 col-md-12 bottom">
+        <div class="btn-group" role="group">
     <?php
-    if($user['role'] == 'pegawai')
+    if($user['role'] == 'pegawai') {
         echo $this->Html->link('Tambah Transaksi', array('action' => 'dashboard', $user['Team']['idtim']), array('class' => 'btn btn-primary'));
+        echo $this->Html->link('Cetak Daftar Pelanggan', array('action' => 'print_customer_only', $user['Team']['idtim']), array('class' => 'btn btn-info'));
+    }
     ?>
+        </div>
 	<form class="form-inline form-inline-collapse" method="get" action="<?php echo $this->Html->url(array('action'=>'history'));?>">
         <div class="form-group">
             <?php

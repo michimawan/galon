@@ -261,25 +261,41 @@ class SellsController extends AppController {
         $this->redirect(array('action'=>'index'));
     }
 
+    private function print_customer_list($idtim = null, $date = null)
+    {
+        if (! $idtim) {
+            return $this->redirect(['action' => 'index']);
+        }
+
+        $teams = $this->Sell->Team->User->get_user_with_idtim_and_attend_today($idtim);
+        $good_price = $this->Sell->Good->find('first', array(
+            'conditions' => array('Good.namabarang LIKE' => '%galon%'),
+            'fields' => array('Good.hargajual')
+        ));
+        $customers = (new CustomerRepository())->getCustomerInTeamNotDoingTransaction($idtim, []);
+
+        $master = (new MasterRepository())->getUnlockedMasterDataFor($idtim);
+
+        $this->set([
+            'master' => $master,
+            'idtim' => $idtim,
+            'teams' => $teams,
+            'good_price' => $good_price,
+            'customers' => $customers,
+        ]);
+    }
+
+    public function print_customer_only($idtim = null)
+    {
+        $this->set('title', 'Galon - Cetak Daftar Pelanggan');
+        $this->print_customer_list($idtim);
+        $this->layout = 'print';
+    }
+
     public function printblank($idtim = null, $date = null){
         $this->set('title', 'Galon - Cetak Blanko Transaksi');
         if($idtim){
-            $teams = $this->Sell->Team->User->get_user_with_idtim_and_attend_today($idtim);
-            $good_price = $this->Sell->Good->find('first', array(
-                'conditions' => array('Good.namabarang LIKE' => '%galon%'),
-                'fields' => array('Good.hargajual')
-            ));
-            $customers = (new CustomerRepository())->getCustomerInTeamNotDoingTransaction($idtim, []);
-
-            $master = (new MasterRepository())->getUnlockedMasterDataFor($idtim);
-
-            $this->set([
-                'master' => $master,
-                'idtim' => $idtim,
-                'teams' => $teams,
-                'good_price' => $good_price,
-                'customers' => $customers,
-            ]);
+            $this->print_customer_list($idtim, $date);
 
             $this->layout = 'print';
         } else

@@ -150,27 +150,6 @@ class TeamsController extends AppController {
         }
     }
 
-    public function print_customer_in_team($idtim = null)
-    {
-        if (! $idtim)
-            return $this->redirect(['action' => 'index']);
-
-        $this->set('title', 'Galon - Cetak Blanko Transaksi');
-        $teams = $this->Team->find('all', [
-            'conditions' => ['Team.idtim' => $idtim, 'Team.status' => 1],
-            'recursive' => 0
-        ]);
-        $customers = (new CustomerRepository())->getCustomerInTeamNotDoingTransaction($idtim, []);
-
-        $this->set([
-            'idtim' => $idtim,
-            'teams' => $teams,
-            'customers' => $customers,
-        ]);
-
-        $this->layout = 'print';
-    }
-
     public function customer_not_teamed(){
         $this->layout = 'no_layout';
         $customer_not_in_team = $this->Team->PairTeamCustomer->Customer->get_customer_not_have_team();
