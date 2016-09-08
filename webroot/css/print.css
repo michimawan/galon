@@ -31,10 +31,25 @@
   .table-responsive {
     display: block;
     position: absolute;
-    width: 100%;
+    width: 99%;
   }
 
   td, th, tr {
     border: 1px solid #eee;
+  }
+
+  .col-wide-1 {
+    width: 5%;
+    white-space: normal;
+  }
+
+  .col-wide-2 {
+    width: 10%;
+    white-space: normal;
+  }
+
+  .col-wide-3 {
+    width: 15%;
+    white-space: normal;
   }
 }
