@@ -49,7 +49,7 @@ class SellRepository
                 'Sell.jmlkembali', 'Sell.bayar', 'Sell.hutang','Sell.status','Sell.date',
                 'Customer.id', 'Customer.kdpelanggan', 'Customer.namapelanggan',
                 'Customer.alamat', 'Customer.galonterpinjam', 'Customer.hutang',
-                'Customer.transaksiterakhir']
+                'Customer.transaksiterakhir', 'Customer.harikunjungan']
         ]);
     }
 

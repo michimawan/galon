@@ -153,9 +153,14 @@ class SellsController extends AppController {
     public function get_hutang_customer($kdpelanggan = null, $idtim = null){
         $this->autoRender = false;
         if($this->request->is('ajax')){
+            if (is_numeric($kdpelanggan)) {
+                $kdpelanggan = (int) $kdpelanggan;
+                $kdpelanggan = str_pad($kdpelanggan, 8, '0', STR_PAD_LEFT);
+                $kdpelanggan = "PG" . $kdpelanggan;
+            }
             $user_data = $this->Sell->Customer->find('first', array(
                 'conditions' => ['Customer.kdpelanggan' => $kdpelanggan, 'PairTeamCustomer.idtim' => $idtim],
-                'fields' => ['Customer.id', 'Customer.namapelanggan', 'Customer.hutang'],
+                'fields' => ['Customer.id', 'Customer.namapelanggan', 'Customer.hutang', 'Customer.kdpelanggan'],
                 'recursive' => 0
             ));
             if($user_data){
