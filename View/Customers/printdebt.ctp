@@ -11,12 +11,12 @@
         <thead>
             <tr>
                 <th>No.</th>
-                <th>Kode Pelanggan</th>
-                <th>Nama Pelanggan</th>
+                <th>Kode</th>
+                <th>Nama</th>
                 <th>Alamat</th>
                 <th>Hutang</th>
-                <th>Pinjam Galon</th>
-                <th>Hari Kunjungan</th>
+                <th>Pinjam</th>
+                <th>Hari</th>
                 <th>Transaksi Terakhir</th>
             </tr>
         </thead>

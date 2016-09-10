@@ -23,37 +23,37 @@
 </div>
 <div class='row'>
     <div class='table-responsive'>
-        <table class='table table-bordered table-striped table-hover '>
+        <table class='table table-bordered table-striped'>
             <thead>
                 <tr>
-                    <th>No.</th>
-                    <th>Hari</th>
-                    <th>Kd Plgn</th>
-                    <th>Nama Plgn</th>
-                    <th>Alamat</th>
-                    <th>Beli Air</th>
-                    <th>Pjm Gln</th>
-                    <th>Kmb Gln</th>
-                    <th>Ttl Pjm Gln</th>
-                    <th class='wider'>Byr</th>
-                    <th class='wider'>Htg</th>
+                    <th class="col-wide-1">No.</th>
+                    <th class="col-wide-1">Hari</th>
+                    <th class="col-wide-2">Nama Plgn</th>
+                    <th class="col-wide-2">Alamat</th>
+                    <th class="col-wide-2">Kd Plgn</th>
+                    <th class="col-wide-1">Beli</th>
+                    <th class="col-wide-3">Byr</th>
+                    <th class="col-wide-1">Pjm</th>
+                    <th class="col-wide-1">Kmb</th>
+                    <th class="col-wide-1">Ttl Pjm</th>
+                    <th class="col-wide-3">Htg</th>
                 </tr>
             </thead>
             <tbody>
                 <?php $i = 1; ?>
                 <?php foreach($customers as $customer) : ?>
                     <tr>
-                        <td><?php echo $i?></td>
-                        <td><?php echo $customer['Customer']['harikunjungan'];?></td>
-                        <td><?php echo $customer['Customer']['kdpelanggan'];?></td>
-                        <td><?php echo $customer['Customer']['namapelanggan'];?></td>
-                        <td><?php echo $customer['Customer']['alamat'];?></td>
-                        <td>&nbsp</td>
-                        <td>&nbsp</td>
-                        <td>&nbsp</td>
-                        <td><?php echo $customer['Customer']['galonterpinjam'];?></td>
-                        <td>&nbsp</td>
-                        <td><?php echo $customer['Customer']['hutang'];?></td>
+                        <td class="col-wide-1"><?php echo $i?></td>
+                        <td class="col-wide-1"><?php echo $customer['Customer']['harikunjungan'];?></td>
+                        <td class="col-wide-2"><?php echo $customer['Customer']['namapelanggan'];?></td>
+                        <td class="col-wide-2"><?php echo $customer['Customer']['alamat'];?></td>
+                        <td class="col-wide-2"><?php echo $customer['Customer']['kdpelanggan'];?></td>
+                        <td class="col-wide-1">&nbsp</td>
+                        <td class="col-wide-3">&nbsp</td>
+                        <td class="col-wide-1">&nbsp</td>
+                        <td class="col-wide-1">&nbsp</td>
+                        <td class="col-wide-1"><?php echo $customer['Customer']['galonterpinjam'];?></td>
+                        <td class="col-wide-3"><?php echo $customer['Customer']['hutang'];?></td>
                     </tr>
                 <?php $i++; ?>
                 <?php endforeach ?>

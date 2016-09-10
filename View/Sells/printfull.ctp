@@ -31,15 +31,15 @@
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>Tanggal</th>
-                    <th>Nama Pelanggan</th>
+                    <th>Jam</th>
+                    <th>Nama</th>
                     <th>Alamat</th>
-                    <th>Kode Pelanggan</th>
-                    <th>Beli Air</th>
+                    <th>Kode</th>
+                    <th>Beli</th>
                     <th>Bayar</th>
-                    <th>Pnjm Galon</th>
-                    <th>Kmbl Galon</th>
-                    <th>Ttl Gln Pnjm</th>
+                    <th>Pjm</th>
+                    <th>Kmbl</th>
+                    <th>Ttl Pjm</th>
                     <th>Hutang</th>
                 </tr>
             </thead>

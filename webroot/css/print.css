@@ -5,15 +5,22 @@
 }
 
 @media print {
+  @page {
+    size: 210mm 297mm;
+    margin: 5mm 5mm 5mm 10mm;
+  }
   * {
     margin: 0 !important;
-    padding: 2px !important;
+    padding: 1px !important;
   }
   body {
     height: 100%;
     width: 100%;
   }
 
+  h4 {
+    font-size: 14px;
+  }
   div {
     display: block;
   }
@@ -31,7 +38,7 @@
   .table-responsive {
     display: block;
     position: absolute;
-    width: 99%;
+    width: 100%;
   }
 
   td, th, tr {
@@ -40,16 +47,15 @@
 
   .col-wide-1 {
     width: 5%;
-    white-space: normal;
   }
 
   .col-wide-2 {
-    width: 10%;
-    white-space: normal;
+    max-width: 10%;
+    font-size: 13px;
+
   }
 
   .col-wide-3 {
     width: 15%;
-    white-space: normal;
   }
 }

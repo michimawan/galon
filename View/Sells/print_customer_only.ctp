@@ -27,15 +27,15 @@
             <thead>
                 <tr>
                     <th class="col-wide-1">No.</th>
-                    <th class="col-wide-1">Transaksi terakhir</th>
-                    <th class="col-wide-2">Kd Plgn</th>
+                    <th class="col-wide-1">Transaksi</th>
                     <th class="col-wide-2">Nama Plgn</th>
                     <th class="col-wide-2">Alamat</th>
-                    <th class="col-wide-1">Beli Air</th>
-                    <th class="col-wide-1">Pjm Gln</th>
-                    <th class="col-wide-1">Kmb Gln</th>
-                    <th class="col-wide-1">Ttl Pjm Gln</th>
+                    <th class="col-wide-2">Kd Plgn</th>
+                    <th class="col-wide-1">Beli</th>
                     <th class="col-wide-3">Byr</th>
+                    <th class="col-wide-1">Pjm</th>
+                    <th class="col-wide-1">Kmb</th>
+                    <th class="col-wide-1">Ttl Pjm</th>
                     <th class="col-wide-3">Htg</th>
                 </tr>
             </thead>
@@ -45,14 +45,14 @@
                     <tr>
                         <td class="col-wide-1"><?php echo $i?></td>
                         <td class="col-wide-1"><?php echo substr($customer['Customer']['transaksiterakhir'], 0, 10);?></td>
-                        <td class="col-wide-2"><?php echo $customer['Customer']['kdpelanggan'];?></td>
                         <td class="col-wide-2"><?php echo $customer['Customer']['namapelanggan'];?></td>
                         <td class="col-wide-2"><?php echo $customer['Customer']['alamat'];?></td>
+                        <td class="col-wide-2"><?php echo $customer['Customer']['kdpelanggan'];?></td>
                         <td class="col-wide-1">&nbsp</td>
+                        <td class="col-wide-3">&nbsp</td>
                         <td class="col-wide-1">&nbsp</td>
                         <td class="col-wide-1">&nbsp</td>
                         <td class="col-wide-1"><?php echo $customer['Customer']['galonterpinjam'];?></td>
-                        <td class="col-wide-3">&nbsp</td>
                         <td class="col-wide-3"><?php echo $customer['Customer']['hutang'];?></td>
                     </tr>
                 <?php $i++; ?>
